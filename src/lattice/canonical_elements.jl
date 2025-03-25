@@ -820,6 +820,56 @@ function VKICKER(;name::String = "VKicker", len::Float64 = 0.0, ykick::Float64 =
     return CORRECTOR(name=name, len=len, xkick=0.0, ykick=ykick)
 end
 
+"""
+    ORBTRIM(;name::String = "ORBTRIM", len::Float64 = 0.0, theta_x::Float64 = 0.0, theta_y::Float64 = 0.0,
+        tm_xkick::Float64 = 0.0, tm_ykick::Float64 = 0.0, xyrotate::Float64 = 0.0, realpara::Bool = false,
+        T1::Array{Float64,1} = zeros(6), T2::Array{Float64,1} = zeros(6), 
+        R1::Array{Float64,2} = zeros(6,6), R2::Array{Float64,2} = zeros(6,6))
+
+An orbit trim element for applying angular kicks to the beam.
+
+# Arguments
+- name::String: Element name
+- len::Float64: Element length (typically 0.0 for a thin element)
+- theta_x::Float64: Horizontal angular kick
+- theta_y::Float64: Vertical angular kick
+- tm_xkick::Float64: Alternative horizontal kick parameter (used if realpara is true)
+- tm_ykick::Float64: Alternative vertical kick parameter (used if realpara is true)
+- xyrotate::Float64: Rotation angle in degrees
+- realpara::Bool: If true, calculate kicks from tm_xkick and tm_ykick
+- T1::Array{Float64,1}: Misalignment at entrance
+- T2::Array{Float64,1}: Misalignment at exit
+- R1::Array{Float64,2}: Rotation at entrance
+- R2::Array{Float64,2}: Rotation at exit
+
+Example:
+```julia
+orbtrim = ORBTRIM(name="OR1", theta_x=0.001, theta_y=0.0)
+```
+"""
+
+mutable struct ORBTRIM <: AbstractElement
+    name::String
+    len::Float64
+    theta_x::Float64
+    theta_y::Float64
+    tm_xkick::Float64
+    tm_ykick::Float64
+    xyrotate::Float64
+    realpara::Bool
+    T1::Array{Float64,1}
+    T2::Array{Float64,1}
+    R1::Array{Float64,2}
+    R2::Array{Float64,2}
+    eletype::String
+    function ORBTRIM(;name::String = "ORBTRIM", len::Float64 = 0.0, theta_x::Float64 = 0.0, theta_y::Float64 = 0.0,
+        tm_xkick::Float64 = 0.0, tm_ykick::Float64 = 0.0, xyrotate::Float64 = 0.0, realpara::Bool = false,
+        T1::Array{Float64,1} = zeros(6), T2::Array{Float64,1} = zeros(6), 
+        R1::Array{Float64,2} = zeros(6,6), R2::Array{Float64,2} = zeros(6,6))
+    new(name, len, theta_x, theta_y, tm_xkick, tm_ykick, xyrotate, realpara, T1, T2, R1, R2, "ORBTRIM")
+    end
+end
+
 mutable struct SPACECHARGE <: AbstractElement
     # spectral space charge
     # this element is treated as an integrated effect of space charge over a length of effective_len

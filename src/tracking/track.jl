@@ -32,6 +32,8 @@ function linepass!(lattice::Lattice, particles::Beam)
             pass!(lattice.LongitudinalRLCWakes[lattice.element_order[i][2]], particles6, np, particles)
         elseif lattice.element_order[i][1] == 15
             pass!(lattice.LongitudinalWakes[lattice.element_order[i][2]], particles6, np, particles)
+        elseif lattice.element_order[i][1] == 16
+            pass!(lattice.orbtrims[lattice.element_order[i][2]], particles6, np, particles)
         # else
         #     println("Unknown element type: $lattice.element_order[i][1]")
         end
@@ -82,6 +84,8 @@ function ADlinepass!(lattice::Lattice, particles::Beam, id::Vector{Int}, elems::
                 pass!(lattice.LongitudinalRLCWakes[lattice.element_order[i][2]], particles6, np, particles)
             elseif lattice.element_order[i][1] == 15
                 pass!(lattice.LongitudinalWakes[lattice.element_order[i][2]], particles6, np, particles)
+            elseif lattice.element_order[i][1] == 16
+                pass!(lattice.orbtrims[lattice.element_order[i][2]], particles6, np, particles)
             # else
             #     println("Unknown element type: $(lattice.element_order[i][1])")
             end
@@ -140,6 +144,8 @@ function plinepass!(lattice::Lattice, particles::Beam)
             pass_P!(lattice.LongitudinalRLCWakes[lattice.element_order[i][2]], particles6, np, particles)
         elseif lattice.element_order[i][1] == 15
             pass_P!(lattice.LongitudinalWakes[lattice.element_order[i][2]], particles6, np, particles)
+        elseif lattice.element_order[i][1] == 16
+            pass_P!(lattice.orbtrims[lattice.element_order[i][2]], particles6, np, particles)
         # else
         #     println("Unknown element type: $lattice.element_order[i][1]")
         end
@@ -188,6 +194,8 @@ function ADplinepass!(lattice::Lattice, particles::Beam, id::Vector{Int}, elems:
                 pass_P!(lattice.LongitudinalRLCWakes[lattice.element_order[i][2]], particles6, np, particles)
             elseif lattice.element_order[i][1] == 15
                 pass_P!(lattice.LongitudinalWakes[lattice.element_order[i][2]], particles6, np, particles)
+            elseif lattice.element_order[i][1] == 16
+                pass_P!(lattice.orbtrims[lattice.element_order[i][2]], particles6, np, particles)
             # else
             #     println("Unknown element type: $(lattice.element_order[i][1])")
             end
@@ -247,6 +255,8 @@ function linepass_TPSA!(line::Lattice, rin::Vector{CTPS{T, TPS_Dim, Max_TPS_Degr
             pass_TPSA!(line.LongitudinalRLCWakes[lattice.element_order[i][2]], rin)
         elseif lattice.element_order[i][1] == 15
             pass_TPSA!(line.LongitudinalWakes[lattice.element_order[i][2]], rin)
+        elseif lattice.element_order[i][1] == 16
+            pass_TPSA!(lattice.orbtrims[lattice.element_order[i][2]], rin)
         # else
         #     println("Unknown element type: $typ")
         end

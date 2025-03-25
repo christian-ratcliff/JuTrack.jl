@@ -14,6 +14,7 @@ mutable struct Lattice
     crabcavities::Vector{CRABCAVITY}
     spacecharges::Vector{SPACECHARGE}
     LongitudinalRLCWakes::Vector{LongitudinalRLCWake}
+    orbtrims::Vector{ORBTRIM}
     # LongitudinalWakes::Vector{LongitudinalWake}
     # StrongGaussianBeams::Vector{StrongGaussianBeam}
     rfca_index::Int64
@@ -30,6 +31,7 @@ mutable struct Lattice
     crabcavity_index::Int64
     spacecharge_index::Int64
     LongitudinalRLCWake_index::Int64
+    orbtrim_index::Int64
     element_order::Vector{Tuple{Int64, Int64}}  # Stores (type, index) tuples
     nelems::Int64
     function Lattice(;nelems::Int64=0)
@@ -47,10 +49,11 @@ mutable struct Lattice
         crabcavities=Vector{CRABCAVITY}(undef, nelems)
         spacecharges=Vector{SPACECHARGE}(undef, nelems)
         LongitudinalRLCWakes=Vector{LongitudinalRLCWake}(undef, nelems)
+        orbtrims=Vector{ORBTRIM}(undef, nelems) 
         element_order=Vector{Tuple{Int64, Int64}}(undef, nelems)
         # nelems::Int64=0
         new(rfcas, drifts, markers, quads, kquads, ksexts, kocts, sbends, thinmultipoles, solenoids, correctors, crabcavities, 
-            spacecharges, LongitudinalRLCWakes, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, element_order, 0)
+            spacecharges, LongitudinalRLCWakes, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, element_order, 0)
     end
 end
 
@@ -151,4 +154,11 @@ function add!(lattice::Lattice, elem::LongitudinalRLCWake)
     lattice.element_order[lattice.nelems + 1] = (14, index)
     lattice.nelems += 1
     lattice.LongitudinalRLCWake_index += 1
+end
+function add!(lattice::Lattice, elem::ORBTRIM)
+    index = lattice.orbtrim_index
+    lattice.orbtrims[index] = elem
+    lattice.element_order[lattice.nelems + 1] = (16, index)
+    lattice.nelems += 1
+    lattice.orbtrim_index += 1
 end
