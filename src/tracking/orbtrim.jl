@@ -6,11 +6,18 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
     # Calculate kicks if realpara is true
     if ele.realpara
         # C0 is the speed of light in m/s
-        C0 = speed_of_light
+        # C0 = speed_of_light
         amu = 931494320.0
-        ecpi = particles.charge / amu * C0 / sqrt((particles.mass + particles.energy)^2 - particles.mass^2)
-        theta_x = ele.tm_xkick * ecpi
-        theta_y = ele.tm_ykick * ecpi
+        # println("charge: ", particles.charge)
+        # println("mass (eV/u): ", particles.mass / amu)
+        # println("energy (eV/u): ",  (particles.energy / (particles.mass / amu)))
+        # println("denom: ",  sqrt(( (particles.energy / (particles.mass / amu)) + amu)^2 - amu^2))
+        # ecpi = particles.charge / amu * C0 / sqrt((particles.mass + particles.energy)^2 - particles.mass^2)
+        ecpi = particles.charge  / (particles.mass / amu) * speed_of_light / sqrt(( (particles.energy / (particles.mass / amu)) + amu)^2 - amu^2)
+        # println(ecpi)
+        theta_x = ele.tm_xkick * ecpi * (particles.charge) / 50
+        theta_y = ele.tm_ykick * ecpi * (particles.charge) / 50
+        
     end
     # Calculate rotation values if needed
     xyrotate_rad = ele.xyrotate * π / 180.0

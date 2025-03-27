@@ -115,7 +115,9 @@ function parse_flame_lattice(filename::String, output_filename::String)
     # FLAME: [x(mm), x'(rad), y(mm), y'(rad), φ(rad), dE_k(MeV/u)]
     # JuTrack: [x(m), px, y(m), py, z(m), dp/p]
     T = zeros(Float64, 6, 6)
-    scaling = [1e-3, 1.0, 1e-3, 1.0, rf_wavelength / (2.0 * π),  1.0 / (beta^2 * kinetic_energy_per_nucleon * 1.0e-6) ] 
+    scaling = zeros(Float64, 6)
+    scaling = [1e-3, 1.0, 1e-3, 1.0, rf_wavelength * beta / (2.0 * π),  1.0 / (beta^2 * kinetic_energy_per_nucleon * 1.0e-6) ] 
+    # scaling .= 1.0
     T = diagm(scaling)
     
     # T = scaling * scaling'
@@ -379,7 +381,7 @@ function parse_flame_lattice(filename::String, output_filename::String)
         using LinearAlgebra
         using Random
         using Distributions
-        using Plots
+        using CairoMakie
         
         """
         )
@@ -460,8 +462,8 @@ function parse_flame_lattice(filename::String, output_filename::String)
             beam$i = create_beam_from_envelope_matrix(
                 S$(i-1)_matrix, 
                 centroid = [$(centroid[1]), $(centroid[2]), $(centroid[3]), $(centroid[4]), $(centroid[5]), $(centroid[6])], 
-                nparticles = 100000, 
-                energy = $total_energy, 
+                nparticles = 10000, 
+                energy = $total_kinetic_energy, 
                 charge = $charge_value, 
                 mass = $total_rest_energy)
             
@@ -504,9 +506,8 @@ function parse_flame_lattice(filename::String, output_filename::String)
                 eigen_decomp = eigen(envelope_matrix)
                 eigen_vals = eigen_decomp.values
                 eigen_vecs = eigen_decomp.vectors
-                
                 # Ensure all eigenvalues are positive (for numerical stability)
-                eigen_vals = max.(eigen_vals, 1e-10)
+                eigen_vals = max.(eigen_vals, 1e-20)
                 
                 # Compute L = V * sqrt(D)
                 eigen_vecs * Diagonal(sqrt.(eigen_vals))
@@ -520,9 +521,9 @@ function parse_flame_lattice(filename::String, output_filename::String)
             
             # Create beam with the generated particles
             beam = Beam(r=particles, np=nparticles, energy=energy, charge=charge, mass=mass)
-            
-            # Calculate emittances from the covariance matrix
-            calculate_emittances!(beam)
+            get_centroid!(beam)
+            get_emittance!(beam)
+
             
             return beam
         end
@@ -532,12 +533,29 @@ function parse_flame_lattice(filename::String, output_filename::String)
         function run_simulation()
             lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice()
             
-            println("Tracking beam through lattice...")
             linepass!(lattice, beam1)
-            
-            println("Final beam parameters:")
-            println("Centroid: ", beam1.centroid)
-            println("Emittance: ", beam1.emittance)
+            get_emittance!(beam1)
+            get_centroid!(beam1)
+
+            linepass!(lattice, beam2)
+            get_emittance!(beam2)
+            get_centroid!(beam2)
+
+            linepass!(lattice, beam3)
+            get_emittance!(beam3)
+            get_centroid!(beam3)
+
+            println("Final beam1 parameters:")
+            println("Centroid: ", beam1.emittance)
+            println("Emittance: ", beam1.centroid)
+
+            println("Final beam2 parameters:")
+            println("Centroid: ", beam2.emittance)
+            println("Emittance: ", beam2.centroid)
+
+            println("Final beam3 parameters:")
+            println("Centroid: ", beam3.emittance)
+            println("Emittance: ", beam3.centroid)
             
             return lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix
         end
@@ -568,7 +586,7 @@ function parse_flame_lattice(filename::String, output_filename::String)
         end
         
         # Create the lattice and beams
-        lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice()
+        lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
         
         begin
             # Print validation information
@@ -585,16 +603,13 @@ function parse_flame_lattice(filename::String, output_filename::String)
             ratio3 = cov(beam3.r) ./ S2_matrix
             display(ratio3)
         end
-        
+        lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = run_simulation();
         # Run visualization
         p1 = visualize_beam_properties(beam1)
         p2 = visualize_beam_properties(beam2)
         p3 = visualize_beam_properties(beam3)
         
-        println("\\nBeam emittances:")
-        println("beam1: ", beam1.emittance)
-        println("beam2: ", beam2.emittance)
-        println("beam3: ", beam3.emittance)
+
         """)
     end
     
@@ -665,7 +680,6 @@ function get_jutrack_param(param_name::String, param_value, flame_type::String, 
     if param_name in ["IonEs", "IonEk"] && typeof(param_value) <: Number
         return "$(get(param_map, param_name, param_name))=$(param_value * mass_number)"
     end
-
     
     # Return mapped parameter name and value
     mapped_name = get(param_map, param_name, param_name)
