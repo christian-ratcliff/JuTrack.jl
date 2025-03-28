@@ -459,7 +459,7 @@ function parse_flame_lattice(filename::String, output_filename::String)
             
             # Create beam with transformed coordinates
             write(file, """
-            beam$i = create_beam_from_envelope_matrix(
+                beam$i = create_beam_from_envelope_matrix(
                 S$(i-1)_matrix, 
                 centroid = [$(centroid[1]), $(centroid[2]), $(centroid[3]), $(centroid[4]), $(centroid[5]), $(centroid[6])], 
                 nparticles = 10000, 

@@ -12,11 +12,11 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
         # println("mass (eV/u): ", particles.mass / amu)
         # println("energy (eV/u): ",  (particles.energy / (particles.mass / amu)))
         # println("denom: ",  sqrt(( (particles.energy / (particles.mass / amu)) + amu)^2 - amu^2))
-        # ecpi = particles.charge / amu * C0 / sqrt((particles.mass + particles.energy)^2 - particles.mass^2)
-        ecpi = particles.charge  / (particles.mass / amu) * speed_of_light / sqrt(( (particles.energy / (particles.mass / amu)) + amu)^2 - amu^2)
+        mass_number = particles.mass/amu
+        ecpi = 50.  / (mass_number) * speed_of_light / sqrt(( (particles.energy / mass_number) + amu)^2 - amu^2)
         # println(ecpi)
-        theta_x = ele.tm_xkick * ecpi * (particles.charge) / 50
-        theta_y = ele.tm_ykick * ecpi * (particles.charge) / 50
+        theta_x = ele.tm_xkick * ecpi * (particles.charge) / 50.
+        theta_y = ele.tm_ykick * ecpi * (particles.charge) / 50.
         
     end
     # Calculate rotation values if needed
@@ -39,18 +39,19 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
         end
         
         # Apply kicks to momenta
+        # println(theta_x[1])
         r6[2] += theta_x
         r6[4] += theta_y
         
         # Apply rotation if needed
-        if ele.xyrotate != 0.0
-            cos_rot = cos(xyrotate_rad)
-            sin_rot = sin(xyrotate_rad)
-            px_temp = r6[2]
-            py_temp = r6[4]
-            r6[2] = cos_rot * px_temp - sin_rot * py_temp
-            r6[4] = sin_rot * px_temp + cos_rot * py_temp
-        end
+        # if ele.xyrotate != 0.0
+        #     cos_rot = cos(xyrotate_rad)
+        #     sin_rot = sin(xyrotate_rad)
+        #     px_temp = r6[2]
+        #     py_temp = r6[4]
+        #     r6[2] = cos_rot * px_temp - sin_rot * py_temp
+        #     r6[4] = sin_rot * px_temp + cos_rot * py_temp
+        # end
         
         # Apply misalignment at exit
         if !iszero(ele.R2)

@@ -1,13 +1,11 @@
-run_simulation()
-
-using LinearAlgebra
-using Random
-using Distributions
-
-
-function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; centroid::Vector{Float64}, 
-                                        nparticles::Int, energy::Float64=1e9, charge::Float64=-1.0, mass::Float64=931494320.0, seed::Int=42)
-    # Validate input
+function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; 
+                                centroid::Vector{Float64} = zeros(6),
+                                nparticles::Int = 10000, 
+                                energy::Float64 = 1e9, 
+                                charge::Float64 = -1.0, 
+                                mass::Float64 = 931494320.0, 
+                                seed::Int = 42)
+    # Validate inputs
     if size(envelope_matrix) != (6, 6)
         error("Envelope matrix must be 6x6")
     end
@@ -16,402 +14,492 @@ function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; cent
         error("Centroid must be a 6-element vector")
     end
     
-    # Set random seed for reproducibility
     Random.seed!(seed)
     
     # Ensure the envelope matrix is symmetric
-    envelope_matrix_symm = (envelope_matrix + envelope_matrix')/2
-    
-    # Decompose the envelope matrix to get the transformation
-    # We'll use the Cholesky decomposition if possible
+    envelope_matrix = (envelope_matrix + envelope_matrix')/2
+
+    # Generate random samples with the correct covariance
+    # Method 1: Use Cholesky decomposition if matrix is positive definite
     L = try
-        cholesky(envelope_matrix_symm).L
+        cholesky(envelope_matrix).L
     catch
-        # Fallback to eigendecomposition if Cholesky fails
-        eigen_decomp = eigen(envelope_matrix_symm)
-        values = eigen_decomp.values
-        vectors = eigen_decomp.vectors
+        # Method 2: Use eigendecomposition as fallback
+        eigen_decomp = eigen(envelope_matrix)
+        eigen_vals = eigen_decomp.values
+        eigen_vecs = eigen_decomp.vectors
+        # Ensure all eigenvalues are positive (for numerical stability)
+        eigen_vals = max.(eigen_vals, 1e-20)
         
-        # Replace any negative eigenvalues with small positive values
-        values = max.(values, 1e-20)
-        
-        # Reconstruct L
-        sqrt_values = sqrt.(values)
-        L = vectors * Diagonal(sqrt_values)
+        # Compute L = V * sqrt(D)
+        eigen_vecs * Diagonal(sqrt.(eigen_vals))
     end
     
-    # Generate standard normal distribution
-    dist = Normal(0, 1)
-    particles_raw = rand(dist, nparticles, 6)
+    # Generate standard normal random variables
+    Z = randn(nparticles, 6)
     
-    # Apply the transformation matrix to get correlated distribution
-    particles_correlated = particles_raw * transpose(L)
+    particles = Z * transpose(L)
+    particles .+= reshape(centroid, 1, 6)
     
-    # Shift the distribution to be centered at the specified centroid
-    particles_final = particles_correlated .+ reshape(centroid, 1, 6)
-    
-    # Create a Beam object
-    beam = Beam(r=particles_final, np= nparticles, energy = energy, charge=charge, mass=mass)
+    # Create beam with the generated particles
+    beam = Beam(r=particles, np=nparticles, energy=energy, charge=charge, mass=mass)
+    get_centroid!(beam)
+    get_emittance!(beam)
+
     
     return beam
 end
 
-function verify_beam_parameters(beam::Beam, expected_centroid::Vector{Float64}, expected_envelope::Matrix{Float64})
-    # Calculate the actual centroid
-    actual_centroid = vec(mean(beam.r, dims=1))
+function propagate_beam(lattice, beam, np)
+    # Initialize arrays to store results
+    n_elements = length(lattice)
+    beam_rms = zeros(n_elements, 6)  # Store RMS for all 6 dimensions
+    floor_distance = zeros(n_elements)
     
-    # Calculate the actual envelope matrix
-    centered_coords = beam.r .- reshape(actual_centroid, 1, 6)
-    actual_envelope = transpose(centered_coords) * centered_coords / size(beam.r, 1)
+    # Create a temporary array for flattened particles
+    flat_particles = zeros(6 * np)
     
-    # Calculate differences
-    centroid_diff = actual_centroid - expected_centroid
-    envelope_diff = actual_envelope - expected_envelope
-    
-    return centroid_diff, envelope_diff
-end
-
-# Example usage:
-envelope_matrix =  [
-    1.4591505220806416e-6 4.80759780722691e-9 -2.574008048881089e-7 -1.5753048728498946e-8 2.5016619575190344e-10 -0.0007222896297673236 ;
-    4.807597807226825e-9 1.113553929141832e-8 6.517280550397521e-8 -9.059142689309891e-9 1.9374466778366148e-11 0.00014392049726901385 ;
-    -2.5740080488810454e-7 6.51728055039751e-8 2.3112947543955263e-6 4.4795495848647294e-8 -9.291570665087705e-10 -0.0023714729116731895 ;
-    -1.5753048728498906e-8 -9.059142689309881e-9 4.4795495848647254e-8 1.2334170148319723e-8 8.669554527079657e-11 -0.0007809804442718882 ;
-    2.501661957483973e-10 1.937446677764928e-11 -9.291570665010306e-10 8.669554527099342e-11 5.397896688007715e-5 42.791987513052945 ;
-    -0.0007222896297913824 0.000143920497262889 -0.0023714729116086934 -0.000780980444264636 42.79198751305286 3.339580248268087e8 ;
-]
-
-# Define a beam centroid
-centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932]
-
-# Generate a beam with 10000 particles
-beam = create_beam_from_envelope_matrix(envelope_matrix, centroid = centroid, nparticles = 10000, energy = 2.2705e8; charge=49.0, mass=1.1550529568e11)
-
-# Verify the beam parameters
-centroid_diff, envelope_diff = verify_beam_parameters(beam, centroid, envelope_matrix)
-
-println("Beam centroid difference:")
-println(centroid_diff)
-println("\nMaximum envelope matrix difference: $(maximum(abs.(envelope_diff)))")
-
-# To visualize the beam (requires Plots package):
-using Plots
-scatter(beam.r[:, 1], beam.r[:, 2], 
-       xlabel="x [m]", ylabel="px [rad]", 
-       title="Beam Distribution (x-px)", 
-       markersize=2, alpha=0.5, legend=false)
-
-p1 = scatter(beam.r[:, 1], beam.r[:, 2], 
-            title="x-px", xlabel="x [m]", ylabel="px [rad]", 
-            markersize=2, alpha=0.5, legend=false)
-p2 = scatter(beam.r[:, 3], beam.r[:, 4], 
-            title="y-py", xlabel="y [m]", ylabel="py [rad]", 
-            markersize=2, alpha=0.5, legend=false) 
-p3 = scatter(beam.r[:, 1], beam.r[:, 3], 
-            title="x-y", xlabel="x [m]", ylabel="y [m]", 
-            markersize=2, alpha=0.5, legend=false)
-p4 = scatter(beam.r[:, 5], beam.r[:, 6], 
-            title="z-δ", xlabel="z [m]", ylabel="δE/E", 
-            markersize=2, alpha=0.5, legend=false)
-plot(p1, p2, p3, p4, layout=(2,2), size=(800, 600))
-
-
-
-
-#####################
-lattice, beam1, beam2, beam3 = create_lattice();
-
-function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; centroid::Vector{Float64}, 
-                                nparticles::Int, energy::Float64=1e9, charge::Float64=-1.0, mass::Float64=931494320.0, seed::Int=42)
-    # Validate input
-    if size(envelope_matrix) != (6, 6)
-        error("Envelope matrix must be 6x6")
-    end
-    
-    if length(centroid) != 6
-        error("Centroid must be a 6-element vector")
-    end
-    
-    # Set random seed for reproducibility
-    Random.seed!(seed)
-    
-    # Ensure the envelope matrix is symmetric
-    envelope_matrix_symm = (envelope_matrix + envelope_matrix')/2
-    
-    # Decompose the envelope matrix to get the transformation
-    # Use the Cholesky decomposition if possible
-    L = try
-        cholesky(envelope_matrix_symm).L
-    catch
-        # Fallback to eigendecomposition if Cholesky fails
-        eigen_decomp = eigen(envelope_matrix_symm)
-        values = eigen_decomp.values
-        vectors = eigen_decomp.vectors
+    # Loop through each lattice element
+    for i in eachindex(lattice)
+        # Flatten the beam position data
+        flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
         
-        # # Replace any negative eigenvalues with small positive values
-        # values = max.(values, 1e-20)
+        # Pass particles through the lattice element
+        pass!(lattice[i], flat_particles, np, beam)
         
-        # Reconstruct L
-        sqrt_values = sqrt.(values)
-        L = vectors * Diagonal(sqrt_values)
-    end
-    
-    # Generate standard normal distribution
-    dist = Normal(0, 1)
-    particles_raw = rand(dist, nparticles, 6)
-    
-    # Apply the transformation matrix to get correlated distribution
-    particles_correlated = particles_raw * transpose(L)
-    # println(mean(particles_correlated[:, 6]))
-    # Shift the distribution to be centered at the specified centroid
-    particles_final = particles_correlated .+ reshape(centroid, 1, 6)
-    println(std(particles_final[:, 6]))
-    # Create a Beam object
-    beam = Beam(r=particles_final, np= nparticles, energy = energy, charge=charge, mass=mass)
-    
-    return beam
-end
-
-beam1_test = create_beam_from_envelope_matrix(S0_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], nparticles=10000, charge=50.0, mass=1.1550529568e11);
-histogram(beam1_test.r[:,1] / std(beam1_test.r[:,1]), bins=100, title="x")
-histogram(beam1_test.r[:,2] / std(beam1_test.r[:,2]), bins=100, title="x'")
-histogram(beam1_test.r[:,3] / std(beam1_test.r[:,3]), bins=100, title="y")
-histogram(beam1_test.r[:,4] / std(beam1_test.r[:,4]), bins=100, title="y'")
-histogram(beam1_test.r[:,5] / std(beam1_test.r[:,5]), bins=100, title="z")
-histogram(beam1_test.r[:,6] / std(beam1_test.r[:,6]), bins=100, title="δE/E")
-
-
-beam2_test = create_beam_from_envelope_matrix(S1_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932], nparticles=10000, charge=49.0, mass=1.1550529568e11);
-histogram(beam2_test.r[:,1] / std(beam2_test.r[:,1]), bins=100, title="x")
-histogram(beam2_test.r[:,2] / std(beam2_test.r[:,2]), bins=100, title="x'")
-histogram(beam2_test.r[:,3] / std(beam2_test.r[:,3]), bins=100, title="y")
-histogram(beam2_test.r[:,4] / std(beam2_test.r[:,4]), bins=100, title="y'")
-histogram(beam2_test.r[:,5] / std(beam2_test.r[:,5]), bins=100, title="z")
-histogram(beam2_test.r[:,6] / std(beam2_test.r[:,6]), bins=100, title="δE/E")
-
-
-beam3_test = create_beam_from_envelope_matrix(S2_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, -530000.0000000012], nparticles=100000, charge=51.0, mass=1.1550529568e11);
-histogram(beam3_test.r[:,1] / std(beam3_test.r[:,1]), bins=100, title="x")
-histogram(beam3_test.r[:,2] / std(beam3_test.r[:,2]), bins=100, title="x'")
-histogram(beam3_test.r[:,3] / std(beam3_test.r[:,3]), bins=100, title="y")
-histogram(beam3_test.r[:,4] / std(beam3_test.r[:,4]), bins=100, title="y'")
-histogram(beam3_test.r[:,5] / std(beam3_test.r[:,5]), bins=100, title="z")
-histogram(beam3_test.r[:,6] / std(beam3_test.r[:,6]), bins=100, title="δE/E")
-
-
-function verify_beam_parameters(beam::Beam, expected_centroid::Vector{Float64}, expected_envelope::Matrix{Float64})
-    # Calculate the actual centroid
-    actual_centroid = vec(mean(beam.r, dims=1))
-    println(actual_centroid)
-    # Calculate the actual envelope matrix
-    centered_coords = beam.r .- reshape(actual_centroid, 1, 6)
-    actual_envelope = transpose(centered_coords) * centered_coords / size(beam.r, 1)
-    
-    # Calculate differences
-    centroid_diff = actual_centroid - expected_centroid
-    envelope_diff = actual_envelope - expected_envelope
-    
-    return centroid_diff, envelope_diff
-end
-
-S0_matrix = [
-    1.9401120068506904e-6 6.916101751370262e-9 -6.452826622660077e-7 1.937737875971762e-8 2.5016619575190483e-10 -0.0007222896297673211 ;
-    6.916101751370465e-9 1.227632215382666e-8 7.966019841914919e-8 1.2214490136665444e-8 1.937446677836609e-11 0.00014392049726901372 ;
-    -6.452826622660028e-7 7.966019841914866e-8 1.677274570233923e-6 3.786049860001454e-8 -9.291570665087502e-10 -0.002371472911673177 ;
-    1.9377378759717307e-8 1.221449013666544e-8 3.7860498600015637e-8 1.3727527372393609e-8 8.669554527079634e-11 -0.0007809804442718887 ;
-    2.5016619574839893e-10 1.9374466777649283e-11 -9.291570665010154e-10 8.669554527099378e-11 5.397896688007718e-5 42.79198751305294 ;
-    -0.0007222896297913817 0.00014392049726288898 -0.002371472911608706 -0.0007809804442646337 42.791987513052845 3.339580248268087e8 ;
-]
-
-S1_matrix = [
-    1.4591505220806416e-6 4.80759780722691e-9 -2.574008048881089e-7 -1.5753048728498946e-8 2.5016619575190344e-10 -0.0007222896297673236 ;
-    4.807597807226825e-9 1.113553929141832e-8 6.517280550397521e-8 -9.059142689309891e-9 1.9374466778366148e-11 0.00014392049726901385 ;
-    -2.5740080488810454e-7 6.51728055039751e-8 2.3112947543955263e-6 4.4795495848647294e-8 -9.291570665087705e-10 -0.0023714729116731895 ;
-    -1.5753048728498906e-8 -9.059142689309881e-9 4.4795495848647254e-8 1.2334170148319723e-8 8.669554527079657e-11 -0.0007809804442718882 ;
-    2.501661957483973e-10 1.937446677764928e-11 -9.291570665010306e-10 8.669554527099342e-11 5.397896688007715e-5 42.791987513052945 ;
-    -0.0007222896297913824 0.000143920497262889 -0.0023714729116086934 -0.000780980444264636 42.79198751305286 3.339580248268087e8 ;
-]
-
-S2_matrix = [
-    8.610934701851641e-6 -2.925996909510753e-7 -1.0426799474860453e-6 3.96584305304612e-7 2.501661957519043e-10 -0.0007222896297673205 ;
-    -2.925996909510772e-7 2.0119976600609268e-8 9.453461098576867e-8 -3.284566499545562e-9 1.9374466778366112e-11 0.0001439204972690139 ;
-    -1.0426799474860374e-6 9.453461098576794e-8 1.2714676786183125e-6 1.2290925637784062e-8 -9.291570665087563e-10 -0.002371472911673196 ;
-    3.9658430530461154e-7 -3.2845664995454693e-9 1.2290925637784375e-8 2.8471963564199213e-8 8.66955452707956e-11 -0.0007809804442718881 ;
-    2.501661957483968e-10 1.9374466777649218e-11 -9.291570665010196e-10 8.66955452709927e-11 5.3978966880077166e-5 42.79198751305295 ;
-    -0.0007222896297913842 0.0001439204972628889 -0.002371472911608734 -0.0007809804442646341 42.79198751305287 3.339580248268087e8 ;
-]
-
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam1_test, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], S0_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
-
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam2_test, [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932], S1_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
-
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam3_test, [0.0, 0.0, 0.0, 0.0, 0.0, -530000.0000000012], S2_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
-
-
-
-
-
-
-
-#########################
-function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; centroid::Vector{Float64}, 
-                                nparticles::Int, energy::Float64=1e9, charge::Float64=-1.0, mass::Float64=931494320.0, seed::Int=42)
-    # Validate input
-    if size(envelope_matrix) != (6, 6)
-        error("Envelope matrix must be 6x6")
-    end
-    
-    if length(centroid) != 6
-        error("Centroid must be a 6-element vector")
-    end
-    
-    # Set random seed for reproducibility
-    Random.seed!(seed)
-    
-    # Ensure the envelope matrix is symmetric
-    envelope_matrix_symm = (envelope_matrix + envelope_matrix')/2
-    
-    # Decompose the envelope matrix to get the transformation
-    # We'll use the Cholesky decomposition if possible
-    L = try
-        cholesky(envelope_matrix_symm).L
-    catch
-        # Fallback to eigendecomposition if Cholesky fails
-        eigen_decomp = eigen(envelope_matrix_symm)
-        values = eigen_decomp.values
-        vectors = eigen_decomp.vectors
+        # Reshape the particles back to original shape
+        beam.r = reshape(flat_particles, 6, np)'
         
-        # Replace any negative eigenvalues with small positive values
-        values = max.(values, 1e-20)
+        # Calculate beam properties
+        # get_emittance!(beam)
+        # get_centroid!(beam)
+        # get_2nd_moment!(beam)
         
-        # Reconstruct L
-        sqrt_values = sqrt.(values)
-        L = vectors * Diagonal(sqrt_values)
+        # Calculate and store RMS for all 6 dimensions
+        for dim in 1:6
+            beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
+        end
+        
+        # Calculate and store cumulative distance
+        if i == 1
+            floor_distance[i] = lattice[i].len
+        else
+            floor_distance[i] = floor_distance[i-1] + lattice[i].len
+        end
     end
     
-    # Generate standard normal distribution
-    dist = Normal(0, 1)
-    particles_raw = rand(dist, nparticles, 6)
-    
-    # Apply the transformation matrix to get correlated distribution
-    particles_correlated = particles_raw * transpose(L)
-    
-    # Shift the distribution to be centered at the specified centroid
-    particles_final = particles_correlated .+ reshape(centroid, 1, 6)
-    
-    # Create a Beam object
-    beam = Beam(r=particles_final, np= nparticles, energy = energy, charge=charge, mass=mass)
-    
-    return beam
+    return beam_rms, floor_distance, beam
 end
 
-lattice, beam1, beam2, beam3 = create_lattice();
-
-lattice, beam1, beam2, beam3 = run_simulation();
-
-S0_matrix = [
-    1.9401120068506904e-6 6.916101751370262e-9 -6.452826622660077e-7 1.937737875971762e-8 2.5016619575190483e-10 -0.0007222896297673211 ;
-    6.916101751370465e-9 1.227632215382666e-8 7.966019841914919e-8 1.2214490136665444e-8 1.937446677836609e-11 0.00014392049726901372 ;
-    -6.452826622660028e-7 7.966019841914866e-8 1.677274570233923e-6 3.786049860001454e-8 -9.291570665087502e-10 -0.002371472911673177 ;
-    1.9377378759717307e-8 1.221449013666544e-8 3.7860498600015637e-8 1.3727527372393609e-8 8.669554527079634e-11 -0.0007809804442718887 ;
-    2.5016619574839893e-10 1.9374466777649283e-11 -9.291570665010154e-10 8.669554527099378e-11 5.397896688007718e-5 42.79198751305294 ;
-    -0.0007222896297913817 0.00014392049726288898 -0.002371472911608706 -0.0007809804442646337 42.791987513052845 3.339580248268087e8 ;
-]
-
-S1_matrix = [
-    1.4591505220806416e-6 4.80759780722691e-9 -2.574008048881088e-7 -1.5753048728498946e-8 2.5016619575190344e-10 -0.0007222896297673236 ;
-    4.807597807226825e-9 1.113553929141832e-8 6.517280550397521e-8 -9.059142689309891e-9 1.9374466778366148e-11 0.00014392049726901385 ;
-    -2.574008048881045e-7 6.51728055039751e-8 2.3112947543955263e-6 4.4795495848647294e-8 -9.291570665087705e-10 -0.0023714729116731895 ;
-    -1.5753048728498906e-8 -9.059142689309881e-9 4.4795495848647254e-8 1.2334170148319723e-8 8.669554527079657e-11 -0.0007809804442718882 ;
-    2.501661957483973e-10 1.937446677764928e-11 -9.291570665010306e-10 8.669554527099342e-11 5.397896688007715e-5 42.791987513052945 ;
-    -0.0007222896297913824 0.000143920497262889 -0.0023714729116086934 -0.000780980444264636 42.79198751305286 3.339580248268087e8 ;
-]
-
-S2_matrix = [
-    8.610934701851641e-6 -2.925996909510753e-7 -1.0426799474860453e-6 3.96584305304612e-7 2.501661957519043e-10 -0.0007222896297673205 ;
-    -2.925996909510772e-7 2.0119976600609268e-8 9.453461098576867e-8 -3.284566499545562e-9 1.9374466778366112e-11 0.0001439204972690139 ;
-    -1.0426799474860374e-6 9.453461098576794e-8 1.2714676786183123e-6 1.2290925637784062e-8 -9.291570665087563e-10 -0.0023714729116731956 ;
-    3.9658430530461154e-7 -3.2845664995454693e-9 1.2290925637784375e-8 2.8471963564199213e-8 8.66955452707956e-11 -0.0007809804442718881 ;
-    2.501661957483968e-10 1.9374466777649218e-11 -9.291570665010196e-10 8.66955452709927e-11 5.3978966880077166e-5 42.79198751305295 ;
-    -0.0007222896297913841 0.0001439204972628889 -0.002371472911608734 -0.0007809804442646341 42.79198751305287 3.339580248268087e8 ;
-]
-
-beam1_test = create_beam_from_envelope_matrix(S0_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], nparticles=10000, charge=50.0, mass=1.1550529568e11);
-histogram(beam1_test.r[:,1] / std(beam1_test.r[:,1]), bins=100, title="x")
-histogram(beam1_test.r[:,2] / std(beam1_test.r[:,2]), bins=100, title="x'")
-histogram(beam1_test.r[:,3] / std(beam1_test.r[:,3]), bins=100, title="y")
-histogram(beam1_test.r[:,4] / std(beam1_test.r[:,4]), bins=100, title="y'")
-histogram(beam1_test.r[:,5] / std(beam1_test.r[:,5]), bins=100, title="z")
-histogram(beam1_test.r[:,6] / std(beam1_test.r[:,6]), bins=100, title="δE/E")
-
-
-beam2_test = create_beam_from_envelope_matrix(S1_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932], nparticles=10000, charge=49.0, mass=1.1550529568e11);
-histogram(beam2_test.r[:,1] / std(beam2_test.r[:,1]), bins=100, title="x")
-histogram(beam2_test.r[:,2] / std(beam2_test.r[:,2]), bins=100, title="x'")
-histogram(beam2_test.r[:,3] / std(beam2_test.r[:,3]), bins=100, title="y")
-histogram(beam2_test.r[:,4] / std(beam2_test.r[:,4]), bins=100, title="y'")
-histogram(beam2_test.r[:,5] / std(beam2_test.r[:,5]), bins=100, title="z")
-histogram(beam2_test.r[:,6] / std(beam2_test.r[:,6]), bins=100, title="δE/E")
-
-
-beam3_test = create_beam_from_envelope_matrix(S2_matrix, centroid = [0.0, 0.0, 0.0, 0.0, 0.0, -530000.0000000012], nparticles=100000, charge=51.0, mass=1.1550529568e11);
-histogram(beam3_test.r[:,1] / std(beam3_test.r[:,1]), bins=100, title="x")
-histogram(beam3_test.r[:,2] / std(beam3_test.r[:,2]), bins=100, title="x'")
-histogram(beam3_test.r[:,3] / std(beam3_test.r[:,3]), bins=100, title="y")
-histogram(beam3_test.r[:,4] / std(beam3_test.r[:,4]), bins=100, title="y'")
-histogram(beam3_test.r[:,5] / std(beam3_test.r[:,5]), bins=100, title="z")
-histogram(beam3_test.r[:,6] / std(beam3_test.r[:,6]), bins=100, title="δE/E")
-
-
-function verify_beam_parameters(beam::Beam, expected_centroid::Vector{Float64}, expected_envelope::Matrix{Float64})
-    # Calculate the actual centroid
-    actual_centroid = vec(mean(beam.r, dims=1))
-    # Calculate the actual envelope matrix
-    centered_coords = beam.r .- reshape(actual_centroid, 1, 6)
-    # actual_envelope = transpose(centered_coords) * centered_coords / size(beam.r, 1)
-    actual_envelope = cov(beam.r)
-    println(actual_envelope)
-    # Calculate differences
-    centroid_diff = (actual_centroid - expected_centroid)
-    envelope_diff= (actual_envelope - expected_envelope)
-    envelope_diff_perc = (actual_envelope - expected_envelope) ./    expected_envelope
+# Run the simulation
+function run_simulation()
+    lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice()
     
-    return centroid_diff, envelope_diff,  envelope_diff_perc
+    # linepass!(lattice, beam1)
+    # get_emittance!(beam1)
+    # get_centroid!(beam1)
+
+    # linepass!(lattice, beam2)
+    # get_emittance!(beam2)
+    # get_centroid!(beam2)
+
+    # linepass!(lattice, beam3)
+    # get_emittance!(beam3)
+    # get_centroid!(beam3)
+    # beam1_rms_x::Vector{Float64} = zeros(length(lattice))
+    # flat_particles1::Vector{Float64} = zeros(length(beam1.r))
+    # floor_distance::Vector{Float64} = zeros(length(lattice))
+    # np::Int = beam1.np
+    # for i in eachindex(lattice)
+    #     flat_particles1 .= collect(Iterators.flatten(eachrow(beam1.r)))
+    #     pass!(lattice[i], flat_particles1, np, beam1)
+    #     beam1.r = reshape(flat_particles1, 6, np)'
+    #     get_emittance!(beam1)
+    #     get_centroid!(beam1)
+    #     get_2nd_moment!(beam1)
+    #     beam1_rms_x[i] = sqrt(mean(beam1.r[:,1].^2))
+    #     if i == 1
+    #         floor_distance[i] = lattice[i].len
+    #     else
+    #         floor_distance[i] = floor_distance[i-1] + lattice[i].len
+    #     end
+    # end
+    beam1_rms, floor_distance, beam1 = propagate_beam(lattice, beam1, beam1.np)
+    beam2_rms, floor_distance, beam2 = propagate_beam(lattice, beam2, beam2.np)
+    beam3_rms, floor_distance, beam3 = propagate_beam(lattice, beam3, beam3.np)
+
+
+    println("Final beam1 parameters:")
+    println("Centroid: ", beam1.emittance)
+    println("Emittance: ", beam1.centroid)
+
+    println("Final beam2 parameters:")
+    println("Centroid: ", beam2.emittance)
+    println("Emittance: ", beam2.centroid)
+
+    println("Final beam3 parameters:")
+    println("Centroid: ", beam3.emittance)
+    println("Emittance: ", beam3.centroid)
+    
+    return lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, floor_distance
 end
 
+function visualize_beam_properties(beam::Beam)
+    # Create a multi-panel plot to visualize beam properties
+    
+    # Phase space plots (x-px, y-py, z-dp)
+    p1 = scatter(beam.r[:,1], beam.r[:,2], 
+                markersize=1, markerstrokewidth=0, alpha=0.5,
+                title="x-px phase space", xlabel="x [m]", ylabel="px")
+                
+    p2 = scatter(beam.r[:,3], beam.r[:,4], 
+                markersize=1, markerstrokewidth=0, alpha=0.5,
+                title="y-py phase space", xlabel="y [m]", ylabel="py")
+                
+    p3 = scatter(beam.r[:,5], beam.r[:,6], 
+                markersize=1, markerstrokewidth=0, alpha=0.5,
+                title="z-dp phase space", xlabel="z [m]", ylabel="dp/p")
+    
+    # Projections (histograms)
+    p4 = histogram(beam.r[:,1], bins=50, alpha=0.7, title="x distribution", xlabel="x [m]")
+    p5 = histogram(beam.r[:,3], bins=50, alpha=0.7, title="y distribution", xlabel="y [m]")
+    p6 = histogram(beam.r[:,5], bins=50, alpha=0.7, title="z distribution", xlabel="z [m]")
+    
+    # Combine plots
+    plot(p1, p2, p3, p4, p5, p6, layout=(2,3), size=(900,600), legend=false)
+end
 
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam1_test, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], S0_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
+# Create the lattice and beams
+# lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
 
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam2_test, [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932], S1_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
+# begin
+#     # Print validation information
+#     println("Validation results:")
+#     println("beam1 covariance ratio:")
+#     ratio1 = cov(beam1.r) ./ S0_matrix
+#     display(ratio1)
+    
+#     println("\nbeam2 covariance ratio:")
+#     ratio2 = cov(beam2.r) ./ S1_matrix
+#     display(ratio2)
+    
+#     println("\nbeam3 covariance ratio:")
+#     ratio3 = cov(beam3.r) ./ S2_matrix
+#     display(ratio3)
+# end
+lattice, beam1, beam2, beam3, beam1_rms, beam2_rms,beam3_rms, floor_length = run_simulation();
+# Run visualization
+# p1 = visualize_beam_properties(beam1)
+# p2 = visualize_beam_properties(beam2)
+# p3 = visualize_beam_properties(beam3)
 
-centroid_diff_test, envelope_diff_test = verify_beam_parameters(beam3_test, [0.0, 0.0, 0.0, 0.0, 0.0, -530000.0000000012], S2_matrix);
-println("Beam centroid difference:", centroid_diff_test)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff_test)))")
+begin
+    f = Figure(size = (900, 650))
+    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
+        title = "MultiBeam RMS X Plot")
+    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
+    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
+    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
+    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
+    display(f)
+end;
 
-scale = [1e-3, 1, 1e-3, 1, 1, 1e6]
+begin
+    f = Figure(size = (900, 650))
+    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
+        title = "MultiBeam RMS Y Plot")
+    lines!(ax, floor_length, beam1_rms[:,3] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
+    lines!(ax, floor_length, beam2_rms[:,3] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
+    lines!(ax, floor_length, beam3_rms[:,3] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
+    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
+    display(f)
+end;
 
 
+function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
+    # Create the figure
+    f = Figure(size = (900, 650))
+    
+    # Create the RMS plot
+    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
+              title = "MultiBeam RMS X Plot")
+    
+    # Plot the beam RMS data
+    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
+    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
+    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
+    
+    # Add the beam legend
+    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
+    
+    # Create the floorline plot
+    floor_ax = Axis(f[2, 1], 
+                   xticklabelsvisible = false,
+                   yticklabelsvisible = false,
+                   ylabel = "Elements")
+    
+    # Define element type colors and heights
+    element_colors = Dict(
+        "SBEND" => :blue,
+        "KQUAD" => :red,
+        "ORBTRIM" => :green,
+        "default" => :gray
+    )
+    
+    element_heights = Dict(
+        "SBEND" => 0.8,
+        "KQUAD" => 0.6,
+        "ORBTRIM" => 0.4,
+        "default" => 0.2
+    )
+    
+    # Track element plot handles for legend
+    element_handles = []
+    element_names = []
+    
+    # Draw the floorline
+    curr_pos = 0.0
+    for ele in lattice
+        # Get element type
+        ele_type = string(typeof(ele).name.name)
+        
+        # Determine color and height
+        color = get(element_colors, ele_type, element_colors["default"])
+        height = get(element_heights, ele_type, element_heights["default"])
+        
+        # Draw rectangle for element
+        rect = Rect(curr_pos, -height/2, ele.len, height)
+        element = poly!(floor_ax, rect, color = color)
+        
+        # Track for legend if not already tracked
+        if haskey(element_colors, ele_type) && !(ele_type in element_names)
+            push!(element_handles, element)
+            push!(element_names, ele_type)
+        end
+        
+        # Update position
+        curr_pos += ele.len
+    end
+    
+    # Link x axes to keep them aligned
+    linkxaxes!(ax, floor_ax)
+    
+    # Add element type legend
+    if !isempty(element_handles)
+        f[2, 2] = Legend(f, element_handles, element_names, "Element Types", framevisible = false)
+    end
+    
+    # Adjust layout
+    rowsize!(f.layout, 1, 0.8)
+    rowsize!(f.layout, 2, 0.2)
+    save("src/demo/FRIB/multibeam_rms.png", f)
+    return f
+end
+function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
+    # Create the figure with more height for better visualization
+    f = Figure(size = (900, 700))
+    
+    # Create main plot with more prominent gridlines
+    ax = Axis(f[1, 1], 
+        xlabel = "z [m]", 
+        ylabel = "RMS X [mm]",
+        title = "MultiBeam RMS X Plot",
+        xminorticksvisible = true,
+        yminorticksvisible = true)
+    
+    # Plot the beam RMS data with thicker lines
+    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color = :red, linewidth = 2)
+    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color = :blue, linewidth = 2)
+    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color = :green, linewidth = 2)
+    
+    # Add legend for beams
+    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
+    
+    # Create floorline plot with better visibility
+    floor_ax = Axis(f[2, 1], 
+                   xticklabelsvisible = false,
+                   yticklabelsvisible = false,
+                   ylabel = "Elements",
+                   height = 100)
+    
+    # Define element type colors and heights with more contrast
+    element_colors = Dict(
+        "SBEND" => :blue,
+        "KQUAD" => :red,
+        "ORBTRIM" => :green,
+        "default" => :gray
+    )
+    
+    # Make elements taller for better visibility
+    element_heights = Dict(
+        "SBEND" => 1.0,
+        "KQUAD" => 0.8,
+        "ORBTRIM" => 0.6,
+        "default" => 0.4
+    )
+    
+    # Track element plot handles for legend
+    element_types = Dict{String, Any}()
+    
+    # Draw the floorline with clear rectangles
+    curr_pos = 0.0
+    for ele in lattice
+        # Get element type
+        ele_type = string(typeof(ele).name.name)
+        
+        # Determine color and height
+        color = get(element_colors, ele_type, element_colors["default"])
+        height = get(element_heights, ele_type, element_heights["default"])
+        
+        # Draw rectangle for element
+        rect = Rect(curr_pos, -height/2, max(ele.len, 0.05), height)  # Minimum width for visibility
+        element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+        
+        # Track for legend
+        element_types[ele_type] = element
+        
+        # Update position
+        curr_pos += ele.len
+    end
+    
+    # Link x axes to keep them aligned
+    linkxaxes!(ax, floor_ax)
+    
+    # Ensure y-axis limits show data properly
+    ylims!(ax, (0, nothing))  # Start at 0, auto-determine upper limit
+    ylims!(floor_ax, (-0.6, 0.6))  # Fixed range for elements
+    
+    # Add element type legend
+    element_entries = []
+    element_names = []
+    for (name, element) in element_types
+        push!(element_entries, element)
+        push!(element_names, name)
+    end
+    
+    f[2, 2] = Legend(f, element_entries, element_names, "Element Types", framevisible = false)
+    
+    # Adjust layout
+    rowsize!(f.layout, 1, 0.8)
+    rowsize!(f.layout, 2, 0.2)
+    save("src/demo/FRIB/multibeam_rms.png", f)
+    return f
+end
+function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
+    # Create the figure
+    f = Figure(size = (900, 700))
+    
+    # Create layout with separate areas for plots
+    gl = f[1, 1] = GridLayout()
+    
+    # Create the RMS plot with its own scale
+    ax = Axis(gl[1, 1], 
+        xlabel = "", # Remove x-label from top plot
+        ylabel = "RMS X [mm]",
+        # height = 100,
+        title = "MultiBeam RMS X Plot")
+    
+    # Plot beam data
+    b1_data = beam1_rms[:,1] .* 1e3
+    b2_data = beam2_rms[:,1] .* 1e3
+    b3_data = beam3_rms[:,1] .* 1e3
+    
+    l1 = lines!(ax, floor_length, b1_data, label = "Beam 1, Charge = 50", color = :red, linewidth = 2)
+    l2 = lines!(ax, floor_length, b2_data, label = "Beam 2, Charge = 49", color = :blue, linewidth = 2)
+    l3 = lines!(ax, floor_length, b3_data, label = "Beam 3, Charge = 51", color = :green, linewidth = 2)
+    
+    # # Calculate appropriate y-limits for RMS plot
+    # all_data = vcat(b1_data, b2_data, b3_data)
+    # data_min = minimum(all_data)
+    # data_max = maximum(all_data)
+    # range = max(data_max - data_min, 1e-6) # Prevent zero range
+    # ylims!(ax, (data_min - range*0.1, data_max + range*0.1))
+    
+    # Create floorline plot with NO y-axis labels or ticks
+    floor_ax = Axis(gl[2, 1], 
+                #    height = 100,
+                   xlabel = "z [m]", # Only show x-label on bottom plot
+                   ylabel = "Elements",
+                   yticklabelsvisible = false, # Hide y-tick labels
+                   yticksvisible = false) # Hide y-tick marks
+    
+    # Define element colors
+    element_colors = Dict(
+        "SBEND" => :blue,
+        "KQUAD" => :red,
+        "ORBTRIM" => :green,
+        "MARKER" => :darkgray,
+        "DRIFT" => :lightgray,
+        "default" => :gray
+    )
+    
+    element_heights = Dict(
+        "SBEND" => 0.8,
+        "KQUAD" => 0.7,
+        "ORBTRIM" => 0.6,
+        "MARKER" => 0.4,
+        "DRIFT" => 0.3,
+        "default" => 0.5
+    )
+    
+    # Track element types for legend
+    element_types = Dict{String, Any}()
+    
+    # Draw the floorline
+    curr_pos = 0.0
+    for ele in lattice
+        # Get element type
+        ele_type = string(typeof(ele).name.name)
+        
+        # Determine color and height
+        color = get(element_colors, ele_type, element_colors["default"])
+        height = get(element_heights, ele_type, element_heights["default"])
+        
+        # Draw rectangle for element
+        rect = Rect(curr_pos, -height/2, max(ele.len, 0.05), height)
+        element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+        
+        # Track for legend (only if not already tracked)
+        if !haskey(element_types, ele_type)
+            element_types[ele_type] = element
+        end
+        
+        # Update position
+        curr_pos += ele.len
+    end
+    
+    # Link x axes to keep them aligned
+    linkxaxes!(ax, floor_ax)
+    
+    # Set fixed y limits for floorline - independent from top plot
+    # ylims!(floor_ax, (-0.5, 0.5))
+    
+    # Add legends to right side
+    gl2 = f[1, 2] = GridLayout()
+    gl2[1,1] = Legend(f, [l1, l2, l3], ["Beam 1, Charge = 50", "Beam 2, Charge = 49", "Beam 3, Charge = 51"], "Beams")
+    
+    element_entries = []
+    element_names = []
+    # Sort the element names alphabetically
+    sorted_names = sort(collect(keys(element_types)))
 
-histogram(beam2.r[:,1] / std(beam2.r[:,1]), bins=100, title="x")
-histogram(beam2.r[:,2] / std(beam2.r[:,2]), bins=100, title="x'")
-histogram(beam2.r[:,3] / std(beam2.r[:,3]), bins=100, title="y")
-histogram(beam2.r[:,4] / std(beam2.r[:,4]), bins=100, title="y'")
-histogram(beam2.r[:,5] / std(beam2.r[:,5]), bins=100, title="z")
-histogram(beam2.r[:,6] / std(beam2.r[:,6]), bins=100, title="δE/E")
-centroid_diff, envelope_diff, envelope_diff_perc = verify_beam_parameters(beam2, [0.0, 0.0, 0.0, 0.0, 0.0, 319999.9999999932], S1_matrix);
-println("Beam centroid difference:", centroid_diff)
-println("Maximum envelope matrix difference: $(maximum(abs.(envelope_diff)))")
-println("envelope matrix difference perc: $envelope_diff_perc)")
+    # Then create the legend entries in that order
+    for name in sorted_names
+        element = element_types[name]
+        push!(element_entries, element)
+        push!(element_names, name)
+    end
+    
+    if !isempty(element_entries)
+        gl2[2,1] = Legend(f, element_entries, element_names, "Element Types")
+    end
+    
+    # Adjust layout - give more space to top plot
+    # rowsize!(gl, 1, 0.8)
+    rowsize!(gl, 2, 100)
+    rowsize!(gl2, 2, 100)
+    
+    return f
+end
 
-envelope_diff_perc 
-envelope_diff
+plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
