@@ -44,14 +44,14 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
         r6[4] += theta_y
         
         # Apply rotation if needed
-        # if ele.xyrotate != 0.0
-        #     cos_rot = cos(xyrotate_rad)
-        #     sin_rot = sin(xyrotate_rad)
-        #     px_temp = r6[2]
-        #     py_temp = r6[4]
-        #     r6[2] = cos_rot * px_temp - sin_rot * py_temp
-        #     r6[4] = sin_rot * px_temp + cos_rot * py_temp
-        # end
+        if ele.xyrotate != 0.0
+            cos_rot = cos(xyrotate_rad)
+            sin_rot = sin(xyrotate_rad)
+            px_temp = r6[2]
+            py_temp = r6[4]
+            r6[2] = cos_rot * px_temp - sin_rot * py_temp
+            r6[4] = sin_rot * px_temp + cos_rot * py_temp
+        end
         
         # Apply misalignment at exit
         if !iszero(ele.R2)
