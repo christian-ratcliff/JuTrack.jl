@@ -484,9 +484,13 @@ function parse_flame_lattice(filename::String, output_filename::String)
                 
                 if any(lam$i .<= 0)
                     println("Warning: Detected negative eigenvalues in the matrix")
-                    epsilon = max(1e-20, abs(minimum(lam$i)) * 1.1)  # Slightly larger than the most negative eigenvalue
-                    s_reg = S$(i-1)_matrix + epsilon * I  # Add to diagonal
-                    lam$i, u$i = eigen(s_reg)    # Recompute eigendecomposition
+                    # Set threshold relative to the largest eigenvalue
+                    min_eigenvalue = max(1e-20, maximum(lam$i) * 1e-6)  
+                    # Clip negative eigenvalues
+                    lam1_clipped = max.(lam$i, min_eigenvalue)  
+                    # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+                    S_reg = u$i * Diagonal(lam1_clipped) * u$i'
+                    lam$i, u$i = eigen(S_reg)
                 end
 
                 # Generate random particles 

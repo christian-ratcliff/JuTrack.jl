@@ -1,6 +1,6 @@
 # JuTrack lattice file converted from FLAME format
 # Original file: BDS_124Xe_3cs_short_v1.lat
-# Generated on: 2025-04-09T11:12:25.264
+# Generated on: 2025-04-09T11:29:39.564
 # Mass number: 124.0
 # Coordinate system conversion: FLAME [mm, rad, mm, rad, rad, MeV/u] -> JuTrack [m, px, m, py, m, dp]
 # Relativistic factors: beta=0.5946004840620179, gamma=1.2437481314969263, beta*gamma=0.7395332410393027
@@ -642,7 +642,7 @@ function create_lattice()
     if any(lam1 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
         # Set threshold relative to the largest eigenvalue
-        min_eigenvalue = max(1e-12, maximum(lam1) * 1e-6)  
+        min_eigenvalue = max(1e-20, maximum(lam1) * 1e-6)  
         # Clip negative eigenvalues
         lam1_clipped = max.(lam1, min_eigenvalue)  
         # Reconstruct matrix with clipped eigenvalues but same eigenvectors
@@ -699,9 +699,13 @@ function create_lattice()
     
     if any(lam2 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
-        epsilon = max(1e-20, abs(minimum(lam2)) * 1.1)  # Slightly larger than the most negative eigenvalue
-        s_reg = S1_matrix + epsilon * I  # Add to diagonal
-        lam2, u2 = eigen(s_reg)    # Recompute eigendecomposition
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam2) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam2, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u2 * Diagonal(lam1_clipped) * u2'
+        lam2, u2 = eigen(S_reg)
     end
 
     # Generate random particles 
@@ -753,9 +757,13 @@ function create_lattice()
     
     if any(lam3 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
-        epsilon = max(1e-20, abs(minimum(lam3)) * 1.1)  # Slightly larger than the most negative eigenvalue
-        s_reg = S2_matrix + epsilon * I  # Add to diagonal
-        lam3, u3 = eigen(s_reg)    # Recompute eigendecomposition
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam3) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam3, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u3 * Diagonal(lam1_clipped) * u3'
+        lam3, u3 = eigen(S_reg)
     end
 
     # Generate random particles 
@@ -802,6 +810,7 @@ function create_lattice()
     return lattice, beam1, beam2, beam3
 end
 
+# Run the simulation
 
 function propagate_beam(lattice, beam, np)
     # Create expanded lattice
@@ -1355,8 +1364,7 @@ lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms,
 twi1, twi2, twi3, floor_distance, expanded_indices = run_simulation();
 
 # Plot using original indexing
-end_ele = 20;
-plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false);
+end_ele = 200
+plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false)
 plots["rms"] 
-plots_combined = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, true)
 
