@@ -1086,9 +1086,14 @@ function parse_flame_lattice(filename::String, output_filename::String)
         lattice, beam1, beam2, beam3 = create_lattice();
         
 
-        p1 = visualize_beam_properties(beam1);
-        p2 = visualize_beam_properties(beam2);
-        p3 = visualize_beam_properties(beam3);
+        begin
+            p1 = visualize_beam_properties(beam1);
+            p2 = visualize_beam_properties(beam2);
+            p3 = visualize_beam_properties(beam3);
+            display(p1)
+            display(p2)
+            display(p3)
+        end;
 
 
         # Run simulation
