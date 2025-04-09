@@ -1101,9 +1101,10 @@ function parse_flame_lattice(filename::String, output_filename::String)
         twi1, twi2, twi3, floor_distance, expanded_indices = run_simulation();
 
         # Plot using original indexing
-        end_ele = 200
-        plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false)
-        plots["rms"] 
+        end_ele = 200;
+        plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false);
+        plots["rms"]
+        plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, true)
 
         """)
     end
