@@ -1,6 +1,6 @@
 # JuTrack lattice file converted from FLAME format
 # Original file: BDS_124Xe_3cs_short_v1.lat
-# Generated on: 2025-03-26T15:49:15.173
+# Generated on: 2025-04-09T11:12:25.264
 # Mass number: 124.0
 # Coordinate system conversion: FLAME [mm, rad, mm, rad, rad, MeV/u] -> JuTrack [m, px, m, py, m, dp]
 # Relativistic factors: beta=0.5946004840620179, gamma=1.2437481314969263, beta*gamma=0.7395332410393027
@@ -12,6 +12,7 @@ using LinearAlgebra
 using Random
 using Distributions
 using CairoMakie
+using Statistics
 
 function create_lattice()
     lattice = []
@@ -582,629 +583,359 @@ function create_lattice()
     USE = MARKER(name="USE")
     push!(lattice, USE)
 
-    # Define beam envelope matrices
-    S0_matrix = [
-        1.9401120068506904e-6 6.916101751370262e-9 -6.452826622660077e-7 1.937737875971762e-8 8.816553292069131e-11 -8.997862587159953e-12 ;
-        6.916101751370465e-9 1.227632215382666e-8 7.966019841914919e-8 1.2214490136665444e-8 6.8281015483918325e-12 1.7928775445931288e-12 ;
-        -6.452826622660028e-7 7.966019841914866e-8 1.677274570233923e-6 3.786049860001454e-8 -3.274608213533839e-10 -2.954242523914023e-11 ;
-        1.9377378759717307e-8 1.221449013666544e-8 3.7860498600015637e-8 1.3727527372393609e-8 3.055392407305886e-11 -9.728998494802312e-12 ;
-        8.816553291945573e-11 6.8281015481392096e-12 -3.2746082135065794e-10 3.055392407312844e-11 6.704478361805059e-6 1.8787138961392854e-7 ;
-        -8.997862587459685e-12 1.7928775445168307e-12 -2.954242523833709e-11 -9.728998494711933e-12 1.8787138961392817e-7 5.182601752993566e-8 ;
+    # Define FLAME raw matrices
+    S0_raw = [
+        1.9401120068506905 6.916101751370262e-6 -0.6452826622660077 1.937737875971762e-5 2.5016619575190483e-7 -7.22289629767321e-7 ;
+        6.916101751370465e-6 1.227632215382666e-8 7.966019841914919e-5 1.2214490136665444e-8 1.937446677836609e-11 1.4392049726901372e-10 ;
+        -0.6452826622660028 7.966019841914866e-5 1.6772745702339231 3.786049860001454e-5 -9.291570665087502e-7 -2.371472911673177e-6 ;
+        1.9377378759717306e-5 1.221449013666544e-8 3.786049860001564e-5 1.3727527372393609e-8 8.669554527079634e-11 -7.809804442718887e-10 ;
+        2.501661957483989e-7 1.9374466777649283e-11 -9.291570665010154e-7 8.669554527099378e-11 5.397896688007718e-5 4.2791987513052936e-5 ;
+        -7.222896297913816e-7 1.4392049726288899e-10 -2.371472911608706e-6 -7.809804442646337e-10 4.279198751305285e-5 0.0003339580248268087 ;
     ]
 
-    S1_matrix = [
-        1.4591505220806416e-6 4.80759780722691e-9 -2.574008048881089e-7 -1.5753048728498946e-8 8.816553292069082e-11 -8.997862587159986e-12 ;
-        4.807597807226825e-9 1.113553929141832e-8 6.517280550397521e-8 -9.059142689309891e-9 6.828101548391853e-12 1.7928775445931304e-12 ;
-        -2.5740080488810454e-7 6.51728055039751e-8 2.3112947543955263e-6 4.4795495848647294e-8 -3.274608213533911e-10 -2.9542425239140383e-11 ;
-        -1.5753048728498906e-8 -9.059142689309881e-9 4.4795495848647254e-8 1.2334170148319723e-8 3.0553924073058935e-11 -9.728998494802306e-12 ;
-        8.816553291945514e-11 6.828101548139209e-12 -3.2746082135066327e-10 3.055392407312831e-11 6.704478361805056e-6 1.8787138961392856e-7 ;
-        -8.997862587459696e-12 1.7928775445168309e-12 -2.954242523833693e-11 -9.728998494711962e-12 1.878713896139282e-7 5.182601752993566e-8 ;
+    S1_raw = [
+        1.4591505220806416 4.80759780722691e-6 -0.25740080488810885 -1.5753048728498944e-5 2.5016619575190346e-7 -7.222896297673236e-7 ;
+        4.807597807226825e-6 1.113553929141832e-8 6.517280550397521e-5 -9.059142689309891e-9 1.9374466778366148e-11 1.4392049726901385e-10 ;
+        -0.2574008048881045 6.51728055039751e-5 2.3112947543955262 4.479549584864729e-5 -9.291570665087705e-7 -2.3714729116731894e-6 ;
+        -1.5753048728498907e-5 -9.059142689309881e-9 4.479549584864725e-5 1.2334170148319723e-8 8.669554527079657e-11 -7.809804442718882e-10 ;
+        2.5016619574839727e-7 1.937446677764928e-11 -9.291570665010305e-7 8.669554527099342e-11 5.397896688007715e-5 4.279198751305294e-5 ;
+        -7.222896297913825e-7 1.43920497262889e-10 -2.3714729116086933e-6 -7.80980444264636e-10 4.279198751305286e-5 0.0003339580248268087 ;
     ]
 
-    S2_matrix = [
-        8.610934701851641e-6 -2.925996909510753e-7 -1.0426799474860453e-6 3.96584305304612e-7 8.816553292069113e-11 -8.997862587159947e-12 ;
-        -2.925996909510772e-7 2.0119976600609268e-8 9.453461098576867e-8 -3.284566499545562e-9 6.8281015483918406e-12 1.7928775445931312e-12 ;
-        -1.0426799474860374e-6 9.453461098576794e-8 1.2714676786183125e-6 1.2290925637784062e-8 -3.274608213533861e-10 -2.954242523914047e-11 ;
-        3.9658430530461154e-7 -3.2845664995454693e-9 1.2290925637784375e-8 2.8471963564199213e-8 3.055392407305859e-11 -9.728998494802304e-12 ;
-        8.816553291945498e-11 6.828101548139187e-12 -3.274608213506595e-10 3.0553924073128056e-11 6.704478361805057e-6 1.878713896139286e-7 ;
-        -8.997862587459717e-12 1.7928775445168297e-12 -2.9542425238337437e-11 -9.72899849471194e-12 1.8787138961392822e-7 5.182601752993566e-8 ;
+    S2_raw = [
+        8.610934701851642 -0.00029259969095107527 -1.0426799474860453 0.000396584305304612 2.501661957519043e-7 -7.222896297673205e-7 ;
+        -0.00029259969095107716 2.0119976600609268e-8 9.453461098576867e-5 -3.284566499545562e-9 1.9374466778366112e-11 1.439204972690139e-10 ;
+        -1.0426799474860375 9.453461098576793e-5 1.2714676786183123 1.2290925637784062e-5 -9.291570665087563e-7 -2.3714729116731957e-6 ;
+        0.0003965843053046115 -3.2845664995454693e-9 1.2290925637784374e-5 2.8471963564199213e-8 8.66955452707956e-11 -7.809804442718881e-10 ;
+        2.501661957483968e-7 1.9374466777649218e-11 -9.291570665010196e-7 8.66955452709927e-11 5.3978966880077166e-5 4.279198751305295e-5 ;
+        -7.222896297913841e-7 1.439204972628889e-10 -2.371472911608734e-6 -7.809804442646341e-10 4.279198751305287e-5 0.0003339580248268087 ;
     ]
+
+    # Define RF and beam parameters
+    rf_freq = 8.05e7  # RF frequency in Hz
+    rf_k = 2 * pi * rf_freq / 299792458.0  # [1/m]
+    IonEs = 9.3149432e8  # Nucleon mass [eV/u]
+    IonEk = 2.2705e8  # Kinetic energy [eV/u]
+    gamma = 1.0 + IonEk / IonEs  # Lorentz factor
+    beta = sqrt(1.0 - 1.0 / (gamma * gamma))  # Velocity factor
+    
+    # Define scaling factors for coordinate transformation
+    scaling = [1e-3, 1.0, 1e-3, 1.0, beta/rf_k, 1.0e6/beta/beta/(IonEs+IonEk)]
+    
+    # Transform FLAME matrices to JuTrack matrices
+    # Transform S0
+    S0_matrix = diagm(scaling) * ((S0_raw + S0_raw') ./ 2) * diagm(scaling)'  # Apply scaling and symmetrize
+
+    # Transform S1
+    S1_matrix = diagm(scaling) * ((S1_raw + S1_raw') ./ 2) * diagm(scaling)'  # Apply scaling and symmetrize
+
+    # Transform S2
+    S2_matrix = diagm(scaling) * ((S2_raw + S2_raw') ./ 2) * diagm(scaling)'  # Apply scaling and symmetrize
 
     # Create beam objects for each charge state
-    beam1 = create_beam_from_envelope_matrix(
-    S0_matrix, 
-    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
-    nparticles = 10000, 
-    energy = 2.81542e10, 
-    charge = 50.0, 
-    mass = 1.1550529568e11)
+    # Generate beam1 using eigendecomposition
+    Random.seed!(42)  # Ensure reproducibility
+    
+    # Get eigendecomposition of the transformed matrix
+    lam1, u1 = eigen(S0_matrix)
+    
+    if any(lam1 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-12, maximum(lam1) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam1, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u1 * Diagonal(lam1_clipped) * u1'
+        lam1, u1 = eigen(S_reg)
+    end
 
-    beam2 = create_beam_from_envelope_matrix(
-    S1_matrix, 
-    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.003986373207128377], 
-    nparticles = 10000, 
-    energy = 2.81542e10, 
-    charge = 49.0, 
-    mass = 1.1550529568e11)
+    # Generate random particles 
+    nparticles = 10000000
+    dis1 = Matrix{Float64}(undef, nparticles, 6)
+    for d in 1:6
+        dis1[:, d] .= randn(nparticles)
+    end
+    
+    # Calculate the initial 2nd moment matrix 
+    moment2nd1 = zeros(6, 6)
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd1[d1, d2] = mean(dis1[:, d1] .* dis1[:, d2])
+        end
+    end
+    
+    # Create transformation matrix from eigendecomposition
+    transformation1 = u1 * Diagonal(sqrt.(lam1)) * u1'
+    
+    # Apply transformation to get desired covariance
+    dis1 = dis1 * transformation1'
+    
+    # Calculate the final 2nd moment matrix to verify transformation
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd1[d1, d2] = mean(dis1[:, d1] .* dis1[:, d2])
+        end
+    end
+    
+    # Calculate and display the ratio to verify accuracy
+    ratio1 = moment2nd1 ./ S0_matrix
+    println("Beam 1 second moment ratio:")
+    display(ratio1)
+    
+    # Add centroid
+    dis1 .+= reshape([0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 1, 6)
+    
+    # Create beam with the generated particles - using a subset for efficiency
+    beam1 = Beam(r=dis1[1:10000,:], np=10000, energy=2.81542e10, charge=50.0, mass=1.1550529568e11)
+    get_centroid!(beam1)
+    get_emittance!(beam1)
 
-    beam3 = create_beam_from_envelope_matrix(
-    S2_matrix, 
-    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, -0.0066024306243065295], 
-    nparticles = 10000, 
-    energy = 2.81542e10, 
-    charge = 51.0, 
-    mass = 1.1550529568e11)
+    # Generate beam2 using eigendecomposition
+    Random.seed!(43)  # Ensure reproducibility
+    
+    # Get eigendecomposition of the transformed matrix
+    lam2, u2 = eigen(S1_matrix)
+    
+    if any(lam2 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        epsilon = max(1e-20, abs(minimum(lam2)) * 1.1)  # Slightly larger than the most negative eigenvalue
+        s_reg = S1_matrix + epsilon * I  # Add to diagonal
+        lam2, u2 = eigen(s_reg)    # Recompute eigendecomposition
+    end
 
-    return lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix
+    # Generate random particles 
+    nparticles = 10000000
+    dis2 = Matrix{Float64}(undef, nparticles, 6)
+    for d in 1:6
+        dis2[:, d] .= randn(nparticles)
+    end
+    
+    # Calculate the initial 2nd moment matrix 
+    moment2nd2 = zeros(6, 6)
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd2[d1, d2] = mean(dis2[:, d1] .* dis2[:, d2])
+        end
+    end
+    
+    # Create transformation matrix from eigendecomposition
+    transformation2 = u2 * Diagonal(sqrt.(lam2)) * u2'
+    
+    # Apply transformation to get desired covariance
+    dis2 = dis2 * transformation2'
+    
+    # Calculate the final 2nd moment matrix to verify transformation
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd2[d1, d2] = mean(dis2[:, d1] .* dis2[:, d2])
+        end
+    end
+    
+    # Calculate and display the ratio to verify accuracy
+    ratio2 = moment2nd2 ./ S1_matrix
+    println("Beam 2 second moment ratio:")
+    display(ratio2)
+    
+    # Add centroid
+    dis2 .+= reshape([0.0, 0.0, 0.0, 0.0, 0.0, 0.0007812442053822318], 1, 6)
+    
+    # Create beam with the generated particles - using a subset for efficiency
+    beam2 = Beam(r=dis2[1:10000,:], np=10000, energy=2.81542e10, charge=49.0, mass=1.1550529568e11)
+    get_centroid!(beam2)
+    get_emittance!(beam2)
+
+    # Generate beam3 using eigendecomposition
+    Random.seed!(44)  # Ensure reproducibility
+    
+    # Get eigendecomposition of the transformed matrix
+    lam3, u3 = eigen(S2_matrix)
+    
+    if any(lam3 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        epsilon = max(1e-20, abs(minimum(lam3)) * 1.1)  # Slightly larger than the most negative eigenvalue
+        s_reg = S2_matrix + epsilon * I  # Add to diagonal
+        lam3, u3 = eigen(s_reg)    # Recompute eigendecomposition
+    end
+
+    # Generate random particles 
+    nparticles = 10000000
+    dis3 = Matrix{Float64}(undef, nparticles, 6)
+    for d in 1:6
+        dis3[:, d] .= randn(nparticles)
+    end
+    
+    # Calculate the initial 2nd moment matrix 
+    moment2nd3 = zeros(6, 6)
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd3[d1, d2] = mean(dis3[:, d1] .* dis3[:, d2])
+        end
+    end
+    
+    # Create transformation matrix from eigendecomposition
+    transformation3 = u3 * Diagonal(sqrt.(lam3)) * u3'
+    
+    # Apply transformation to get desired covariance
+    dis3 = dis3 * transformation3'
+    
+    # Calculate the final 2nd moment matrix to verify transformation
+    for d1 in 1:6
+        for d2 in 1:6
+            moment2nd3[d1, d2] = mean(dis3[:, d1] .* dis3[:, d2])
+        end
+    end
+    
+    # Calculate and display the ratio to verify accuracy
+    ratio3 = moment2nd3 ./ S2_matrix
+    println("Beam 3 second moment ratio:")
+    display(ratio3)
+    
+    # Add centroid
+    dis3 .+= reshape([0.0, 0.0, 0.0, 0.0, 0.0, -0.0012939357151643517], 1, 6)
+    
+    # Create beam with the generated particles - using a subset for efficiency
+    beam3 = Beam(r=dis3[1:10000,:], np=10000, energy=2.81542e10, charge=51.0, mass=1.1550529568e11)
+    get_centroid!(beam3)
+    get_emittance!(beam3)
+
+    return lattice, beam1, beam2, beam3
 end
 
-# Helper function to create a beam from an envelope matrix
-function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; 
-                                centroid::Vector{Float64} = zeros(6),
-                                nparticles::Int = 10000, 
-                                energy::Float64 = 1e9, 
-                                charge::Float64 = -1.0, 
-                                mass::Float64 = 931494320.0, 
-                                seed::Int = 42)
-    # Validate inputs
-    if size(envelope_matrix) != (6, 6)
-        error("Envelope matrix must be 6x6")
-    end
-    
-    if length(centroid) != 6
-        error("Centroid must be a 6-element vector")
-    end
-    
-    Random.seed!(seed)
-    
-    # Ensure the envelope matrix is symmetric
-    envelope_matrix = (envelope_matrix + envelope_matrix')/2
-
-    # Generate random samples with the correct covariance
-    # Method 1: Use Cholesky decomposition if matrix is positive definite
-    L = try
-        cholesky(envelope_matrix).L
-    catch
-        # Method 2: Use eigendecomposition as fallback
-        eigen_decomp = eigen(envelope_matrix)
-        eigen_vals = eigen_decomp.values
-        eigen_vecs = eigen_decomp.vectors
-        # Ensure all eigenvalues are positive (for numerical stability)
-        eigen_vals = max.(eigen_vals, 1e-20)
-        
-        # Compute L = V * sqrt(D)
-        eigen_vecs * Diagonal(sqrt.(eigen_vals))
-    end
-    
-    # Generate standard normal random variables
-    Z = randn(nparticles, 6)
-    
-    particles = Z * transpose(L)
-    particles .+= reshape(centroid, 1, 6)
-    
-    # Create beam with the generated particles
-    beam = Beam(r=particles, np=nparticles, energy=energy, charge=charge, mass=mass)
-    # get_centroid!(beam)
-    # get_emittance!(beam)
-
-    
-    return beam
-end
 
 function propagate_beam(lattice, beam, np)
-    # # Initialize arrays to store results
-    n_elements = length(lattice)
-    beam_rms = zeros(n_elements, 6)  # Store RMS for all 6 dimensions
-    floor_distance = zeros(n_elements)
+    # Create expanded lattice
+    expanded_lattice = []
+    expanded_indices = []  # Track which original element each expanded element belongs to
     
-    # Create a temporary array for flattened particles
-    flat_particles = zeros(6 * np)
-    twi = zeros(n_elements, 9)
-    
-    # Loop through each lattice element
-    for i in eachindex(lattice)
-
-        twi[i, :] .= twiss_beam(beam)
-
-
-        flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
-        
-        # Pass particles through the lattice element
-        pass!(lattice[i], flat_particles, np, beam)
-
-        # Reshape the particles back to original shape
-        beam.r = reshape(flat_particles, 6, np)'
-
-        # Calculate and store RMS for all 6 dimensions
-        for dim in 1:6
-            beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
-        end
-        
-        # Calculate and store cumulative distance
-        if i == 1
-            floor_distance[i] = lattice[i].len
+    for (i, element) in enumerate(lattice)
+        if element.len > 0
+            # Calculate segments needed
+            segments_by_count = 10
+            segments_by_length = ceil(Int, element.len / 0.1)
+            num_segments = max(segments_by_count, segments_by_length)
+            segment_length = element.len / num_segments
+            
+            # Create smaller elements
+            for j in 1:num_segments
+                small_element = deepcopy(element)
+                small_element.len = segment_length
+                push!(expanded_lattice, small_element)
+                push!(expanded_indices, i)  # Record original index
+            end
         else
-            floor_distance[i] = floor_distance[i-1] + lattice[i].len
+            # Zero-length elements
+            push!(expanded_lattice, element)
+            push!(expanded_indices, i)
         end
     end
-    # for j in 1:n_elements
-    #     i = non_marker_indices[j]
-    #     twi[j, :] .= twiss_beam(beam)
-    #     flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
-    #     pass!(lattice[i], flat_particles, np, beam)
-    #     # Reshape the particles back to original shape
-    #     beam.r = reshape(flat_particles, 6, np)'
-
-    #     # Calculate and store RMS for all 6 dimensions
-    #     for dim in 1:6
-    #         beam_rms[j, dim] = sqrt(mean(beam.r[:,dim].^2))
-    #     end
+    
+    # Propagate through expanded lattice
+    n_expanded = length(expanded_lattice)
+    expanded_beam_rms = zeros(n_expanded, 6)
+    expanded_floor_distance = zeros(n_expanded)
+    expanded_twi = zeros(n_expanded, 9)
+    flat_particles = zeros(6 * np)
+    
+    # Propagate through expanded lattice
+    for i in eachindex(expanded_lattice)
+        expanded_twi[i, :] .= twiss_beam(beam)
+        flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
         
-    #     # Calculate and store cumulative distance
-    #     if j == 1
-    #         floor_distance[j] = lattice[i].len
-    #     else
-    #         floor_distance[j] = floor_distance[j-1] + lattice[i].len
-    #     end
-    # end
-    return beam_rms, floor_distance, beam, twi
+        # Pass particles through element
+        pass!(expanded_lattice[i], flat_particles, np, beam)
+        beam.r = reshape(flat_particles, 6, np)'
+        
+        # Store RMS values
+        for dim in 1:6
+            expanded_beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
+        end
+        
+        # Calculate floor distance
+        if i == 1
+            expanded_floor_distance[i] = expanded_lattice[i].len
+        else
+            expanded_floor_distance[i] = expanded_floor_distance[i-1] + expanded_lattice[i].len
+        end
+    end
+    
+    # Return everything needed
+    return expanded_beam_rms, expanded_floor_distance, beam, expanded_twi, 
+        lattice, expanded_lattice, expanded_indices
 end
 
-# Run the simulation
 function run_simulation()
-    lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice()
+    lattice, beam1, beam2, beam3 = create_lattice()
     
-    # linepass!(lattice, beam1)
-    # get_emittance!(beam1)
-    # get_centroid!(beam1)
-
-    # linepass!(lattice, beam2)
-    # get_emittance!(beam2)
-    # get_centroid!(beam2)
-
-    # linepass!(lattice, beam3)
-    # get_emittance!(beam3)
-    # get_centroid!(beam3)
-    # beam1_rms_x::Vector{Float64} = zeros(length(lattice))
-    # flat_particles1::Vector{Float64} = zeros(length(beam1.r))
-    # floor_distance::Vector{Float64} = zeros(length(lattice))
-    # np::Int = beam1.np
-    # for i in eachindex(lattice)
-    #     flat_particles1 .= collect(Iterators.flatten(eachrow(beam1.r)))
-    #     pass!(lattice[i], flat_particles1, np, beam1)
-    #     beam1.r = reshape(flat_particles1, 6, np)'
-    #     get_emittance!(beam1)
-    #     get_centroid!(beam1)
-    #     get_2nd_moment!(beam1)
-    #     beam1_rms_x[i] = sqrt(mean(beam1.r[:,1].^2))
-    #     if i == 1
-    #         floor_distance[i] = lattice[i].len
-    #     else
-    #         floor_distance[i] = floor_distance[i-1] + lattice[i].len
-    #     end
-    # end
-    beam1_rms, floor_distance, beam1, twi1 = propagate_beam(lattice, beam1, beam1.np)
-    beam2_rms, floor_distance, beam2, twi2 = propagate_beam(lattice, beam2, beam2.np)
-    beam3_rms, floor_distance, beam3, twi3 = propagate_beam(lattice, beam3, beam3.np)
-
-    # get_emittance!(beam1)
-    # get_centroid!(beam1)
-    # get_emittance!(beam2)
-    # get_centroid!(beam2)
-    # get_emittance!(beam3)
-    # get_centroid!(beam3)
-
-    # println("Final beam1 parameters:")
-    # println("Centroid: ", beam1.emittance)
-    # println("Emittance: ", beam1.centroid)
-
-    # println("Final beam2 parameters:")
-    # println("Centroid: ", beam2.emittance)
-    # println("Emittance: ", beam2.centroid)
-
-    # println("Final beam3 parameters:")
-    # println("Centroid: ", beam3.emittance)
-    # println("Emittance: ", beam3.centroid)
+    beam1_rms, floor_distance, beam1, twi1, original_lattice, _, expanded_indices1 = 
+        propagate_beam(lattice, beam1, beam1.np)
     
-    return lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance
+    beam2_rms, _, beam2, twi2, _, _, expanded_indices2 = 
+        propagate_beam(lattice, beam2, beam2.np)
+    
+    beam3_rms, _, beam3, twi3, _, _, expanded_indices3 = 
+        propagate_beam(lattice, beam3, beam3.np)
+
+    return original_lattice, beam1, beam2, beam3, 
+        beam1_rms, beam2_rms, beam3_rms, 
+        twi1, twi2, twi3, floor_distance, expanded_indices1
+end
+
+# plotting wrapper function
+function plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, 
+                                    twi1, twi2, twi3, floor_distance,
+                                    original_lattice, expanded_indices, 
+                                    combined=false)
+    # Filter expanded data up to the specified original element
+    mask = expanded_indices .<= end_ele
+    
+    # Use the filtered data for plots but original lattice for floor layout
+    return plot_multibeam_data(
+        floor_distance[mask], 
+        beam1_rms[mask,:], 
+        beam2_rms[mask,:], 
+        beam3_rms[mask,:], 
+        twi1[mask,:], 
+        twi2[mask,:], 
+        twi3[mask,:], 
+        original_lattice[1:end_ele],  # Use original lattice for floor plot
+        combined=combined
+    )
 end
 
 function visualize_beam_properties(beam::Beam)
-    # Create a multi-panel plot to visualize beam properties
+    # Create a multi-panel figure
+    fig = Figure(size=(900, 600))
     
     # Phase space plots (x-px, y-py, z-dp)
-    p1 = scatter(beam.r[:,1], beam.r[:,2], 
-                markersize=1, markerstrokewidth=0, alpha=0.5,
-                title="x-px phase space", xlabel="x [m]", ylabel="px")
-                
-    p2 = scatter(beam.r[:,3], beam.r[:,4], 
-                markersize=1, markerstrokewidth=0, alpha=0.5,
-                title="y-py phase space", xlabel="y [m]", ylabel="py")
-                
-    p3 = scatter(beam.r[:,5], beam.r[:,6], 
-                markersize=1, markerstrokewidth=0, alpha=0.5,
-                title="z-dp phase space", xlabel="z [m]", ylabel="dp/p")
+    ax1 = Axis(fig[1, 1], title="x-px phase space", xlabel="x [mm]", ylabel="px")
+    # Convert m to mm for x-axis
+    scatter!(ax1, beam.r[:,1] .* 1000, beam.r[:,2], markersize=1, strokewidth=0, alpha=0.5)
+    
+    ax2 = Axis(fig[1, 2], title="y-py phase space", xlabel="y [mm]", ylabel="py")
+    # Convert m to mm for y-axis
+    scatter!(ax2, beam.r[:,3] .* 1000, beam.r[:,4], markersize=1, strokewidth=0, alpha=0.5)
+    
+    ax3 = Axis(fig[1, 3], title="z-dp phase space", xlabel="z [mm]", ylabel="dp/p")
+    # Convert m to mm for z-axis
+    scatter!(ax3, beam.r[:,5] .* 1000, beam.r[:,6], markersize=1, strokewidth=0, alpha=0.5)
     
     # Projections (histograms)
-    p4 = histogram(beam.r[:,1], bins=50, alpha=0.7, title="x distribution", xlabel="x [m]")
-    p5 = histogram(beam.r[:,3], bins=50, alpha=0.7, title="y distribution", xlabel="y [m]")
-    p6 = histogram(beam.r[:,5], bins=50, alpha=0.7, title="z distribution", xlabel="z [m]")
+    ax4 = Axis(fig[2, 1], title="x distribution", xlabel="x [mm]")
+    # Convert m to mm for x-axis
+    hist!(ax4, beam.r[:,1] .* 1000, bins=50, color=(:blue, 0.7))
     
-    # Combine plots
-    plot(p1, p2, p3, p4, p5, p6, layout=(2,3), size=(900,600), legend=false)
+    ax5 = Axis(fig[2, 2], title="y distribution", xlabel="y [mm]")
+    # Convert m to mm for y-axis
+    hist!(ax5, beam.r[:,3] .* 1000, bins=50, color=(:blue, 0.7))
+    
+    ax6 = Axis(fig[2, 3], title="z distribution", xlabel="z [mm]")
+    # Convert m to mm for z-axis
+    hist!(ax6, beam.r[:,5] .* 1000, bins=50, color=(:blue, 0.7))
+    
+    # Return the figure
+    return fig
 end
-
-
-# function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, lattice; combined = true)
-#     if combined != true    
-#         # Define beam colors and labels (shared across all plots)
-#         beam_colors = [:blue, :orange, :green]
-#         beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
-        
-#         # Define element colors and heights (shared across all plots)
-#         element_colors = Dict(
-#             "SBEND" => :purple,
-#             "KQUAD" => :red,
-#             "ORBTRIM" => :green,
-#             "MARKER" => :gray,
-#             "DRIFT" => :white,
-#             "default" => :gray
-#         )
-        
-#         element_heights = Dict(
-#             "SBEND" => 0.8,
-#             "KQUAD" => 0.7,
-#             "ORBTRIM" => 0.6,
-#             "MARKER" => 0.4,
-#             "DRIFT" => 0.3,
-#             "default" => 0.5
-#         )
-        
-#         # Helper function to create a standard plot structure
-#         function create_plot(top_data1, top_data2, top_data3, bottom_data1, bottom_data2, bottom_data3, 
-#                             top_label, bottom_label, title)
-            
-#             f = Figure(size = (1200, 400))
-#             gl = f[1, 1] = GridLayout()
-#             legend_layout = f[1, 2] = GridLayout()
-            
-#             # Top plot
-#             ax_top = Axis(gl[1, 1], xlabel = "", ylabel = top_label)
-#             lines!(ax_top, floor_length, top_data1, color = beam_colors[1], linewidth = 2)
-#             lines!(ax_top, floor_length, top_data2, color = beam_colors[2], linewidth = 2)
-#             lines!(ax_top, floor_length, top_data3, color = beam_colors[3], linewidth = 2)
-#             hidexdecorations!(ax_top)
-            
-#             # Create floorline plot in the middle
-#             floor_ax = Axis(gl[2, 1], 
-#                         xlabel = "",
-#                         ylabel = "",
-#                         yticklabelsvisible = false,
-#                         yticksvisible = false)
-            
-#             # Track element types for legend
-#             element_types = Dict{String, Any}()
-            
-#             # Draw the floorline
-#             curr_pos = 0.0
-#             for ele in lattice
-#                 # Get element type
-#                 ele_type = string(typeof(ele).name.name)
-                
-#                 # Determine color and height
-#                 color = get(element_colors, ele_type, element_colors["default"])
-#                 height = get(element_heights, ele_type, element_heights["default"])
-                
-#                 # Make sure elements don't overlap by using a minimum width
-#                 # and ensuring no overlap due to position calculations
-#                 ele_width = ele.len
-                
-#                 # Draw rectangle for element
-#                 rect = Rect(curr_pos, -height/2, ele_width, height)
-#                 element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
-                
-#                 # Add F/D labels for KQUAD and KSEXT
-#                 if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
-#                     label = ele.k1 > 0 ? "F" : "D"
-#                     text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
-#                           fontsize = 12, font = :bold)
-#                 elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
-#                     label = ele.k2 > 0 ? "F" : "D"
-#                     text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
-#                           fontsize = 12, font = :bold)
-#                 end
-                
-#                 # Track for legend (only if not already tracked)
-#                 if !haskey(element_types, ele_type)
-#                     element_types[ele_type] = element
-#                 end
-                
-#                 # Update position - ensure we advance by at least the element width
-#                 # to avoid overlapping due to position calculations
-#                 curr_pos += ele_width
-#             end
-            
-#             hidexdecorations!(floor_ax)
-            
-#             # Bottom plot
-#             ax_bottom = Axis(gl[3, 1], xlabel = "z [m]", ylabel = bottom_label, yreversed = true)
-#             lines!(ax_bottom, floor_length, bottom_data1, color = beam_colors[1], linewidth = 2)
-#             lines!(ax_bottom, floor_length, bottom_data2, color = beam_colors[2], linewidth = 2)
-#             lines!(ax_bottom, floor_length, bottom_data3, color = beam_colors[3], linewidth = 2)
-            
-#             # Link x axes
-#             linkxaxes!(ax_top, floor_ax, ax_bottom)
-            
-#             # Add beam legend
-#             legend_entries = [
-#                 LineElement(color = c, linewidth = 2) for c in beam_colors
-#             ]
-            
-#             leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
-            
-#             # Add element legend (filtering out MARKER and DRIFT)
-#             element_entries = []
-#             element_names = []
-#             sorted_names = sort(collect(keys(element_types)))
-#             for name in sorted_names
-#                 if !(name in ["MARKER", "DRIFT"])
-#                     element = element_types[name]
-#                     push!(element_entries, element)
-#                     push!(element_names, name)
-#                 end
-#             end
-            
-#             if !isempty(element_entries)
-#                 element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
-#             end
-            
-#             # Adjust spacing between legends
-#             rowgap!(legend_layout, 5)
-            
-#             # Set row sizes
-#             rowsize!(gl, 1, 100)  # Top plot
-#             rowsize!(gl, 2, 30)   # Elements plot (smaller)
-#             rowsize!(gl, 3, 100)  # Bottom plot
-            
-#             # Set title
-#             # f.title = title
-            
-#             return f
-#         end
-        
-#         # Create the four plots
-#         rms_plot = create_plot(
-#             beam1_rms[:,1] .* 1e3,
-#             beam2_rms[:,1] .* 1e3,
-#             beam3_rms[:,1] .* 1e3,
-#             beam1_rms[:,3] .* 1e3,
-#             beam2_rms[:,3] .* 1e3,
-#             beam3_rms[:,3] .* 1e3,
-#             "RMS X [mm]",
-#             "RMS Y [mm]",
-#             "RMS Plot"
-#         )
-        
-#         beta_plot = create_plot(
-#             twi1[:,1],
-#             twi2[:,1],
-#             twi3[:,1],
-#             twi1[:,4],
-#             twi2[:,4],
-#             twi3[:,4],
-#             L"\beta_x",
-#             L"\beta_y",
-#             "Beta Functions"
-#         )
-        
-#         alpha_plot = create_plot(
-#             twi1[:,2],
-#             twi2[:,2],
-#             twi3[:,2],
-#             twi1[:,5],
-#             twi2[:,5],
-#             twi3[:,5],
-#             L"\alpha_x",
-#             L"\alpha_y",
-#             "Alpha Functions"
-#         )
-        
-#         emittance_plot = create_plot(
-#             twi1[:,3],
-#             twi2[:,3],
-#             twi3[:,3],
-#             twi1[:,6],
-#             twi2[:,6],
-#             twi3[:,6],
-#             L"\epsilon_x",
-#             L"\epsilon_y",
-#             "Emittance"
-#         )
-        
-#         # Return all plots
-#         return Dict(
-#             "rms" => rms_plot,
-#             "beta" => beta_plot,
-#             "alpha" => alpha_plot,
-#             "emittance" => emittance_plot
-#         )
-#     else
-#         # Create one large figure
-#         f = Figure(size = (1200, 1200))
-        
-#         # Create the main layout
-#         gl = f[1, 1] = GridLayout()
-#         legend_layout = f[1, 2] = GridLayout()
-        
-#         # Define beam colors and labels
-#         beam_colors = [:blue, :orange, :green]
-#         beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
-        
-#         # Define element colors and heights
-#         element_colors = Dict(
-#             "SBEND" => :purple,
-#             "KQUAD" => :red,
-#             "ORBTRIM" => :green,
-#             "MARKER" => :gray,
-#             "DRIFT" => :white,
-#             "default" => :gray
-#         )
-        
-#         element_heights = Dict(
-#             "SBEND" => 0.8,
-#             "KQUAD" => 0.7,
-#             "ORBTRIM" => 0.6,
-#             "MARKER" => 0.4,
-#             "DRIFT" => 0.3,
-#             "default" => 0.5
-#         )
-        
-#         # Create plots in sequence (8 total + 1 lattice in the middle)
-#         # 1. RMS X
-#         ax_rms_x = Axis(gl[1, 1], xlabel = "", ylabel = "RMS X [mm]", title = "RMS Values")
-#         lines!(ax_rms_x, floor_length, beam1_rms[:,1] .* 1e3, color = beam_colors[1], linewidth = 2)
-#         lines!(ax_rms_x, floor_length, beam2_rms[:,1] .* 1e3, color = beam_colors[2], linewidth = 2)
-#         lines!(ax_rms_x, floor_length, beam3_rms[:,1] .* 1e3, color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_rms_x)
-        
-#         # 2. RMS Y
-#         ax_rms_y = Axis(gl[2, 1], xlabel = "", ylabel = "RMS Y [mm]")
-#         lines!(ax_rms_y, floor_length, beam1_rms[:,3] .* 1e3, color = beam_colors[1], linewidth = 2)
-#         lines!(ax_rms_y, floor_length, beam2_rms[:,3] .* 1e3, color = beam_colors[2], linewidth = 2)
-#         lines!(ax_rms_y, floor_length, beam3_rms[:,3] .* 1e3, color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_rms_y)
-        
-#         # 3. Beta X
-#         ax_beta_x = Axis(gl[3, 1], xlabel = "", ylabel = L"\beta_x", title = "Beta Functions")
-#         lines!(ax_beta_x, floor_length, twi1[:,1], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_beta_x, floor_length, twi2[:,1], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_beta_x, floor_length, twi3[:,1], color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_beta_x)
-        
-#         # 4. Beta Y
-#         ax_beta_y = Axis(gl[4, 1], xlabel = "", ylabel = L"\beta_y")
-#         lines!(ax_beta_y, floor_length, twi1[:,4], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_beta_y, floor_length, twi2[:,4], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_beta_y, floor_length, twi3[:,4], color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_beta_y)
-        
-#         # 5. Lattice plot in the middle
-#         floor_ax = Axis(gl[5, 1], 
-#                     xlabel = "",
-#                     ylabel = "",
-#                     yticklabelsvisible = false,
-#                     yticksvisible = false)
-        
-#         # Track element types for legend
-#         element_types = Dict{String, Any}()
-        
-#         # Draw the floorline
-#         curr_pos = 0.0
-#         for ele in lattice
-#             # Get element type
-#             ele_type = string(typeof(ele).name.name)
-            
-#             # Determine color and height
-#             color = get(element_colors, ele_type, element_colors["default"])
-#             height = get(element_heights, ele_type, element_heights["default"])
-            
-#             # Use a minimum width to prevent tiny elements and avoid overlap
-#             ele_width = max(ele.len, 0.05)
-            
-#             # Draw rectangle for element
-#             rect = Rect(curr_pos, -height/2, ele_width, height)
-#             element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
-            
-#             # Add F/D labels for KQUAD and KSEXT
-#             if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
-#                 label = ele.k1 > 0 ? "F" : "D"
-#                 text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
-#                       fontsize = 12, font = :bold)
-#             elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
-#                 label = ele.k2 > 0 ? "F" : "D"
-#                 text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
-#                       fontsize = 12, font = :bold)
-#             end
-            
-#             # Track for legend (only if not already tracked)
-#             if !haskey(element_types, ele_type)
-#                 element_types[ele_type] = element
-#             end
-            
-#             # Update position - use the element width to ensure no overlap
-#             curr_pos += ele_width
-#         end
-#         hidexdecorations!(floor_ax)
-        
-#         # 6. Alpha X
-#         ax_alpha_x = Axis(gl[6, 1], xlabel = "", ylabel = L"\alpha_x", title = "Alpha Functions")
-#         lines!(ax_alpha_x, floor_length, twi1[:,2], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_alpha_x, floor_length, twi2[:,2], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_alpha_x, floor_length, twi3[:,2], color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_alpha_x)
-        
-#         # 7. Alpha Y
-#         ax_alpha_y = Axis(gl[7, 1], xlabel = "", ylabel = L"\alpha_y")
-#         lines!(ax_alpha_y, floor_length, twi1[:,5], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_alpha_y, floor_length, twi2[:,5], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_alpha_y, floor_length, twi3[:,5], color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_alpha_y)
-        
-#         # 8. Emittance X
-#         ax_emit_x = Axis(gl[8, 1], xlabel = "", ylabel = L"\epsilon_x", title = "Emittance")
-#         lines!(ax_emit_x, floor_length, twi1[:,3], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_emit_x, floor_length, twi2[:,3], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_emit_x, floor_length, twi3[:,3], color = beam_colors[3], linewidth = 2)
-#         hidexdecorations!(ax_emit_x)
-        
-#         # 9. Emittance Y (bottom plot)
-#         ax_emit_y = Axis(gl[9, 1], xlabel = "z [m]", ylabel = L"\epsilon_y")
-#         lines!(ax_emit_y, floor_length, twi1[:,6], color = beam_colors[1], linewidth = 2)
-#         lines!(ax_emit_y, floor_length, twi2[:,6], color = beam_colors[2], linewidth = 2)
-#         lines!(ax_emit_y, floor_length, twi3[:,6], color = beam_colors[3], linewidth = 2)
-        
-#         # Link all x axes
-#         for ax in [ax_rms_x, ax_rms_y, ax_beta_x, ax_beta_y, floor_ax, 
-#                 ax_alpha_x, ax_alpha_y, ax_emit_x, ax_emit_y]
-#             linkxaxes!(ax, ax_rms_x)
-#         end
-        
-#         # Add beam legend
-#         legend_entries = [
-#             LineElement(color = c, linewidth = 2) for c in beam_colors
-#         ]
-        
-#         leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
-        
-#         # Add element legend (excluding MARKER and DRIFT)
-#         element_entries = []
-#         element_names = []
-#         sorted_names = sort(collect(keys(element_types)))
-#         for name in sorted_names
-#             if !(name in ["MARKER", "DRIFT"])
-#                 element = element_types[name]
-#                 push!(element_entries, element)
-#                 push!(element_names, name)
-#             end
-#         end
-        
-#         if !isempty(element_entries)
-#             element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
-#         end
-        
-#         # Adjust spacing between legends
-#         rowgap!(legend_layout, 5)
-        
-#         # Set row sizes (make lattice row smaller)
-#         rowsize!(gl, 5, 30)  # Lattice plot is smaller
-        
-#         # Set overall title
-#         # f.title = "Multibeam Analysis"
-        
-#         return f
-#     end
-# end
-
 
 function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, lattice; combined = true)
     if combined != true    
@@ -1605,38 +1336,27 @@ function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1
         # Set row sizes (make lattice row smaller)
         rowsize!(gl, 5, 30)  # Lattice plot is smaller
         
-        # Set overall title
-        # f.title = "Multibeam Analysis"
         
         return f
     end
 end
 
 # Create the lattice and beams
-# lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
+lattice, beam1, beam2, beam3 = create_lattice();
 
-# begin
-#     # Print validation information
-#     println("Validation results:")
-#     println("beam1 covariance ratio:")
-#     ratio1 = cov(beam1.r) ./ S0_matrix
-#     display(ratio1)
-    
-#     println("\nbeam2 covariance ratio:")
-#     ratio2 = cov(beam2.r) ./ S1_matrix
-#     display(ratio2)
-    
-#     println("\nbeam3 covariance ratio:")
-#     ratio3 = cov(beam3.r) ./ S2_matrix
-#     display(ratio3)
-# end
-lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance = run_simulation();
-# Run visualization
-# p1 = visualize_beam_properties(beam1)
-# p2 = visualize_beam_properties(beam2)
-# p3 = visualize_beam_properties(beam3)
 
+p1 = visualize_beam_properties(beam1);
+p2 = visualize_beam_properties(beam2);
+p3 = visualize_beam_properties(beam3);
+
+
+# Run simulation
+lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, 
+twi1, twi2, twi3, floor_distance, expanded_indices = run_simulation();
+
+# Plot using original indexing
 end_ele = 20;
-plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=false)["rms"]
+plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false);
+plots["rms"] 
+plots_combined = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, true)
 
-plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=true)

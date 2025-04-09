@@ -1,3 +1,644 @@
+# JuTrack lattice file converted from FLAME format
+# Original file: BDS_124Xe_3cs_short_v1.lat
+# Generated on: 2025-03-26T15:49:15.173
+# Mass number: 124.0
+# Coordinate system conversion: FLAME [mm, rad, mm, rad, rad, MeV/u] -> JuTrack [m, px, m, py, m, dp]
+# Relativistic factors: beta=0.5946004840620179, gamma=1.2437481314969263, beta*gamma=0.7395332410393027
+# RF frequency: 8.05e7 Hz, wavelength: 3.724129913043478 m
+
+include("../../JuTrack.jl")
+using .JuTrack
+using LinearAlgebra
+using Random
+using Distributions
+using CairoMakie
+
+function create_lattice()
+    lattice = []
+
+    # Define elements
+    LS3_WD06_BPM_D4699 = MARKER(name="LS3_WD06:BPM_D4699")
+    push!(lattice, LS3_WD06_BPM_D4699)
+    drift_499 = DRIFT(name="drift_499", len=0.999498)
+    push!(lattice, drift_499)
+    LS3_BTS_DCH_D4709 = ORBTRIM(name="LS3_BTS:DCH_D4709", realpara=true, tm_xkick=-0.0005735004899999999)
+    push!(lattice, LS3_BTS_DCH_D4709)
+    LS3_BTS_DCV_D4709 = ORBTRIM(name="LS3_BTS:DCV_D4709", realpara=true, tm_ykick=0.000551383048)
+    push!(lattice, LS3_BTS_DCV_D4709)
+    drift_500 = DRIFT(name="drift_500", len=0.2945)
+    push!(lattice, drift_500)
+    LS3_BTS_QV_D4713 = KQUAD(name="LS3_BTS:QV_D4713", k1=-7.073181959999999, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4713)
+    drift_501 = DRIFT(name="drift_501", len=0.239)
+    push!(lattice, drift_501)
+    LS3_BTS_QH_D4718 = KQUAD(name="LS3_BTS:QH_D4718", k1=7.84223811, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4718)
+    drift_502 = DRIFT(name="drift_502", len=0.7016340000000001)
+    push!(lattice, drift_502)
+    LS3_BTS_GV_D4726 = MARKER(name="LS3_BTS:GV_D4726")
+    push!(lattice, LS3_BTS_GV_D4726)
+    drift_503 = DRIFT(name="drift_503", len=2.421837)
+    push!(lattice, drift_503)
+    LS3_BTS_DCH_D4750 = ORBTRIM(name="LS3_BTS:DCH_D4750", realpara=true, tm_xkick=-0.00011964992)
+    push!(lattice, LS3_BTS_DCH_D4750)
+    LS3_BTS_DCV_D4750 = ORBTRIM(name="LS3_BTS:DCV_D4750", realpara=true, tm_ykick=0.00035710039199999996)
+    push!(lattice, LS3_BTS_DCV_D4750)
+    drift_504 = DRIFT(name="drift_504", len=0.243209)
+    push!(lattice, drift_504)
+    LS3_BTS_BPM_D4753 = MARKER(name="LS3_BTS:BPM_D4753")
+    push!(lattice, LS3_BTS_BPM_D4753)
+    drift_505 = DRIFT(name="drift_505", len=0.05232)
+    push!(lattice, drift_505)
+    LS3_BTS_QV_D4755 = KQUAD(name="LS3_BTS:QV_D4755", k1=-3.9165533400000005, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4755)
+    drift_506 = DRIFT(name="drift_506", len=0.239)
+    push!(lattice, drift_506)
+    LS3_BTS_QH_D4760 = KQUAD(name="LS3_BTS:QH_D4760", k1=1.80802314, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4760)
+    drift_507 = DRIFT(name="drift_507", len=0.826117)
+    push!(lattice, drift_507)
+    LS3_BTS_BPM_D4769 = MARKER(name="LS3_BTS:BPM_D4769")
+    push!(lattice, LS3_BTS_BPM_D4769)
+    drift_508 = DRIFT(name="drift_508", len=0.145282)
+    push!(lattice, drift_508)
+    LS3_BTS_PM_D4771 = MARKER(name="LS3_BTS:PM_D4771")
+    push!(lattice, LS3_BTS_PM_D4771)
+    drift_509 = DRIFT(name="drift_509", len=0.825101)
+    push!(lattice, drift_509)
+    LS3_BTS_DCH_D4779 = ORBTRIM(name="LS3_BTS:DCH_D4779", realpara=true, tm_xkick=-0.00010691387)
+    push!(lattice, LS3_BTS_DCH_D4779)
+    LS3_BTS_DCV_D4779 = ORBTRIM(name="LS3_BTS:DCV_D4779", realpara=true, tm_ykick=-0.0009388861279999999)
+    push!(lattice, LS3_BTS_DCV_D4779)
+    drift_510 = DRIFT(name="drift_510", len=0.2945)
+    push!(lattice, drift_510)
+    LS3_BTS_QH_D4783 = KQUAD(name="LS3_BTS:QH_D4783", k1=6.22882116, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4783)
+    drift_511 = DRIFT(name="drift_511", len=1.199075)
+    push!(lattice, drift_511)
+    LS3_BTS_PM_D4797 = MARKER(name="LS3_BTS:PM_D4797")
+    push!(lattice, LS3_BTS_PM_D4797)
+    drift_512 = DRIFT(name="drift_512", len=0.789925)
+    push!(lattice, drift_512)
+    LS3_BTS_QV_D4806 = KQUAD(name="LS3_BTS:QV_D4806", k1=-6.88877451, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4806)
+    drift_513 = DRIFT(name="drift_513", len=2.006084)
+    push!(lattice, drift_513)
+    LS3_BTS_PM_D4827 = MARKER(name="LS3_BTS:PM_D4827")
+    push!(lattice, LS3_BTS_PM_D4827)
+    drift_514 = DRIFT(name="drift_514", len=1.391397)
+    push!(lattice, drift_514)
+    LS3_BTS_DCH_D4841 = ORBTRIM(name="LS3_BTS:DCH_D4841", realpara=true, tm_xkick=0.00060231174)
+    push!(lattice, LS3_BTS_DCH_D4841)
+    LS3_BTS_DCV_D4841 = ORBTRIM(name="LS3_BTS:DCV_D4841", realpara=true, tm_ykick=0.000606018168)
+    push!(lattice, LS3_BTS_DCV_D4841)
+    drift_515 = DRIFT(name="drift_515", len=0.243199)
+    push!(lattice, drift_515)
+    LS3_BTS_BPM_D4843 = MARKER(name="LS3_BTS:BPM_D4843")
+    push!(lattice, LS3_BTS_BPM_D4843)
+    drift_516 = DRIFT(name="drift_516", len=0.05232)
+    push!(lattice, drift_516)
+    LS3_BTS_QH_D4845 = KQUAD(name="LS3_BTS:QH_D4845", k1=7.06167873, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4845)
+    drift_517 = DRIFT(name="drift_517", len=1.4945)
+    push!(lattice, drift_517)
+    LS3_BTS_PM_D4862 = MARKER(name="LS3_BTS:PM_D4862")
+    push!(lattice, LS3_BTS_PM_D4862)
+    drift_518 = DRIFT(name="drift_518", len=0.4945)
+    push!(lattice, drift_518)
+    LS3_BTS_QV_D4868 = KQUAD(name="LS3_BTS:QV_D4868", k1=-7.06820118, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4868)
+    drift_519 = DRIFT(name="drift_519", len=0.158432)
+    push!(lattice, drift_519)
+    LS3_BTS_GV_D4871 = MARKER(name="LS3_BTS:GV_D4871")
+    push!(lattice, LS3_BTS_GV_D4871)
+    drift_520 = DRIFT(name="drift_520", len=1.564721)
+    push!(lattice, drift_520)
+    LS3_BTS_BPM_D4886 = MARKER(name="LS3_BTS:BPM_D4886")
+    push!(lattice, LS3_BTS_BPM_D4886)
+    drift_521 = DRIFT(name="drift_521", len=1.675347)
+    push!(lattice, drift_521)
+    LS3_BTS_DCH_D4903 = ORBTRIM(name="LS3_BTS:DCH_D4903", realpara=true, tm_xkick=-0.0006071283899999999)
+    push!(lattice, LS3_BTS_DCH_D4903)
+    LS3_BTS_DCV_D4903 = ORBTRIM(name="LS3_BTS:DCV_D4903", realpara=true, tm_ykick=-0.0009477944880000001)
+    push!(lattice, LS3_BTS_DCV_D4903)
+    drift_522 = DRIFT(name="drift_522", len=0.2945)
+    push!(lattice, drift_522)
+    LS3_BTS_QH_D4907 = KQUAD(name="LS3_BTS:QH_D4907", k1=7.06511784, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4907)
+    drift_523 = DRIFT(name="drift_523", len=1.9889999999999999)
+    push!(lattice, drift_523)
+    LS3_BTS_QV_D4930 = KQUAD(name="LS3_BTS:QV_D4930", k1=-7.0700986200000004, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4930)
+    drift_524 = DRIFT(name="drift_524", len=3.397481)
+    push!(lattice, drift_524)
+    LS3_BTS_DCH_D4965 = ORBTRIM(name="LS3_BTS:DCH_D4965", realpara=true, tm_xkick=0.0)
+    push!(lattice, LS3_BTS_DCH_D4965)
+    LS3_BTS_DCV_D4965 = ORBTRIM(name="LS3_BTS:DCV_D4965", realpara=true, tm_ykick=0.0)
+    push!(lattice, LS3_BTS_DCV_D4965)
+    drift_525 = DRIFT(name="drift_525", len=0.243199)
+    push!(lattice, drift_525)
+    LS3_BTS_BPM_D4968 = MARKER(name="LS3_BTS:BPM_D4968")
+    push!(lattice, LS3_BTS_BPM_D4968)
+    drift_526 = DRIFT(name="drift_526", len=0.05232)
+    push!(lattice, drift_526)
+    LS3_BTS_QH_D4969 = KQUAD(name="LS3_BTS:QH_D4969", k1=7.10555703, len=0.261)
+    push!(lattice, LS3_BTS_QH_D4969)
+    drift_527 = DRIFT(name="drift_527", len=1.9889999999999999)
+    push!(lattice, drift_527)
+    LS3_BTS_QV_D4992 = KQUAD(name="LS3_BTS:QV_D4992", k1=-7.11955065, len=0.261)
+    push!(lattice, LS3_BTS_QV_D4992)
+    drift_528 = DRIFT(name="drift_528", len=1.7231509999999999)
+    push!(lattice, drift_528)
+    LS3_BTS_BPM_D5010 = MARKER(name="LS3_BTS:BPM_D5010")
+    push!(lattice, LS3_BTS_BPM_D5010)
+    drift_529 = DRIFT(name="drift_529", len=1.675349)
+    push!(lattice, drift_529)
+    LS3_BTS_DCH_D5027 = ORBTRIM(name="LS3_BTS:DCH_D5027", realpara=true, tm_xkick=0.00011228606)
+    push!(lattice, LS3_BTS_DCH_D5027)
+    LS3_BTS_DCV_D5027 = ORBTRIM(name="LS3_BTS:DCV_D5027", realpara=true, tm_ykick=-0.000697141592)
+    push!(lattice, LS3_BTS_DCV_D5027)
+    drift_530 = DRIFT(name="drift_530", len=0.2945)
+    push!(lattice, drift_530)
+    LS3_BTS_QH_D5031 = KQUAD(name="LS3_BTS:QH_D5031", k1=7.10140638, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5031)
+    drift_531 = DRIFT(name="drift_531", len=1.9889999999999999)
+    push!(lattice, drift_531)
+    LS3_BTS_QV_D5054 = KQUAD(name="LS3_BTS:QV_D5054", k1=-7.1070987, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5054)
+    drift_532 = DRIFT(name="drift_532", len=3.397481)
+    push!(lattice, drift_532)
+    LS3_BTS_DCH_D5089 = ORBTRIM(name="LS3_BTS:DCH_D5089", realpara=true, tm_xkick=-0.0002995188)
+    push!(lattice, LS3_BTS_DCH_D5089)
+    LS3_BTS_DCV_D5089 = ORBTRIM(name="LS3_BTS:DCV_D5089", realpara=true, tm_ykick=0.000304822496)
+    push!(lattice, LS3_BTS_DCV_D5089)
+    drift_533 = DRIFT(name="drift_533", len=0.243199)
+    push!(lattice, drift_533)
+    LS3_BTS_BPM_D5092 = MARKER(name="LS3_BTS:BPM_D5092")
+    push!(lattice, LS3_BTS_BPM_D5092)
+    drift_534 = DRIFT(name="drift_534", len=0.05232)
+    push!(lattice, drift_534)
+    LS3_BTS_QH_D5093 = KQUAD(name="LS3_BTS:QH_D5093", k1=7.1094705000000005, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5093)
+    drift_535 = DRIFT(name="drift_535", len=1.9889999999999999)
+    push!(lattice, drift_535)
+    LS3_BTS_QV_D5116 = KQUAD(name="LS3_BTS:QV_D5116", k1=-7.0999833, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5116)
+    drift_536 = DRIFT(name="drift_536", len=1.723146854)
+    push!(lattice, drift_536)
+    LS3_BTS_BPM_D5134 = MARKER(name="LS3_BTS:BPM_D5134")
+    push!(lattice, LS3_BTS_BPM_D5134)
+    drift_537 = DRIFT(name="drift_537", len=1.675353146)
+    push!(lattice, drift_537)
+    LS3_BTS_DCH_D5151 = ORBTRIM(name="LS3_BTS:DCH_D5151", realpara=true, tm_xkick=-0.00079380953)
+    push!(lattice, LS3_BTS_DCH_D5151)
+    LS3_BTS_DCV_D5151 = ORBTRIM(name="LS3_BTS:DCV_D5151", realpara=true, tm_ykick=-0.000319609104)
+    push!(lattice, LS3_BTS_DCV_D5151)
+    drift_538 = DRIFT(name="drift_538", len=0.2945)
+    push!(lattice, drift_538)
+    LS3_BTS_QH_D5155 = KQUAD(name="LS3_BTS:QH_D5155", k1=7.10365959, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5155)
+    drift_539 = DRIFT(name="drift_539", len=1.9889999999999999)
+    push!(lattice, drift_539)
+    LS3_BTS_QV_D5178 = KQUAD(name="LS3_BTS:QV_D5178", k1=-7.10745447, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5178)
+    drift_540 = DRIFT(name="drift_540", len=3.3985)
+    push!(lattice, drift_540)
+    LS3_BTS_DCH_D5213 = ORBTRIM(name="LS3_BTS:DCH_D5213", realpara=true, tm_xkick=0.0)
+    push!(lattice, LS3_BTS_DCH_D5213)
+    LS3_BTS_DCV_D5213 = ORBTRIM(name="LS3_BTS:DCV_D5213", realpara=true, tm_ykick=0.000645820128)
+    push!(lattice, LS3_BTS_DCV_D5213)
+    drift_541 = DRIFT(name="drift_541", len=0.242179)
+    push!(lattice, drift_541)
+    LS3_BTS_BPM_D5216 = MARKER(name="LS3_BTS:BPM_D5216")
+    push!(lattice, LS3_BTS_BPM_D5216)
+    drift_542 = DRIFT(name="drift_542", len=0.05232099999999999)
+    push!(lattice, drift_542)
+    LS3_BTS_QH_D5218 = KQUAD(name="LS3_BTS:QH_D5218", k1=7.099627529999999, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5218)
+    drift_543 = DRIFT(name="drift_543", len=1.9889999999999999)
+    push!(lattice, drift_543)
+    LS3_BTS_QV_D5240 = KQUAD(name="LS3_BTS:QV_D5240", k1=-7.1041339500000005, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5240)
+    drift_544 = DRIFT(name="drift_544", len=1.723164854)
+    push!(lattice, drift_544)
+    LS3_BTS_BPM_D5259 = MARKER(name="LS3_BTS:BPM_D5259")
+    push!(lattice, LS3_BTS_BPM_D5259)
+    drift_545 = DRIFT(name="drift_545", len=1.675335146)
+    push!(lattice, drift_545)
+    LS3_BTS_DCH_D5275 = ORBTRIM(name="LS3_BTS:DCH_D5275", realpara=true, tm_xkick=-0.00033805594)
+    push!(lattice, LS3_BTS_DCH_D5275)
+    LS3_BTS_DCV_D5275 = ORBTRIM(name="LS3_BTS:DCV_D5275", realpara=true, tm_ykick=0.0005861023759999999)
+    push!(lattice, LS3_BTS_DCV_D5275)
+    drift_546 = DRIFT(name="drift_546", len=0.2945)
+    push!(lattice, drift_546)
+    LS3_BTS_QH_D5280 = KQUAD(name="LS3_BTS:QH_D5280", k1=7.1107749899999995, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5280)
+    drift_547 = DRIFT(name="drift_547", len=1.9889999999999999)
+    push!(lattice, drift_547)
+    LS3_BTS_QV_D5302 = KQUAD(name="LS3_BTS:QV_D5302", k1=-7.09713714, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5302)
+    drift_548 = DRIFT(name="drift_548", len=3.3985)
+    push!(lattice, drift_548)
+    LS3_BTS_DCH_D5337 = ORBTRIM(name="LS3_BTS:DCH_D5337", realpara=true, tm_xkick=-0.00063958414)
+    push!(lattice, LS3_BTS_DCH_D5337)
+    LS3_BTS_DCV_D5337 = ORBTRIM(name="LS3_BTS:DCV_D5337", realpara=true, tm_ykick=-0.0008330268799999999)
+    push!(lattice, LS3_BTS_DCV_D5337)
+    drift_549 = DRIFT(name="drift_549", len=0.242191)
+    push!(lattice, drift_549)
+    LS3_BTS_BPM_D5340 = MARKER(name="LS3_BTS:BPM_D5340")
+    push!(lattice, LS3_BTS_BPM_D5340)
+    drift_550 = DRIFT(name="drift_550", len=0.052308999999999994)
+    push!(lattice, drift_550)
+    LS3_BTS_QH_D5342 = KQUAD(name="LS3_BTS:QH_D5342", k1=7.10994486, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5342)
+    drift_551 = DRIFT(name="drift_551", len=1.9889999999999999)
+    push!(lattice, drift_551)
+    LS3_BTS_QV_D5364 = KQUAD(name="LS3_BTS:QV_D5364", k1=-7.1072172899999995, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5364)
+    drift_552 = DRIFT(name="drift_552", len=1.583223)
+    push!(lattice, drift_552)
+    LS3_BTS_BPM_D5381 = MARKER(name="LS3_BTS:BPM_D5381")
+    push!(lattice, LS3_BTS_BPM_D5381)
+    drift_553 = DRIFT(name="drift_553", len=0.736277)
+    push!(lattice, drift_553)
+    LS3_BTS_DCH_D5389 = ORBTRIM(name="LS3_BTS:DCH_D5389", realpara=true, tm_xkick=0.00022455636)
+    push!(lattice, LS3_BTS_DCH_D5389)
+    LS3_BTS_DCV_D5389 = ORBTRIM(name="LS3_BTS:DCV_D5389", realpara=true, tm_ykick=-0.000485012592)
+    push!(lattice, LS3_BTS_DCV_D5389)
+    drift_554 = DRIFT(name="drift_554", len=0.2945)
+    push!(lattice, drift_554)
+    LS3_BTS_QH_D5393 = KQUAD(name="LS3_BTS:QH_D5393", k1=7.0869384, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5393)
+    drift_555 = DRIFT(name="drift_555", len=1.2389999999999999)
+    push!(lattice, drift_555)
+    LS3_BTS_QV_D5408 = KQUAD(name="LS3_BTS:QV_D5408", k1=-7.09440957, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5408)
+    drift_556 = DRIFT(name="drift_556", len=1.873481)
+    push!(lattice, drift_556)
+    LS3_BTS_DCH_D5428 = ORBTRIM(name="LS3_BTS:DCH_D5428", realpara=true, tm_xkick=-0.00118876892)
+    push!(lattice, LS3_BTS_DCH_D5428)
+    LS3_BTS_DCV_D5428 = ORBTRIM(name="LS3_BTS:DCV_D5428", realpara=true, tm_ykick=0.00026289183999999996)
+    push!(lattice, LS3_BTS_DCV_D5428)
+    drift_557 = DRIFT(name="drift_557", len=0.243199)
+    push!(lattice, drift_557)
+    LS3_BTS_BPM_D5430 = MARKER(name="LS3_BTS:BPM_D5430")
+    push!(lattice, LS3_BTS_BPM_D5430)
+    drift_558 = DRIFT(name="drift_558", len=0.05232)
+    push!(lattice, drift_558)
+    LS3_BTS_QH_D5432 = KQUAD(name="LS3_BTS:QH_D5432", k1=23.487911465234422, len=0.261)
+    push!(lattice, LS3_BTS_QH_D5432)
+    drift_559 = DRIFT(name="drift_559", len=0.489)
+    push!(lattice, drift_559)
+    LS3_BTS_QV_D5440 = KQUAD(name="LS3_BTS:QV_D5440", k1=-17.354942289892875, len=0.261)
+    push!(lattice, LS3_BTS_QV_D5440)
+    drift_560 = DRIFT(name="drift_560", len=0.371224814)
+    push!(lattice, drift_560)
+    LS3_BTS_BPM_D5445 = MARKER(name="LS3_BTS:BPM_D5445")
+    push!(lattice, LS3_BTS_BPM_D5445)
+    drift_561 = DRIFT(name="drift_561", len=2.223275186)
+    push!(lattice, drift_561)
+    BDS_BTS_DCH_D5467 = ORBTRIM(name="BDS_BTS:DCH_D5467", realpara=true, tm_xkick=0.00045996132)
+    push!(lattice, BDS_BTS_DCH_D5467)
+    BDS_BTS_DCV_D5467 = ORBTRIM(name="BDS_BTS:DCV_D5467", realpara=true, tm_ykick=0.000516426528)
+    push!(lattice, BDS_BTS_DCV_D5467)
+    drift_562 = DRIFT(name="drift_562", len=0.2945)
+    push!(lattice, drift_562)
+    BDS_BTS_QH_D5471 = KQUAD(name="BDS_BTS:QH_D5471", k1=15.703851295404386, len=0.261)
+    push!(lattice, BDS_BTS_QH_D5471)
+    drift_563 = DRIFT(name="drift_563", len=0.489)
+    push!(lattice, drift_563)
+    BDS_BTS_QV_D5479 = KQUAD(name="BDS_BTS:QV_D5479", k1=-2.1049294985230427, len=0.261)
+    push!(lattice, BDS_BTS_QV_D5479)
+    drift_564 = DRIFT(name="drift_564", len=0.32889999999999997)
+    push!(lattice, drift_564)
+    BDS_BTS_DCH_D5496 = ORBTRIM(name="BDS_BTS:DCH_D5496", realpara=true, tm_xkick=-0.000205109268)
+    push!(lattice, BDS_BTS_DCH_D5496)
+    BDS_BTS_DCV_D5496 = ORBTRIM(name="BDS_BTS:DCV_D5496", realpara=true, tm_ykick=0.000257928564)
+    push!(lattice, BDS_BTS_DCV_D5496)
+    drift_565 = DRIFT(name="drift_565", len=0.2921758)
+    push!(lattice, drift_565)
+    BDS_BTS_BPM_D5499 = MARKER(name="BDS_BTS:BPM_D5499")
+    push!(lattice, BDS_BTS_BPM_D5499)
+    drift_566 = DRIFT(name="drift_566", len=0.052324199999999994)
+    push!(lattice, drift_566)
+    BDS_BTS_QV_D5501 = KQUAD(name="BDS_BTS:QV_D5501", k1=-4.804583880544453, len=0.261)
+    push!(lattice, BDS_BTS_QV_D5501)
+    drift_567 = DRIFT(name="drift_567", len=0.489)
+    push!(lattice, drift_567)
+    BDS_BTS_QH_D5509 = KQUAD(name="BDS_BTS:QH_D5509", k1=4.793709029952756, len=0.261)
+    push!(lattice, BDS_BTS_QH_D5509)
+    drift_568 = DRIFT(name="drift_568", len=0.268080814)
+    push!(lattice, drift_568)
+    BDS_BTS_BPM_D5513 = MARKER(name="BDS_BTS:BPM_D5513")
+    push!(lattice, BDS_BTS_BPM_D5513)
+    drift_569 = DRIFT(name="drift_569", len=0.145282)
+    push!(lattice, drift_569)
+    BDS_BTS_PM_D5514 = MARKER(name="BDS_BTS:PM_D5514")
+    push!(lattice, BDS_BTS_PM_D5514)
+    drift_570 = DRIFT(name="drift_570", len=0.705851186)
+    push!(lattice, drift_570)
+    BDS_BTS_BCM_D5521 = MARKER(name="BDS_BTS:BCM_D5521")
+    push!(lattice, BDS_BTS_BCM_D5521)
+    drift_571 = DRIFT(name="drift_571", len=2.571083)
+    push!(lattice, drift_571)
+    BDS_BTS_GV_D5547 = MARKER(name="BDS_BTS:GV_D5547")
+    push!(lattice, BDS_BTS_GV_D5547)
+    drift_572 = DRIFT(name="drift_572", len=0.356979)
+    push!(lattice, drift_572)
+    BDS_BTS_QV_D5552 = KQUAD(name="BDS_BTS:QV_D5552", k1=-15.048493687224616, len=0.261)
+    push!(lattice, BDS_BTS_QV_D5552)
+    drift_573 = DRIFT(name="drift_573", len=0.489)
+    push!(lattice, drift_573)
+    BDS_BTS_QH_D5559 = KQUAD(name="BDS_BTS:QH_D5559", k1=19.82095506614822, len=0.261)
+    push!(lattice, BDS_BTS_QH_D5559)
+    drift_574 = DRIFT(name="drift_574", len=0.2195)
+    push!(lattice, drift_574)
+    BDS_BTS_DCH_D5563 = ORBTRIM(name="BDS_BTS:DCH_D5563", realpara=true, tm_xkick=-0.0005881375899999999)
+    push!(lattice, BDS_BTS_DCH_D5563)
+    BDS_BTS_DCV_D5563 = ORBTRIM(name="BDS_BTS:DCV_D5563", realpara=true, tm_ykick=0.0)
+    push!(lattice, BDS_BTS_DCV_D5563)
+    drift_575 = DRIFT(name="drift_575", len=0.234072)
+    push!(lattice, drift_575)
+    BDS_BTS_BPM_D5565 = MARKER(name="BDS_BTS:BPM_D5565")
+    push!(lattice, BDS_BTS_BPM_D5565)
+    drift_576 = DRIFT(name="drift_576", len=0.145282)
+    push!(lattice, drift_576)
+    BDS_BTS_PM_D5567 = MARKER(name="BDS_BTS:PM_D5567")
+    push!(lattice, BDS_BTS_PM_D5567)
+    drift_577 = DRIFT(name="drift_577", len=0.295646)
+    push!(lattice, drift_577)
+    BDS_BBS_DH_D5578_1 = SBEND(name="BDS_BBS:DH_D5578_1", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5578_1)
+    BDS_BBS_DH_D5578_2 = SBEND(name="BDS_BBS:DH_D5578_2", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5578_2)
+    BDS_BBS_DH_D5578_3 = SBEND(name="BDS_BBS:DH_D5578_3", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5578_3)
+    BDS_BBS_DH_D5578_4 = SBEND(name="BDS_BBS:DH_D5578_4", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5578_4)
+    drift_578 = DRIFT(name="drift_578", len=0.37951480000000004)
+    push!(lattice, drift_578)
+    BDS_BBS_S_D5606 = DRIFT(name="BDS_BBS:S_D5606", len=0.2)
+    push!(lattice, BDS_BBS_S_D5606)
+    drift_579 = DRIFT(name="drift_579", len=0.2)
+    push!(lattice, drift_579)
+    BDS_BBS_QH_D5611 = KQUAD(name="BDS_BBS:QH_D5611", k1=12.715320875, len=0.4)
+    push!(lattice, BDS_BBS_QH_D5611)
+    drift_580 = DRIFT(name="drift_580", len=0.3)
+    push!(lattice, drift_580)
+    BDS_BBS_DCH_D5616 = ORBTRIM(name="BDS_BBS:DCH_D5616", realpara=true, tm_xkick=-3.8544e-6)
+    push!(lattice, BDS_BBS_DCH_D5616)
+    BDS_BBS_DCV_D5616 = ORBTRIM(name="BDS_BBS:DCV_D5616", realpara=true, tm_ykick=9.636e-7)
+    push!(lattice, BDS_BBS_DCV_D5616)
+    drift_581 = DRIFT(name="drift_581", len=0.3)
+    push!(lattice, drift_581)
+    BDS_BBS_QV_D5621 = KQUAD(name="BDS_BBS:QV_D5621", k1=-7.6287745, len=0.4)
+    push!(lattice, BDS_BBS_QV_D5621)
+    drift_582 = DRIFT(name="drift_582", len=0.230148)
+    push!(lattice, drift_582)
+    BDS_BBS_BPM_D5625 = MARKER(name="BDS_BBS:BPM_D5625")
+    push!(lattice, BDS_BBS_BPM_D5625)
+    drift_583 = DRIFT(name="drift_583", len=0.270036)
+    push!(lattice, drift_583)
+    BDS_BBS_PM_D5628 = MARKER(name="BDS_BBS:PM_D5628")
+    push!(lattice, BDS_BBS_PM_D5628)
+    drift_584 = DRIFT(name="drift_584", len=0.449816)
+    push!(lattice, drift_584)
+    BDS_BBS_DH_D5641_0 = SBEND(name="BDS_BBS:DH_D5641_0", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5641_0)
+    BDS_BBS_DH_D5641_1 = SBEND(name="BDS_BBS:DH_D5641_1", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5641_1)
+    BDS_BBS_DH_D5641_2 = SBEND(name="BDS_BBS:DH_D5641_2", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5641_2)
+    BDS_BBS_DH_D5641_3 = SBEND(name="BDS_BBS:DH_D5641_3", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5641_3)
+    BDS_BBS_DH_D5641_4 = SBEND(name="BDS_BBS:DH_D5641_4", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5641_4)
+    drift_585 = DRIFT(name="drift_585", len=0.370384)
+    push!(lattice, drift_585)
+    BDS_BBS_BPM_D5653 = MARKER(name="BDS_BBS:BPM_D5653")
+    push!(lattice, BDS_BBS_BPM_D5653)
+    drift_586 = DRIFT(name="drift_586", len=0.044129)
+    push!(lattice, drift_586)
+    BDS_BBS_PM_D5653 = MARKER(name="BDS_BBS:PM_D5653")
+    push!(lattice, BDS_BBS_PM_D5653)
+    drift_587 = DRIFT(name="drift_587", len=0.347358)
+    push!(lattice, drift_587)
+    BDS_BBS_DCH_D5657 = ORBTRIM(name="BDS_BBS:DCH_D5657", realpara=true, tm_xkick=-6.132e-7)
+    push!(lattice, BDS_BBS_DCH_D5657)
+    BDS_BBS_DCV_D5657 = ORBTRIM(name="BDS_BBS:DCV_D5657", realpara=true, tm_ykick=1.314e-6)
+    push!(lattice, BDS_BBS_DCV_D5657)
+    drift_588 = DRIFT(name="drift_588", len=0.338129)
+    push!(lattice, drift_588)
+    BDS_BBS_DH_D5668_0 = SBEND(name="BDS_BBS:DH_D5668_0", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5668_0)
+    BDS_BBS_DH_D5668_1 = SBEND(name="BDS_BBS:DH_D5668_1", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5668_1)
+    BDS_BBS_DH_D5668_2 = SBEND(name="BDS_BBS:DH_D5668_2", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5668_2)
+    BDS_BBS_DH_D5668_3 = SBEND(name="BDS_BBS:DH_D5668_3", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5668_3)
+    BDS_BBS_DH_D5668_4 = SBEND(name="BDS_BBS:DH_D5668_4", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5668_4)
+    drift_589 = DRIFT(name="drift_589", len=0.343965)
+    push!(lattice, drift_589)
+    BDS_BBS_BPM_D5680 = MARKER(name="BDS_BBS:BPM_D5680")
+    push!(lattice, BDS_BBS_BPM_D5680)
+    drift_590 = DRIFT(name="drift_590", len=0.270037)
+    push!(lattice, drift_590)
+    BDS_BBS_PM_D5683 = MARKER(name="BDS_BBS:PM_D5683")
+    push!(lattice, BDS_BBS_PM_D5683)
+    drift_591 = DRIFT(name="drift_591", len=0.335998)
+    push!(lattice, drift_591)
+    BDS_BBS_QV_D5688 = KQUAD(name="BDS_BBS:QV_D5688", k1=-7.622504125, len=0.4)
+    push!(lattice, BDS_BBS_QV_D5688)
+    drift_592 = DRIFT(name="drift_592", len=0.3)
+    push!(lattice, drift_592)
+    BDS_BBS_DCH_D5693 = ORBTRIM(name="BDS_BBS:DCH_D5693", realpara=true, tm_xkick=-9.0228e-6)
+    push!(lattice, BDS_BBS_DCH_D5693)
+    BDS_BBS_DCV_D5693 = ORBTRIM(name="BDS_BBS:DCV_D5693", realpara=true, tm_ykick=0.0006286176)
+    push!(lattice, BDS_BBS_DCV_D5693)
+    drift_593 = DRIFT(name="drift_593", len=0.3)
+    push!(lattice, drift_593)
+    BDS_BBS_QH_D5698 = KQUAD(name="BDS_BBS:QH_D5698", k1=12.706415125, len=0.4)
+    push!(lattice, BDS_BBS_QH_D5698)
+    drift_594 = DRIFT(name="drift_594", len=0.2)
+    push!(lattice, drift_594)
+    BDS_BBS_S_D5703 = DRIFT(name="BDS_BBS:S_D5703", len=0.2)
+    push!(lattice, BDS_BBS_S_D5703)
+    drift_595 = DRIFT(name="drift_595", len=0.37951480000000004)
+    push!(lattice, drift_595)
+    BDS_BBS_DH_D5731_0 = SBEND(name="BDS_BBS:DH_D5731_0", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5731_0)
+    BDS_BBS_DH_D5731_1 = SBEND(name="BDS_BBS:DH_D5731_1", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5731_1)
+    BDS_BBS_DH_D5731_2 = SBEND(name="BDS_BBS:DH_D5731_2", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5731_2)
+    BDS_BBS_DH_D5731_3 = SBEND(name="BDS_BBS:DH_D5731_3", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5731_3)
+    BDS_BBS_DH_D5731_4 = SBEND(name="BDS_BBS:DH_D5731_4", e2=0.0, angle=3.5, e1=0.0, len=0.330050488198)
+    push!(lattice, BDS_BBS_DH_D5731_4)
+    drift_596 = DRIFT(name="drift_596", len=0.255853)
+    push!(lattice, drift_596)
+    BDS_FFS_BPM_D5742 = MARKER(name="BDS_FFS:BPM_D5742")
+    push!(lattice, BDS_FFS_BPM_D5742)
+    drift_597 = DRIFT(name="drift_597", len=0.145282)
+    push!(lattice, drift_597)
+    BDS_FFS_PM_D5743 = MARKER(name="BDS_FFS:PM_D5743")
+    push!(lattice, BDS_FFS_PM_D5743)
+    drift_598 = DRIFT(name="drift_598", len=0.299265)
+    push!(lattice, drift_598)
+    BDS_FFS_DCH_D5746 = ORBTRIM(name="BDS_FFS:DCH_D5746", realpara=true, tm_xkick=-0.0025638781699999997)
+    push!(lattice, BDS_FFS_DCH_D5746)
+    BDS_FFS_DCV_D5746 = ORBTRIM(name="BDS_FFS:DCV_D5746", realpara=true, tm_ykick=0.0)
+    push!(lattice, BDS_FFS_DCV_D5746)
+    drift_599 = DRIFT(name="drift_599", len=0.1941)
+    push!(lattice, drift_599)
+    BDS_FFS_QH_D5750 = KQUAD(name="BDS_FFS:QH_D5750", k1=11.51497041, len=0.261)
+    push!(lattice, BDS_FFS_QH_D5750)
+    drift_600 = DRIFT(name="drift_600", len=0.489)
+    push!(lattice, drift_600)
+    BDS_FFS_QV_D5757 = KQUAD(name="BDS_FFS:QV_D5757", k1=-8.6416533, len=0.261)
+    push!(lattice, BDS_FFS_QV_D5757)
+    drift_601 = DRIFT(name="drift_601", len=0.27309419999999995)
+    push!(lattice, drift_601)
+    BDS_FFS_BPM_D5772 = MARKER(name="BDS_FFS:BPM_D5772")
+    push!(lattice, BDS_FFS_BPM_D5772)
+    drift_602 = DRIFT(name="drift_602", len=0.145282)
+    push!(lattice, drift_602)
+    BDS_FFS_PM_D5774 = MARKER(name="BDS_FFS:PM_D5774")
+    push!(lattice, BDS_FFS_PM_D5774)
+    drift_603 = DRIFT(name="drift_603", len=0.206184)
+    push!(lattice, drift_603)
+    BDS_FFS_QH_D5777 = KQUAD(name="BDS_FFS:QH_D5777", k1=7.48468926, len=0.261)
+    push!(lattice, BDS_FFS_QH_D5777)
+    drift_604 = DRIFT(name="drift_604", len=0.2695)
+    push!(lattice, drift_604)
+    BDS_FFS_DCH_D5781 = ORBTRIM(name="BDS_FFS:DCH_D5781", realpara=true, tm_xkick=0.0)
+    push!(lattice, BDS_FFS_DCH_D5781)
+    BDS_FFS_DCV_D5781 = ORBTRIM(name="BDS_FFS:DCV_D5781", realpara=true, tm_ykick=0.0)
+    push!(lattice, BDS_FFS_DCV_D5781)
+    drift_605 = DRIFT(name="drift_605", len=0.2195)
+    push!(lattice, drift_605)
+    BDS_FFS_QV_D5784 = KQUAD(name="BDS_FFS:QV_D5784", k1=-8.503614540000001, len=0.261)
+    push!(lattice, BDS_FFS_QV_D5784)
+    drift_606 = DRIFT(name="drift_606", len=0.180737)
+    push!(lattice, drift_606)
+    BDS_FFS_GV_D5788 = MARKER(name="BDS_FFS:GV_D5788")
+    push!(lattice, BDS_FFS_GV_D5788)
+    drift_607 = DRIFT(name="drift_607", len=0.123632)
+    push!(lattice, drift_607)
+    BDS_FFS_BCM_D5789 = MARKER(name="BDS_FFS:BCM_D5789")
+    push!(lattice, BDS_FFS_BCM_D5789)
+    drift_608 = DRIFT(name="drift_608", len=0.123499)
+    push!(lattice, drift_608)
+    BDS_FFS_BPM_D5790 = MARKER(name="BDS_FFS:BPM_D5790")
+    push!(lattice, BDS_FFS_BPM_D5790)
+    drift_609 = DRIFT(name="drift_609", len=0.145282)
+    push!(lattice, drift_609)
+    BDS_FFS_PM_D5792 = MARKER(name="BDS_FFS:PM_D5792")
+    push!(lattice, BDS_FFS_PM_D5792)
+    drift_610 = DRIFT(name="drift_610", len=0.23193000000000003)
+    push!(lattice, drift_610)
+    BDS_FFS_BPM_D5803 = MARKER(name="BDS_FFS:BPM_D5803")
+    push!(lattice, BDS_FFS_BPM_D5803)
+    drift_611 = DRIFT(name="drift_611", len=0.2367)
+    push!(lattice, drift_611)
+    BDS_FFS_DCH_D5805 = ORBTRIM(name="BDS_FFS:DCH_D5805", realpara=true, tm_xkick=0.0017569932)
+    push!(lattice, BDS_FFS_DCH_D5805)
+    BDS_FFS_DCV_D5805 = ORBTRIM(name="BDS_FFS:DCV_D5805", realpara=true, tm_ykick=-0.0017488464)
+    push!(lattice, BDS_FFS_DCV_D5805)
+    drift_612 = DRIFT(name="drift_612", len=0.275063)
+    push!(lattice, drift_612)
+    BDS_FFS_QH_D5810 = KQUAD(name="BDS_FFS:QH_D5810", k1=20.273760000000003, len=0.26)
+    push!(lattice, BDS_FFS_QH_D5810)
+    drift_613 = DRIFT(name="drift_613", len=0.24)
+    push!(lattice, drift_613)
+    BDS_FFS_QV_D5815 = KQUAD(name="BDS_FFS:QV_D5815", k1=-21.3058104, len=0.4)
+    push!(lattice, BDS_FFS_QV_D5815)
+    drift_614 = DRIFT(name="drift_614", len=0.12288)
+    push!(lattice, drift_614)
+    BDS_FFS_BPM_D5818 = MARKER(name="BDS_FFS:BPM_D5818")
+    push!(lattice, BDS_FFS_BPM_D5818)
+    drift_615 = DRIFT(name="drift_615", len=0.11712)
+    push!(lattice, drift_615)
+    BDS_FFS_QH_D5821 = KQUAD(name="BDS_FFS:QH_D5821", k1=17.316936000000002, len=0.26)
+    push!(lattice, BDS_FFS_QH_D5821)
+    drift_616 = DRIFT(name="drift_616", len=0.116366)
+    push!(lattice, drift_616)
+    BDS_FFS_CLLM_D5824 = DRIFT(name="BDS_FFS:CLLM_D5824", len=0.0738636)
+    push!(lattice, BDS_FFS_CLLM_D5824)
+    drift_617 = DRIFT(name="drift_617", len=0.1103716)
+    push!(lattice, drift_617)
+    mirror_shield_2 = DRIFT(name="mirror_shield_2", len=0.0127)
+    push!(lattice, mirror_shield_2)
+    drift_618 = DRIFT(name="drift_618", len=0.045896)
+    push!(lattice, drift_618)
+    mirror = DRIFT(name="mirror", len=0.011)
+    push!(lattice, mirror)
+    drift_619 = DRIFT(name="drift_619", len=0.386459)
+    push!(lattice, drift_619)
+    Target_Center = MARKER(name="Target_Center")
+    push!(lattice, Target_Center)
+    USE = MARKER(name="USE")
+    push!(lattice, USE)
+
+    # Define beam envelope matrices
+    S0_matrix = [
+        1.9401120068506904e-6 6.916101751370262e-9 -6.452826622660077e-7 1.937737875971762e-8 8.816553292069131e-11 -8.997862587159953e-12 ;
+        6.916101751370465e-9 1.227632215382666e-8 7.966019841914919e-8 1.2214490136665444e-8 6.8281015483918325e-12 1.7928775445931288e-12 ;
+        -6.452826622660028e-7 7.966019841914866e-8 1.677274570233923e-6 3.786049860001454e-8 -3.274608213533839e-10 -2.954242523914023e-11 ;
+        1.9377378759717307e-8 1.221449013666544e-8 3.7860498600015637e-8 1.3727527372393609e-8 3.055392407305886e-11 -9.728998494802312e-12 ;
+        8.816553291945573e-11 6.8281015481392096e-12 -3.2746082135065794e-10 3.055392407312844e-11 6.704478361805059e-6 1.8787138961392854e-7 ;
+        -8.997862587459685e-12 1.7928775445168307e-12 -2.954242523833709e-11 -9.728998494711933e-12 1.8787138961392817e-7 5.182601752993566e-8 ;
+    ]
+
+    S1_matrix = [
+        1.4591505220806416e-6 4.80759780722691e-9 -2.574008048881089e-7 -1.5753048728498946e-8 8.816553292069082e-11 -8.997862587159986e-12 ;
+        4.807597807226825e-9 1.113553929141832e-8 6.517280550397521e-8 -9.059142689309891e-9 6.828101548391853e-12 1.7928775445931304e-12 ;
+        -2.5740080488810454e-7 6.51728055039751e-8 2.3112947543955263e-6 4.4795495848647294e-8 -3.274608213533911e-10 -2.9542425239140383e-11 ;
+        -1.5753048728498906e-8 -9.059142689309881e-9 4.4795495848647254e-8 1.2334170148319723e-8 3.0553924073058935e-11 -9.728998494802306e-12 ;
+        8.816553291945514e-11 6.828101548139209e-12 -3.2746082135066327e-10 3.055392407312831e-11 6.704478361805056e-6 1.8787138961392856e-7 ;
+        -8.997862587459696e-12 1.7928775445168309e-12 -2.954242523833693e-11 -9.728998494711962e-12 1.878713896139282e-7 5.182601752993566e-8 ;
+    ]
+
+    S2_matrix = [
+        8.610934701851641e-6 -2.925996909510753e-7 -1.0426799474860453e-6 3.96584305304612e-7 8.816553292069113e-11 -8.997862587159947e-12 ;
+        -2.925996909510772e-7 2.0119976600609268e-8 9.453461098576867e-8 -3.284566499545562e-9 6.8281015483918406e-12 1.7928775445931312e-12 ;
+        -1.0426799474860374e-6 9.453461098576794e-8 1.2714676786183125e-6 1.2290925637784062e-8 -3.274608213533861e-10 -2.954242523914047e-11 ;
+        3.9658430530461154e-7 -3.2845664995454693e-9 1.2290925637784375e-8 2.8471963564199213e-8 3.055392407305859e-11 -9.728998494802304e-12 ;
+        8.816553291945498e-11 6.828101548139187e-12 -3.274608213506595e-10 3.0553924073128056e-11 6.704478361805057e-6 1.878713896139286e-7 ;
+        -8.997862587459717e-12 1.7928775445168297e-12 -2.9542425238337437e-11 -9.72899849471194e-12 1.8787138961392822e-7 5.182601752993566e-8 ;
+    ]
+
+    # Create beam objects for each charge state
+    beam1 = create_beam_from_envelope_matrix(
+    S0_matrix, 
+    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+    nparticles = 10000, 
+    energy = 2.81542e10, 
+    charge = 50.0, 
+    mass = 1.1550529568e11)
+
+    beam2 = create_beam_from_envelope_matrix(
+    S1_matrix, 
+    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, 0.003986373207128377], 
+    nparticles = 10000, 
+    energy = 2.81542e10, 
+    charge = 49.0, 
+    mass = 1.1550529568e11)
+
+    beam3 = create_beam_from_envelope_matrix(
+    S2_matrix, 
+    centroid = [0.0, 0.0, 0.0, 0.0, 0.0, -0.0066024306243065295], 
+    nparticles = 10000, 
+    energy = 2.81542e10, 
+    charge = 51.0, 
+    mass = 1.1550529568e11)
+
+    return lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix
+end
+
+# Helper function to create a beam from an envelope matrix
 function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64}; 
                                 centroid::Vector{Float64} = zeros(6),
                                 nparticles::Int = 10000, 
@@ -43,38 +684,37 @@ function create_beam_from_envelope_matrix(envelope_matrix::Matrix{Float64};
     
     # Create beam with the generated particles
     beam = Beam(r=particles, np=nparticles, energy=energy, charge=charge, mass=mass)
-    get_centroid!(beam)
-    get_emittance!(beam)
+    # get_centroid!(beam)
+    # get_emittance!(beam)
 
     
     return beam
 end
 
 function propagate_beam(lattice, beam, np)
-    # Initialize arrays to store results
+    # # Initialize arrays to store results
     n_elements = length(lattice)
     beam_rms = zeros(n_elements, 6)  # Store RMS for all 6 dimensions
     floor_distance = zeros(n_elements)
     
     # Create a temporary array for flattened particles
     flat_particles = zeros(6 * np)
+    twi = zeros(n_elements, 9)
     
     # Loop through each lattice element
     for i in eachindex(lattice)
-        # Flatten the beam position data
+
+        twi[i, :] .= twiss_beam(beam)
+
+
         flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
         
         # Pass particles through the lattice element
         pass!(lattice[i], flat_particles, np, beam)
-        
+
         # Reshape the particles back to original shape
         beam.r = reshape(flat_particles, 6, np)'
-        
-        # Calculate beam properties
-        # get_emittance!(beam)
-        # get_centroid!(beam)
-        # get_2nd_moment!(beam)
-        
+
         # Calculate and store RMS for all 6 dimensions
         for dim in 1:6
             beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
@@ -87,8 +727,27 @@ function propagate_beam(lattice, beam, np)
             floor_distance[i] = floor_distance[i-1] + lattice[i].len
         end
     end
-    
-    return beam_rms, floor_distance, beam
+    # for j in 1:n_elements
+    #     i = non_marker_indices[j]
+    #     twi[j, :] .= twiss_beam(beam)
+    #     flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
+    #     pass!(lattice[i], flat_particles, np, beam)
+    #     # Reshape the particles back to original shape
+    #     beam.r = reshape(flat_particles, 6, np)'
+
+    #     # Calculate and store RMS for all 6 dimensions
+    #     for dim in 1:6
+    #         beam_rms[j, dim] = sqrt(mean(beam.r[:,dim].^2))
+    #     end
+        
+    #     # Calculate and store cumulative distance
+    #     if j == 1
+    #         floor_distance[j] = lattice[i].len
+    #     else
+    #         floor_distance[j] = floor_distance[j-1] + lattice[i].len
+    #     end
+    # end
+    return beam_rms, floor_distance, beam, twi
 end
 
 # Run the simulation
@@ -124,24 +783,30 @@ function run_simulation()
     #         floor_distance[i] = floor_distance[i-1] + lattice[i].len
     #     end
     # end
-    beam1_rms, floor_distance, beam1 = propagate_beam(lattice, beam1, beam1.np)
-    beam2_rms, floor_distance, beam2 = propagate_beam(lattice, beam2, beam2.np)
-    beam3_rms, floor_distance, beam3 = propagate_beam(lattice, beam3, beam3.np)
+    beam1_rms, floor_distance, beam1, twi1 = propagate_beam(lattice, beam1, beam1.np)
+    beam2_rms, floor_distance, beam2, twi2 = propagate_beam(lattice, beam2, beam2.np)
+    beam3_rms, floor_distance, beam3, twi3 = propagate_beam(lattice, beam3, beam3.np)
 
+    # get_emittance!(beam1)
+    # get_centroid!(beam1)
+    # get_emittance!(beam2)
+    # get_centroid!(beam2)
+    # get_emittance!(beam3)
+    # get_centroid!(beam3)
 
-    println("Final beam1 parameters:")
-    println("Centroid: ", beam1.emittance)
-    println("Emittance: ", beam1.centroid)
+    # println("Final beam1 parameters:")
+    # println("Centroid: ", beam1.emittance)
+    # println("Emittance: ", beam1.centroid)
 
-    println("Final beam2 parameters:")
-    println("Centroid: ", beam2.emittance)
-    println("Emittance: ", beam2.centroid)
+    # println("Final beam2 parameters:")
+    # println("Centroid: ", beam2.emittance)
+    # println("Emittance: ", beam2.centroid)
 
-    println("Final beam3 parameters:")
-    println("Centroid: ", beam3.emittance)
-    println("Emittance: ", beam3.centroid)
+    # println("Final beam3 parameters:")
+    # println("Centroid: ", beam3.emittance)
+    # println("Emittance: ", beam3.centroid)
     
-    return lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, floor_distance
+    return lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance
 end
 
 function visualize_beam_properties(beam::Beam)
@@ -169,337 +834,814 @@ function visualize_beam_properties(beam::Beam)
     plot(p1, p2, p3, p4, p5, p6, layout=(2,3), size=(900,600), legend=false)
 end
 
-# Create the lattice and beams
-# lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
 
-# begin
-#     # Print validation information
-#     println("Validation results:")
-#     println("beam1 covariance ratio:")
-#     ratio1 = cov(beam1.r) ./ S0_matrix
-#     display(ratio1)
-    
-#     println("\nbeam2 covariance ratio:")
-#     ratio2 = cov(beam2.r) ./ S1_matrix
-#     display(ratio2)
-    
-#     println("\nbeam3 covariance ratio:")
-#     ratio3 = cov(beam3.r) ./ S2_matrix
-#     display(ratio3)
+# function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, lattice; combined = true)
+#     if combined != true    
+#         # Define beam colors and labels (shared across all plots)
+#         beam_colors = [:blue, :orange, :green]
+#         beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
+        
+#         # Define element colors and heights (shared across all plots)
+#         element_colors = Dict(
+#             "SBEND" => :purple,
+#             "KQUAD" => :red,
+#             "ORBTRIM" => :green,
+#             "MARKER" => :gray,
+#             "DRIFT" => :white,
+#             "default" => :gray
+#         )
+        
+#         element_heights = Dict(
+#             "SBEND" => 0.8,
+#             "KQUAD" => 0.7,
+#             "ORBTRIM" => 0.6,
+#             "MARKER" => 0.4,
+#             "DRIFT" => 0.3,
+#             "default" => 0.5
+#         )
+        
+#         # Helper function to create a standard plot structure
+#         function create_plot(top_data1, top_data2, top_data3, bottom_data1, bottom_data2, bottom_data3, 
+#                             top_label, bottom_label, title)
+            
+#             f = Figure(size = (1200, 400))
+#             gl = f[1, 1] = GridLayout()
+#             legend_layout = f[1, 2] = GridLayout()
+            
+#             # Top plot
+#             ax_top = Axis(gl[1, 1], xlabel = "", ylabel = top_label)
+#             lines!(ax_top, floor_length, top_data1, color = beam_colors[1], linewidth = 2)
+#             lines!(ax_top, floor_length, top_data2, color = beam_colors[2], linewidth = 2)
+#             lines!(ax_top, floor_length, top_data3, color = beam_colors[3], linewidth = 2)
+#             hidexdecorations!(ax_top)
+            
+#             # Create floorline plot in the middle
+#             floor_ax = Axis(gl[2, 1], 
+#                         xlabel = "",
+#                         ylabel = "",
+#                         yticklabelsvisible = false,
+#                         yticksvisible = false)
+            
+#             # Track element types for legend
+#             element_types = Dict{String, Any}()
+            
+#             # Draw the floorline
+#             curr_pos = 0.0
+#             for ele in lattice
+#                 # Get element type
+#                 ele_type = string(typeof(ele).name.name)
+                
+#                 # Determine color and height
+#                 color = get(element_colors, ele_type, element_colors["default"])
+#                 height = get(element_heights, ele_type, element_heights["default"])
+                
+#                 # Make sure elements don't overlap by using a minimum width
+#                 # and ensuring no overlap due to position calculations
+#                 ele_width = ele.len
+                
+#                 # Draw rectangle for element
+#                 rect = Rect(curr_pos, -height/2, ele_width, height)
+#                 element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+                
+#                 # Add F/D labels for KQUAD and KSEXT
+#                 if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
+#                     label = ele.k1 > 0 ? "F" : "D"
+#                     text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
+#                           fontsize = 12, font = :bold)
+#                 elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
+#                     label = ele.k2 > 0 ? "F" : "D"
+#                     text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
+#                           fontsize = 12, font = :bold)
+#                 end
+                
+#                 # Track for legend (only if not already tracked)
+#                 if !haskey(element_types, ele_type)
+#                     element_types[ele_type] = element
+#                 end
+                
+#                 # Update position - ensure we advance by at least the element width
+#                 # to avoid overlapping due to position calculations
+#                 curr_pos += ele_width
+#             end
+            
+#             hidexdecorations!(floor_ax)
+            
+#             # Bottom plot
+#             ax_bottom = Axis(gl[3, 1], xlabel = "z [m]", ylabel = bottom_label, yreversed = true)
+#             lines!(ax_bottom, floor_length, bottom_data1, color = beam_colors[1], linewidth = 2)
+#             lines!(ax_bottom, floor_length, bottom_data2, color = beam_colors[2], linewidth = 2)
+#             lines!(ax_bottom, floor_length, bottom_data3, color = beam_colors[3], linewidth = 2)
+            
+#             # Link x axes
+#             linkxaxes!(ax_top, floor_ax, ax_bottom)
+            
+#             # Add beam legend
+#             legend_entries = [
+#                 LineElement(color = c, linewidth = 2) for c in beam_colors
+#             ]
+            
+#             leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
+            
+#             # Add element legend (filtering out MARKER and DRIFT)
+#             element_entries = []
+#             element_names = []
+#             sorted_names = sort(collect(keys(element_types)))
+#             for name in sorted_names
+#                 if !(name in ["MARKER", "DRIFT"])
+#                     element = element_types[name]
+#                     push!(element_entries, element)
+#                     push!(element_names, name)
+#                 end
+#             end
+            
+#             if !isempty(element_entries)
+#                 element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
+#             end
+            
+#             # Adjust spacing between legends
+#             rowgap!(legend_layout, 5)
+            
+#             # Set row sizes
+#             rowsize!(gl, 1, 100)  # Top plot
+#             rowsize!(gl, 2, 30)   # Elements plot (smaller)
+#             rowsize!(gl, 3, 100)  # Bottom plot
+            
+#             # Set title
+#             # f.title = title
+            
+#             return f
+#         end
+        
+#         # Create the four plots
+#         rms_plot = create_plot(
+#             beam1_rms[:,1] .* 1e3,
+#             beam2_rms[:,1] .* 1e3,
+#             beam3_rms[:,1] .* 1e3,
+#             beam1_rms[:,3] .* 1e3,
+#             beam2_rms[:,3] .* 1e3,
+#             beam3_rms[:,3] .* 1e3,
+#             "RMS X [mm]",
+#             "RMS Y [mm]",
+#             "RMS Plot"
+#         )
+        
+#         beta_plot = create_plot(
+#             twi1[:,1],
+#             twi2[:,1],
+#             twi3[:,1],
+#             twi1[:,4],
+#             twi2[:,4],
+#             twi3[:,4],
+#             L"\beta_x",
+#             L"\beta_y",
+#             "Beta Functions"
+#         )
+        
+#         alpha_plot = create_plot(
+#             twi1[:,2],
+#             twi2[:,2],
+#             twi3[:,2],
+#             twi1[:,5],
+#             twi2[:,5],
+#             twi3[:,5],
+#             L"\alpha_x",
+#             L"\alpha_y",
+#             "Alpha Functions"
+#         )
+        
+#         emittance_plot = create_plot(
+#             twi1[:,3],
+#             twi2[:,3],
+#             twi3[:,3],
+#             twi1[:,6],
+#             twi2[:,6],
+#             twi3[:,6],
+#             L"\epsilon_x",
+#             L"\epsilon_y",
+#             "Emittance"
+#         )
+        
+#         # Return all plots
+#         return Dict(
+#             "rms" => rms_plot,
+#             "beta" => beta_plot,
+#             "alpha" => alpha_plot,
+#             "emittance" => emittance_plot
+#         )
+#     else
+#         # Create one large figure
+#         f = Figure(size = (1200, 1200))
+        
+#         # Create the main layout
+#         gl = f[1, 1] = GridLayout()
+#         legend_layout = f[1, 2] = GridLayout()
+        
+#         # Define beam colors and labels
+#         beam_colors = [:blue, :orange, :green]
+#         beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
+        
+#         # Define element colors and heights
+#         element_colors = Dict(
+#             "SBEND" => :purple,
+#             "KQUAD" => :red,
+#             "ORBTRIM" => :green,
+#             "MARKER" => :gray,
+#             "DRIFT" => :white,
+#             "default" => :gray
+#         )
+        
+#         element_heights = Dict(
+#             "SBEND" => 0.8,
+#             "KQUAD" => 0.7,
+#             "ORBTRIM" => 0.6,
+#             "MARKER" => 0.4,
+#             "DRIFT" => 0.3,
+#             "default" => 0.5
+#         )
+        
+#         # Create plots in sequence (8 total + 1 lattice in the middle)
+#         # 1. RMS X
+#         ax_rms_x = Axis(gl[1, 1], xlabel = "", ylabel = "RMS X [mm]", title = "RMS Values")
+#         lines!(ax_rms_x, floor_length, beam1_rms[:,1] .* 1e3, color = beam_colors[1], linewidth = 2)
+#         lines!(ax_rms_x, floor_length, beam2_rms[:,1] .* 1e3, color = beam_colors[2], linewidth = 2)
+#         lines!(ax_rms_x, floor_length, beam3_rms[:,1] .* 1e3, color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_rms_x)
+        
+#         # 2. RMS Y
+#         ax_rms_y = Axis(gl[2, 1], xlabel = "", ylabel = "RMS Y [mm]")
+#         lines!(ax_rms_y, floor_length, beam1_rms[:,3] .* 1e3, color = beam_colors[1], linewidth = 2)
+#         lines!(ax_rms_y, floor_length, beam2_rms[:,3] .* 1e3, color = beam_colors[2], linewidth = 2)
+#         lines!(ax_rms_y, floor_length, beam3_rms[:,3] .* 1e3, color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_rms_y)
+        
+#         # 3. Beta X
+#         ax_beta_x = Axis(gl[3, 1], xlabel = "", ylabel = L"\beta_x", title = "Beta Functions")
+#         lines!(ax_beta_x, floor_length, twi1[:,1], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_beta_x, floor_length, twi2[:,1], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_beta_x, floor_length, twi3[:,1], color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_beta_x)
+        
+#         # 4. Beta Y
+#         ax_beta_y = Axis(gl[4, 1], xlabel = "", ylabel = L"\beta_y")
+#         lines!(ax_beta_y, floor_length, twi1[:,4], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_beta_y, floor_length, twi2[:,4], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_beta_y, floor_length, twi3[:,4], color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_beta_y)
+        
+#         # 5. Lattice plot in the middle
+#         floor_ax = Axis(gl[5, 1], 
+#                     xlabel = "",
+#                     ylabel = "",
+#                     yticklabelsvisible = false,
+#                     yticksvisible = false)
+        
+#         # Track element types for legend
+#         element_types = Dict{String, Any}()
+        
+#         # Draw the floorline
+#         curr_pos = 0.0
+#         for ele in lattice
+#             # Get element type
+#             ele_type = string(typeof(ele).name.name)
+            
+#             # Determine color and height
+#             color = get(element_colors, ele_type, element_colors["default"])
+#             height = get(element_heights, ele_type, element_heights["default"])
+            
+#             # Use a minimum width to prevent tiny elements and avoid overlap
+#             ele_width = max(ele.len, 0.05)
+            
+#             # Draw rectangle for element
+#             rect = Rect(curr_pos, -height/2, ele_width, height)
+#             element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+            
+#             # Add F/D labels for KQUAD and KSEXT
+#             if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
+#                 label = ele.k1 > 0 ? "F" : "D"
+#                 text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
+#                       fontsize = 12, font = :bold)
+#             elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
+#                 label = ele.k2 > 0 ? "F" : "D"
+#                 text!(floor_ax, curr_pos + ele_width/2, 0, text = label, align = (:center, :center), 
+#                       fontsize = 12, font = :bold)
+#             end
+            
+#             # Track for legend (only if not already tracked)
+#             if !haskey(element_types, ele_type)
+#                 element_types[ele_type] = element
+#             end
+            
+#             # Update position - use the element width to ensure no overlap
+#             curr_pos += ele_width
+#         end
+#         hidexdecorations!(floor_ax)
+        
+#         # 6. Alpha X
+#         ax_alpha_x = Axis(gl[6, 1], xlabel = "", ylabel = L"\alpha_x", title = "Alpha Functions")
+#         lines!(ax_alpha_x, floor_length, twi1[:,2], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_alpha_x, floor_length, twi2[:,2], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_alpha_x, floor_length, twi3[:,2], color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_alpha_x)
+        
+#         # 7. Alpha Y
+#         ax_alpha_y = Axis(gl[7, 1], xlabel = "", ylabel = L"\alpha_y")
+#         lines!(ax_alpha_y, floor_length, twi1[:,5], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_alpha_y, floor_length, twi2[:,5], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_alpha_y, floor_length, twi3[:,5], color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_alpha_y)
+        
+#         # 8. Emittance X
+#         ax_emit_x = Axis(gl[8, 1], xlabel = "", ylabel = L"\epsilon_x", title = "Emittance")
+#         lines!(ax_emit_x, floor_length, twi1[:,3], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_emit_x, floor_length, twi2[:,3], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_emit_x, floor_length, twi3[:,3], color = beam_colors[3], linewidth = 2)
+#         hidexdecorations!(ax_emit_x)
+        
+#         # 9. Emittance Y (bottom plot)
+#         ax_emit_y = Axis(gl[9, 1], xlabel = "z [m]", ylabel = L"\epsilon_y")
+#         lines!(ax_emit_y, floor_length, twi1[:,6], color = beam_colors[1], linewidth = 2)
+#         lines!(ax_emit_y, floor_length, twi2[:,6], color = beam_colors[2], linewidth = 2)
+#         lines!(ax_emit_y, floor_length, twi3[:,6], color = beam_colors[3], linewidth = 2)
+        
+#         # Link all x axes
+#         for ax in [ax_rms_x, ax_rms_y, ax_beta_x, ax_beta_y, floor_ax, 
+#                 ax_alpha_x, ax_alpha_y, ax_emit_x, ax_emit_y]
+#             linkxaxes!(ax, ax_rms_x)
+#         end
+        
+#         # Add beam legend
+#         legend_entries = [
+#             LineElement(color = c, linewidth = 2) for c in beam_colors
+#         ]
+        
+#         leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
+        
+#         # Add element legend (excluding MARKER and DRIFT)
+#         element_entries = []
+#         element_names = []
+#         sorted_names = sort(collect(keys(element_types)))
+#         for name in sorted_names
+#             if !(name in ["MARKER", "DRIFT"])
+#                 element = element_types[name]
+#                 push!(element_entries, element)
+#                 push!(element_names, name)
+#             end
+#         end
+        
+#         if !isempty(element_entries)
+#             element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
+#         end
+        
+#         # Adjust spacing between legends
+#         rowgap!(legend_layout, 5)
+        
+#         # Set row sizes (make lattice row smaller)
+#         rowsize!(gl, 5, 30)  # Lattice plot is smaller
+        
+#         # Set overall title
+#         # f.title = "Multibeam Analysis"
+        
+#         return f
+#     end
 # end
-lattice, beam1, beam2, beam3, beam1_rms, beam2_rms,beam3_rms, floor_length = run_simulation();
+
+
+function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, lattice; combined = true)
+    if combined != true    
+        # Define beam colors and labels (shared across all plots)
+        beam_colors = [:blue, :orange, :green]
+        beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
+        
+        # Define element colors and heights (shared across all plots)
+        element_colors = Dict(
+            "SBEND" => :purple,
+            "KQUAD" => :red,
+            "ORBTRIM" => :green,
+            "MARKER" => :gray,
+            "DRIFT" => :white,
+            "default" => :gray
+        )
+        
+        element_heights = Dict(
+            "SBEND" => 0.8,
+            "KQUAD" => 0.7,
+            "ORBTRIM" => 1.0,
+            "MARKER" => 0.4,
+            "DRIFT" => 0.3,
+            "default" => 0.5
+        )
+        
+        # Helper function to create a standard plot structure
+        function create_plot(top_data1, top_data2, top_data3, bottom_data1, bottom_data2, bottom_data3, 
+                            top_label, bottom_label, title)
+            
+            f = Figure(size = (1200, 400))
+            gl = f[1, 1] = GridLayout()
+            legend_layout = f[1, 2] = GridLayout()
+            
+            # Top plot
+            ax_top = Axis(gl[1, 1], xlabel = "", ylabel = top_label)
+            lines!(ax_top, floor_length, top_data1, color = beam_colors[1], linewidth = 2)
+            lines!(ax_top, floor_length, top_data2, color = beam_colors[2], linewidth = 2)
+            lines!(ax_top, floor_length, top_data3, color = beam_colors[3], linewidth = 2)
+            hidexdecorations!(ax_top)
+            
+            # Create floorline plot in the middle
+            floor_ax = Axis(gl[2, 1], 
+                        xlabel = "",
+                        ylabel = "",
+                        yticklabelsvisible = false,
+                        yticksvisible = false)
+            
+            # Track element types for legend
+            element_types = Dict{String, Any}()
+            
+            # Draw the floorline
+            curr_pos = 0.0
+            for ele in lattice
+                # Get element type
+                ele_type = string(typeof(ele).name.name)
+                
+                # Determine color and height
+                color = get(element_colors, ele_type, element_colors["default"])
+                height = get(element_heights, ele_type, element_heights["default"])
+                
+                # Make sure elements don't overlap by using a minimum width
+                ele_width = ele.len #max(ele.len, 0.05)
+                
+                # Draw rectangle for element based on element type and properties
+                if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
+                    # Use the original quad height
+                    quad_height = element_heights["KQUAD"]
+                    drift_height = element_heights["DRIFT"]
+                    
+                    # Calculate offset to align with other elements
+                    # This will make it overlap the x-axis slightly to maintain alignment
+                    if ele.k1 > 0
+                        # For focusing quads: align bottom with the bottom of drift elements
+                        y_pos = -drift_height/2
+                    else
+                        # For defocusing quads: align top with the top of drift elements
+                        y_pos = drift_height/2 - quad_height
+                    end
+                    
+                    rect = Rect(curr_pos, y_pos, ele_width, quad_height)
+                elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
+                    # Use the original sextupole height
+                    sext_height = get(element_heights, "KSEXT", element_heights["default"])
+                    drift_height = element_heights["DRIFT"]
+                    
+                    # Calculate offset to align with other elements
+                    if ele.k2 > 0
+                        # For focusing sextupoles: align bottom with the bottom of drift elements
+                        y_pos = -drift_height/2
+                    else
+                        # For defocusing sextupoles: align top with the top of drift elements
+                        y_pos = drift_height/2 - sext_height
+                    end
+                    
+                    rect = Rect(curr_pos, y_pos, ele_width, sext_height)
+                else
+                    # All other elements centered on x-axis as before
+                    rect = Rect(curr_pos, -height/2, ele_width, height)
+                end
+                
+                element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+                
+                # Track for legend (only if not already tracked)
+                if !haskey(element_types, ele_type)
+                    element_types[ele_type] = element
+                end
+                
+                # Update position - ensure we advance by at least the element width
+                # to avoid overlapping due to position calculations
+                curr_pos += ele_width
+            end
+            
+            hidexdecorations!(floor_ax)
+            
+            # Bottom plot
+            ax_bottom = Axis(gl[3, 1], xlabel = "z [m]", ylabel = bottom_label, yreversed = true)
+            lines!(ax_bottom, floor_length, bottom_data1, color = beam_colors[1], linewidth = 2)
+            lines!(ax_bottom, floor_length, bottom_data2, color = beam_colors[2], linewidth = 2)
+            lines!(ax_bottom, floor_length, bottom_data3, color = beam_colors[3], linewidth = 2)
+            
+            # Link x axes
+            linkxaxes!(ax_top, floor_ax, ax_bottom)
+            
+            # Add beam legend
+            legend_entries = [
+                LineElement(color = c, linewidth = 2) for c in beam_colors
+            ]
+            
+            leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
+            
+            # Add element legend (filtering out MARKER and DRIFT)
+            element_entries = []
+            element_names = []
+            sorted_names = sort(collect(keys(element_types)))
+            for name in sorted_names
+                if !(name in ["MARKER", "DRIFT"])
+                    element = element_types[name]
+                    push!(element_entries, element)
+                    push!(element_names, name)
+                end
+            end
+            
+            if !isempty(element_entries)
+                element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
+            end
+            
+            # Adjust spacing between legends
+            rowgap!(legend_layout, 5)
+            
+            # Set row sizes
+            rowsize!(gl, 1, 100)  # Top plot
+            rowsize!(gl, 2, 30)   # Elements plot (smaller)
+            rowsize!(gl, 3, 100)  # Bottom plot
+            
+            # Set title
+            # f.title = title
+            
+            return f
+        end
+        
+        # Create the four plots
+        rms_plot = create_plot(
+            beam1_rms[:,1] .* 1e3,
+            beam2_rms[:,1] .* 1e3,
+            beam3_rms[:,1] .* 1e3,
+            beam1_rms[:,3] .* 1e3,
+            beam2_rms[:,3] .* 1e3,
+            beam3_rms[:,3] .* 1e3,
+            "RMS X [mm]",
+            "RMS Y [mm]",
+            "RMS Plot"
+        )
+        
+        beta_plot = create_plot(
+            twi1[:,1],
+            twi2[:,1],
+            twi3[:,1],
+            twi1[:,4],
+            twi2[:,4],
+            twi3[:,4],
+            L"\beta_x",
+            L"\beta_y",
+            "Beta Functions"
+        )
+        
+        alpha_plot = create_plot(
+            twi1[:,2],
+            twi2[:,2],
+            twi3[:,2],
+            twi1[:,5],
+            twi2[:,5],
+            twi3[:,5],
+            L"\alpha_x",
+            L"\alpha_y",
+            "Alpha Functions"
+        )
+        
+        emittance_plot = create_plot(
+            twi1[:,3],
+            twi2[:,3],
+            twi3[:,3],
+            twi1[:,6],
+            twi2[:,6],
+            twi3[:,6],
+            L"\epsilon_x",
+            L"\epsilon_y",
+            "Emittance"
+        )
+        
+        # Return all plots
+        return Dict(
+            "rms" => rms_plot,
+            "beta" => beta_plot,
+            "alpha" => alpha_plot,
+            "emittance" => emittance_plot
+        )
+    else
+        # Create one large figure
+        f = Figure(size = (1200, 1200))
+        
+        # Create the main layout
+        gl = f[1, 1] = GridLayout()
+        legend_layout = f[1, 2] = GridLayout()
+        
+        # Define beam colors and labels
+        beam_colors = [:blue, :orange, :green]
+        beam_labels = [L"^{124}Xe^{49+}", L"^{124}Xe^{50+}", L"^{124}Xe^{51+}"]
+        
+        # Define element colors and heights
+        element_colors = Dict(
+            "SBEND" => :purple,
+            "KQUAD" => :red,
+            "ORBTRIM" => :green,
+            "MARKER" => :gray,
+            "DRIFT" => :white,
+            "default" => :gray
+        )
+        
+        element_heights = Dict(
+            "SBEND" => 0.8,
+            "KQUAD" => 0.7,
+            "ORBTRIM" => 0.6,
+            "MARKER" => 0.4,
+            "DRIFT" => 0.3,
+            "default" => 0.5
+        )
+        
+        # Create plots in sequence (8 total + 1 lattice in the middle)
+        # 1. RMS X
+        ax_rms_x = Axis(gl[1, 1], xlabel = "", ylabel = "RMS X [mm]", title = "RMS Values")
+        lines!(ax_rms_x, floor_length, beam1_rms[:,1] .* 1e3, color = beam_colors[1], linewidth = 2)
+        lines!(ax_rms_x, floor_length, beam2_rms[:,1] .* 1e3, color = beam_colors[2], linewidth = 2)
+        lines!(ax_rms_x, floor_length, beam3_rms[:,1] .* 1e3, color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_rms_x)
+        
+        # 2. RMS Y
+        ax_rms_y = Axis(gl[2, 1], xlabel = "", ylabel = "RMS Y [mm]")
+        lines!(ax_rms_y, floor_length, beam1_rms[:,3] .* 1e3, color = beam_colors[1], linewidth = 2)
+        lines!(ax_rms_y, floor_length, beam2_rms[:,3] .* 1e3, color = beam_colors[2], linewidth = 2)
+        lines!(ax_rms_y, floor_length, beam3_rms[:,3] .* 1e3, color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_rms_y)
+        
+        # 3. Beta X
+        ax_beta_x = Axis(gl[3, 1], xlabel = "", ylabel = L"\beta_x", title = "Beta Functions")
+        lines!(ax_beta_x, floor_length, twi1[:,1], color = beam_colors[1], linewidth = 2)
+        lines!(ax_beta_x, floor_length, twi2[:,1], color = beam_colors[2], linewidth = 2)
+        lines!(ax_beta_x, floor_length, twi3[:,1], color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_beta_x)
+        
+        # 4. Beta Y
+        ax_beta_y = Axis(gl[4, 1], xlabel = "", ylabel = L"\beta_y")
+        lines!(ax_beta_y, floor_length, twi1[:,4], color = beam_colors[1], linewidth = 2)
+        lines!(ax_beta_y, floor_length, twi2[:,4], color = beam_colors[2], linewidth = 2)
+        lines!(ax_beta_y, floor_length, twi3[:,4], color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_beta_y)
+        
+        # 5. Lattice plot in the middle
+        floor_ax = Axis(gl[5, 1], 
+                    xlabel = "",
+                    ylabel = "",
+                    yticklabelsvisible = false,
+                    yticksvisible = false)
+        
+        # Track element types for legend
+        element_types = Dict{String, Any}()
+        
+        # Draw the floorline
+        curr_pos = 0.0
+        for ele in lattice
+            # Get element type
+            ele_type = string(typeof(ele).name.name)
+            
+            # Determine color and height
+            color = get(element_colors, ele_type, element_colors["default"])
+            height = get(element_heights, ele_type, element_heights["default"])
+            
+            # Use a minimum width to prevent tiny elements and avoid overlap
+            ele_width = ele.len #max(ele.len, 0.05)
+            
+            # Draw rectangle for element based on element type and properties
+            if ele_type == "KQUAD" && hasfield(typeof(ele), :k1)
+                # Use the original quad height, not drift height
+                quad_height = element_heights["KQUAD"]
+                if ele.k1 > 0
+                    # Position touching x-axis and extending upward with full quad height
+                    rect = Rect(curr_pos, 0, ele_width, quad_height)
+                else
+                    # Position touching x-axis and extending downward with full quad height
+                    rect = Rect(curr_pos, -quad_height, ele_width, quad_height)
+                end
+            elseif ele_type == "KSEXT" && hasfield(typeof(ele), :k2)
+                # Use the original sextupole height
+                sext_height = get(element_heights, "KSEXT", element_heights["default"])
+                if ele.k2 > 0
+                    # Position touching x-axis and extending upward with full sextupole height
+                    rect = Rect(curr_pos, 0, ele_width, sext_height)
+                else
+                    # Position touching x-axis and extending downward with full sextupole height
+                    rect = Rect(curr_pos, -sext_height, ele_width, sext_height)
+                end
+            else
+                # All other elements centered on x-axis as before
+                rect = Rect(curr_pos, -height/2, ele_width, height)
+            end
+            
+            element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
+            
+            # Track for legend (only if not already tracked)
+            if !haskey(element_types, ele_type)
+                element_types[ele_type] = element
+            end
+            
+            # Update position - use the element width to ensure no overlap
+            curr_pos += ele_width
+        end
+        hidexdecorations!(floor_ax)
+        
+        # 6. Alpha X
+        ax_alpha_x = Axis(gl[6, 1], xlabel = "", ylabel = L"\alpha_x", title = "Alpha Functions")
+        lines!(ax_alpha_x, floor_length, twi1[:,2], color = beam_colors[1], linewidth = 2)
+        lines!(ax_alpha_x, floor_length, twi2[:,2], color = beam_colors[2], linewidth = 2)
+        lines!(ax_alpha_x, floor_length, twi3[:,2], color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_alpha_x)
+        
+        # 7. Alpha Y
+        ax_alpha_y = Axis(gl[7, 1], xlabel = "", ylabel = L"\alpha_y")
+        lines!(ax_alpha_y, floor_length, twi1[:,5], color = beam_colors[1], linewidth = 2)
+        lines!(ax_alpha_y, floor_length, twi2[:,5], color = beam_colors[2], linewidth = 2)
+        lines!(ax_alpha_y, floor_length, twi3[:,5], color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_alpha_y)
+        
+        # 8. Emittance X
+        ax_emit_x = Axis(gl[8, 1], xlabel = "", ylabel = L"\epsilon_x", title = "Emittance")
+        lines!(ax_emit_x, floor_length, twi1[:,3], color = beam_colors[1], linewidth = 2)
+        lines!(ax_emit_x, floor_length, twi2[:,3], color = beam_colors[2], linewidth = 2)
+        lines!(ax_emit_x, floor_length, twi3[:,3], color = beam_colors[3], linewidth = 2)
+        hidexdecorations!(ax_emit_x)
+        
+        # 9. Emittance Y (bottom plot)
+        ax_emit_y = Axis(gl[9, 1], xlabel = "z [m]", ylabel = L"\epsilon_y")
+        lines!(ax_emit_y, floor_length, twi1[:,6], color = beam_colors[1], linewidth = 2)
+        lines!(ax_emit_y, floor_length, twi2[:,6], color = beam_colors[2], linewidth = 2)
+        lines!(ax_emit_y, floor_length, twi3[:,6], color = beam_colors[3], linewidth = 2)
+        
+        # Link all x axes
+        for ax in [ax_rms_x, ax_rms_y, ax_beta_x, ax_beta_y, floor_ax, 
+                ax_alpha_x, ax_alpha_y, ax_emit_x, ax_emit_y]
+            linkxaxes!(ax, ax_rms_x)
+        end
+        
+        # Add beam legend
+        legend_entries = [
+            LineElement(color = c, linewidth = 2) for c in beam_colors
+        ]
+        
+        leg = Legend(legend_layout[1, 1], legend_entries, beam_labels, "Beam Types")
+        
+        # Add element legend (excluding MARKER and DRIFT)
+        element_entries = []
+        element_names = []
+        sorted_names = sort(collect(keys(element_types)))
+        for name in sorted_names
+            if !(name in ["MARKER", "DRIFT"])
+                element = element_types[name]
+                push!(element_entries, element)
+                push!(element_names, name)
+            end
+        end
+        
+        if !isempty(element_entries)
+            element_leg = Legend(legend_layout[2, 1], element_entries, element_names, "Element Types")
+        end
+        
+        # Adjust spacing between legends
+        rowgap!(legend_layout, 5)
+        
+        # Set row sizes (make lattice row smaller)
+        rowsize!(gl, 5, 30)  # Lattice plot is smaller
+        
+        
+        return f
+    end
+end
+
+# Create the lattice and beams
+lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
+
+begin
+    # Print validation information
+    println("Validation results:")
+    println("beam1 covariance ratio:")
+    ratio1 = cov(beam1.r) ./ S0_matrix
+    display(ratio1)
+    
+    println("\nbeam2 covariance ratio:")
+    ratio2 = cov(beam2.r) ./ S1_matrix
+    display(ratio2)
+    
+    println("\nbeam3 covariance ratio:")
+    ratio3 = cov(beam3.r) ./ S2_matrix
+    display(ratio3)
+end
+lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance = run_simulation();
 # Run visualization
 # p1 = visualize_beam_properties(beam1)
 # p2 = visualize_beam_properties(beam2)
 # p3 = visualize_beam_properties(beam3)
 
-begin
-    f = Figure(size = (900, 650))
-    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
-        title = "MultiBeam RMS X Plot")
-    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
-    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
-    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
-    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
-    display(f)
-end;
+end_ele = 20;
+plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=false)["rms"]
 
-begin
-    f = Figure(size = (900, 650))
-    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
-        title = "MultiBeam RMS Y Plot")
-    lines!(ax, floor_length, beam1_rms[:,3] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
-    lines!(ax, floor_length, beam2_rms[:,3] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
-    lines!(ax, floor_length, beam3_rms[:,3] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
-    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
-    display(f)
-end;
+plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=true)
 
 
-function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
-    # Create the figure
-    f = Figure(size = (900, 650))
-    
-    # Create the RMS plot
-    ax = Axis(f[1, 1], xlabel = "z [m]", ylabel = "RMS X [mm]",
-              title = "MultiBeam RMS X Plot")
-    
-    # Plot the beam RMS data
-    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color=:red)
-    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color=:blue)
-    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color=:green)
-    
-    # Add the beam legend
-    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
-    
-    # Create the floorline plot
-    floor_ax = Axis(f[2, 1], 
-                   xticklabelsvisible = false,
-                   yticklabelsvisible = false,
-                   ylabel = "Elements")
-    
-    # Define element type colors and heights
-    element_colors = Dict(
-        "SBEND" => :blue,
-        "KQUAD" => :red,
-        "ORBTRIM" => :green,
-        "default" => :gray
-    )
-    
-    element_heights = Dict(
-        "SBEND" => 0.8,
-        "KQUAD" => 0.6,
-        "ORBTRIM" => 0.4,
-        "default" => 0.2
-    )
-    
-    # Track element plot handles for legend
-    element_handles = []
-    element_names = []
-    
-    # Draw the floorline
-    curr_pos = 0.0
-    for ele in lattice
-        # Get element type
-        ele_type = string(typeof(ele).name.name)
-        
-        # Determine color and height
-        color = get(element_colors, ele_type, element_colors["default"])
-        height = get(element_heights, ele_type, element_heights["default"])
-        
-        # Draw rectangle for element
-        rect = Rect(curr_pos, -height/2, ele.len, height)
-        element = poly!(floor_ax, rect, color = color)
-        
-        # Track for legend if not already tracked
-        if haskey(element_colors, ele_type) && !(ele_type in element_names)
-            push!(element_handles, element)
-            push!(element_names, ele_type)
-        end
-        
-        # Update position
-        curr_pos += ele.len
-    end
-    
-    # Link x axes to keep them aligned
-    linkxaxes!(ax, floor_ax)
-    
-    # Add element type legend
-    if !isempty(element_handles)
-        f[2, 2] = Legend(f, element_handles, element_names, "Element Types", framevisible = false)
-    end
-    
-    # Adjust layout
-    rowsize!(f.layout, 1, 0.8)
-    rowsize!(f.layout, 2, 0.2)
-    save("src/demo/FRIB/multibeam_rms.png", f)
-    return f
-end
-function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
-    # Create the figure with more height for better visualization
-    f = Figure(size = (900, 700))
-    
-    # Create main plot with more prominent gridlines
-    ax = Axis(f[1, 1], 
-        xlabel = "z [m]", 
-        ylabel = "RMS X [mm]",
-        title = "MultiBeam RMS X Plot",
-        xminorticksvisible = true,
-        yminorticksvisible = true)
-    
-    # Plot the beam RMS data with thicker lines
-    lines!(ax, floor_length, beam1_rms[:,1] .* 1e3, label = "Beam 1, Charge = 50", color = :red, linewidth = 2)
-    lines!(ax, floor_length, beam2_rms[:,1] .* 1e3, label = "Beam 2, Charge = 49", color = :blue, linewidth = 2)
-    lines!(ax, floor_length, beam3_rms[:,1] .* 1e3, label = "Beam 3, Charge = 51", color = :green, linewidth = 2)
-    
-    # Add legend for beams
-    f[1, 2] = Legend(f, ax, "Beams", framevisible = false)
-    
-    # Create floorline plot with better visibility
-    floor_ax = Axis(f[2, 1], 
-                   xticklabelsvisible = false,
-                   yticklabelsvisible = false,
-                   ylabel = "Elements",
-                   height = 100)
-    
-    # Define element type colors and heights with more contrast
-    element_colors = Dict(
-        "SBEND" => :blue,
-        "KQUAD" => :red,
-        "ORBTRIM" => :green,
-        "default" => :gray
-    )
-    
-    # Make elements taller for better visibility
-    element_heights = Dict(
-        "SBEND" => 1.0,
-        "KQUAD" => 0.8,
-        "ORBTRIM" => 0.6,
-        "default" => 0.4
-    )
-    
-    # Track element plot handles for legend
-    element_types = Dict{String, Any}()
-    
-    # Draw the floorline with clear rectangles
-    curr_pos = 0.0
-    for ele in lattice
-        # Get element type
-        ele_type = string(typeof(ele).name.name)
-        
-        # Determine color and height
-        color = get(element_colors, ele_type, element_colors["default"])
-        height = get(element_heights, ele_type, element_heights["default"])
-        
-        # Draw rectangle for element
-        rect = Rect(curr_pos, -height/2, max(ele.len, 0.05), height)  # Minimum width for visibility
-        element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
-        
-        # Track for legend
-        element_types[ele_type] = element
-        
-        # Update position
-        curr_pos += ele.len
-    end
-    
-    # Link x axes to keep them aligned
-    linkxaxes!(ax, floor_ax)
-    
-    # Ensure y-axis limits show data properly
-    ylims!(ax, (0, nothing))  # Start at 0, auto-determine upper limit
-    ylims!(floor_ax, (-0.6, 0.6))  # Fixed range for elements
-    
-    # Add element type legend
-    element_entries = []
-    element_names = []
-    for (name, element) in element_types
-        push!(element_entries, element)
-        push!(element_names, name)
-    end
-    
-    f[2, 2] = Legend(f, element_entries, element_names, "Element Types", framevisible = false)
-    
-    # Adjust layout
-    rowsize!(f.layout, 1, 0.8)
-    rowsize!(f.layout, 2, 0.2)
-    save("src/demo/FRIB/multibeam_rms.png", f)
-    return f
-end
-function plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
-    # Create the figure
-    f = Figure(size = (900, 700))
-    
-    # Create layout with separate areas for plots
-    gl = f[1, 1] = GridLayout()
-    
-    # Create the RMS plot with its own scale
-    ax = Axis(gl[1, 1], 
-        xlabel = "", # Remove x-label from top plot
-        ylabel = "RMS X [mm]",
-        # height = 100,
-        title = "MultiBeam RMS X Plot")
-    
-    # Plot beam data
-    b1_data = beam1_rms[:,1] .* 1e3
-    b2_data = beam2_rms[:,1] .* 1e3
-    b3_data = beam3_rms[:,1] .* 1e3
-    
-    l1 = lines!(ax, floor_length, b1_data, label = "Beam 1, Charge = 50", color = :red, linewidth = 2)
-    l2 = lines!(ax, floor_length, b2_data, label = "Beam 2, Charge = 49", color = :blue, linewidth = 2)
-    l3 = lines!(ax, floor_length, b3_data, label = "Beam 3, Charge = 51", color = :green, linewidth = 2)
-    
-    # # Calculate appropriate y-limits for RMS plot
-    # all_data = vcat(b1_data, b2_data, b3_data)
-    # data_min = minimum(all_data)
-    # data_max = maximum(all_data)
-    # range = max(data_max - data_min, 1e-6) # Prevent zero range
-    # ylims!(ax, (data_min - range*0.1, data_max + range*0.1))
-    
-    # Create floorline plot with NO y-axis labels or ticks
-    floor_ax = Axis(gl[2, 1], 
-                #    height = 100,
-                   xlabel = "z [m]", # Only show x-label on bottom plot
-                   ylabel = "Elements",
-                   yticklabelsvisible = false, # Hide y-tick labels
-                   yticksvisible = false) # Hide y-tick marks
-    
-    # Define element colors
-    element_colors = Dict(
-        "SBEND" => :blue,
-        "KQUAD" => :red,
-        "ORBTRIM" => :green,
-        "MARKER" => :darkgray,
-        "DRIFT" => :lightgray,
-        "default" => :gray
-    )
-    
-    element_heights = Dict(
-        "SBEND" => 0.8,
-        "KQUAD" => 0.7,
-        "ORBTRIM" => 0.6,
-        "MARKER" => 0.4,
-        "DRIFT" => 0.3,
-        "default" => 0.5
-    )
-    
-    # Track element types for legend
-    element_types = Dict{String, Any}()
-    
-    # Draw the floorline
-    curr_pos = 0.0
-    for ele in lattice
-        # Get element type
-        ele_type = string(typeof(ele).name.name)
-        
-        # Determine color and height
-        color = get(element_colors, ele_type, element_colors["default"])
-        height = get(element_heights, ele_type, element_heights["default"])
-        
-        # Draw rectangle for element
-        rect = Rect(curr_pos, -height/2, max(ele.len, 0.05), height)
-        element = poly!(floor_ax, rect, color = color, strokewidth = 1, strokecolor = :black)
-        
-        # Track for legend (only if not already tracked)
-        if !haskey(element_types, ele_type)
-            element_types[ele_type] = element
-        end
-        
-        # Update position
-        curr_pos += ele.len
-    end
-    
-    # Link x axes to keep them aligned
-    linkxaxes!(ax, floor_ax)
-    
-    # Set fixed y limits for floorline - independent from top plot
-    # ylims!(floor_ax, (-0.5, 0.5))
-    
-    # Add legends to right side
-    gl2 = f[1, 2] = GridLayout()
-    gl2[1,1] = Legend(f, [l1, l2, l3], ["Beam 1, Charge = 50", "Beam 2, Charge = 49", "Beam 3, Charge = 51"], "Beams")
-    
-    element_entries = []
-    element_names = []
-    # Sort the element names alphabetically
-    sorted_names = sort(collect(keys(element_types)))
+beam1.r
 
-    # Then create the legend entries in that order
-    for name in sorted_names
-        element = element_types[name]
-        push!(element_entries, element)
-        push!(element_names, name)
-    end
-    
-    if !isempty(element_entries)
-        gl2[2,1] = Legend(f, element_entries, element_names, "Element Types")
-    end
-    
-    # Adjust layout - give more space to top plot
-    # rowsize!(gl, 1, 0.8)
-    rowsize!(gl, 2, 100)
-    rowsize!(gl2, 2, 100)
-    
-    return f
-end
+get_emittance!(beam1)
 
-plot_multibeam_rms(floor_length, beam1_rms, beam2_rms, beam3_rms, lattice)
+beam1.emittance
