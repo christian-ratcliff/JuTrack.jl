@@ -507,7 +507,22 @@ function parse_flame_lattice(filename::String, output_filename::String)
                         moment2nd$i[d1, d2] = mean(dis$i[:, d1] .* dis$i[:, d2])
                     end
                 end
+
+                lam$i,u$i = eigen(moment2nd$i)
+                transformation$i = u$i*diagm(1.0 ./ sqrt.(lam$i)) *u$i'
+                dis$i = dis$i * transformation$i'
                 
+                lam$i,u$i = eigen(S$(i-1)_matrix)
+                if any(lam$i .<= 0)
+                    println("Warning: Detected negative eigenvalues in the matrix")
+                    # Set threshold relative to the largest eigenvalue
+                    min_eigenvalue = max(1e-20, maximum(lam$i) * 1e-6)  
+                    # Clip negative eigenvalues
+                    lam1_clipped = max.(lam$i, min_eigenvalue)  
+                    # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+                    S_reg = u$i * Diagonal(lam1_clipped) * u$i'
+                    lam$i, u$i = eigen(S_reg)
+                end
                 # Create transformation matrix from eigendecomposition
                 transformation$i = u$i * Diagonal(sqrt.(lam$i)) * u$i'
                 

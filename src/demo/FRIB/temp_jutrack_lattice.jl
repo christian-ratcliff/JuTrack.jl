@@ -1,6 +1,6 @@
 # JuTrack lattice file converted from FLAME format
 # Original file: BDS_124Xe_3cs_short_v1.lat
-# Generated on: 2025-04-09T10:20:34.325
+# Generated on: 2025-04-10T15:00:25.871
 # Mass number: 124.0
 # Coordinate system conversion: FLAME [mm, rad, mm, rad, rad, MeV/u] -> JuTrack [m, px, m, py, m, dp]
 # Relativistic factors: beta=0.5946004840620179, gamma=1.2437481314969263, beta*gamma=0.7395332410393027
@@ -641,9 +641,13 @@ function create_lattice()
     
     if any(lam1 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
-        epsilon = max(1e-20, abs(minimum(lam1)) * 1.1)  # Slightly larger than the most negative eigenvalue
-        s_reg = S0_matrix + epsilon * I  # Add to diagonal
-        lam1, u1 = eigen(s_reg)    # Recompute eigendecomposition
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam1) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam1, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u1 * Diagonal(lam1_clipped) * u1'
+        lam1, u1 = eigen(S_reg)
     end
 
     # Generate random particles 
@@ -660,7 +664,22 @@ function create_lattice()
             moment2nd1[d1, d2] = mean(dis1[:, d1] .* dis1[:, d2])
         end
     end
+
+    lam1,u1 = eigen(moment2nd1)
+    transformation1 = u1*diagm(1.0 ./ sqrt.(lam1)) *u1'
+    dis1 = dis1 * transformation1'
     
+    lam1,u1 = eigen(S0_matrix)
+    if any(lam1 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam1) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam1, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u1 * Diagonal(lam1_clipped) * u1'
+        lam1, u1 = eigen(S_reg)
+    end
     # Create transformation matrix from eigendecomposition
     transformation1 = u1 * Diagonal(sqrt.(lam1)) * u1'
     
@@ -695,9 +714,13 @@ function create_lattice()
     
     if any(lam2 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
-        epsilon = max(1e-20, abs(minimum(lam2)) * 1.1)  # Slightly larger than the most negative eigenvalue
-        s_reg = S1_matrix + epsilon * I  # Add to diagonal
-        lam2, u2 = eigen(s_reg)    # Recompute eigendecomposition
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam2) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam2, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u2 * Diagonal(lam1_clipped) * u2'
+        lam2, u2 = eigen(S_reg)
     end
 
     # Generate random particles 
@@ -714,7 +737,22 @@ function create_lattice()
             moment2nd2[d1, d2] = mean(dis2[:, d1] .* dis2[:, d2])
         end
     end
+
+    lam2,u2 = eigen(moment2nd2)
+    transformation2 = u2*diagm(1.0 ./ sqrt.(lam2)) *u2'
+    dis2 = dis2 * transformation2'
     
+    lam2,u2 = eigen(S1_matrix)
+    if any(lam2 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam2) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam2, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u2 * Diagonal(lam1_clipped) * u2'
+        lam2, u2 = eigen(S_reg)
+    end
     # Create transformation matrix from eigendecomposition
     transformation2 = u2 * Diagonal(sqrt.(lam2)) * u2'
     
@@ -749,9 +787,13 @@ function create_lattice()
     
     if any(lam3 .<= 0)
         println("Warning: Detected negative eigenvalues in the matrix")
-        epsilon = max(1e-20, abs(minimum(lam3)) * 1.1)  # Slightly larger than the most negative eigenvalue
-        s_reg = S2_matrix + epsilon * I  # Add to diagonal
-        lam3, u3 = eigen(s_reg)    # Recompute eigendecomposition
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam3) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam3, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u3 * Diagonal(lam1_clipped) * u3'
+        lam3, u3 = eigen(S_reg)
     end
 
     # Generate random particles 
@@ -768,7 +810,22 @@ function create_lattice()
             moment2nd3[d1, d2] = mean(dis3[:, d1] .* dis3[:, d2])
         end
     end
+
+    lam3,u3 = eigen(moment2nd3)
+    transformation3 = u3*diagm(1.0 ./ sqrt.(lam3)) *u3'
+    dis3 = dis3 * transformation3'
     
+    lam3,u3 = eigen(S2_matrix)
+    if any(lam3 .<= 0)
+        println("Warning: Detected negative eigenvalues in the matrix")
+        # Set threshold relative to the largest eigenvalue
+        min_eigenvalue = max(1e-20, maximum(lam3) * 1e-6)  
+        # Clip negative eigenvalues
+        lam1_clipped = max.(lam3, min_eigenvalue)  
+        # Reconstruct matrix with clipped eigenvalues but same eigenvectors
+        S_reg = u3 * Diagonal(lam1_clipped) * u3'
+        lam3, u3 = eigen(S_reg)
+    end
     # Create transformation matrix from eigendecomposition
     transformation3 = u3 * Diagonal(sqrt.(lam3)) * u3'
     
@@ -795,55 +852,109 @@ function create_lattice()
     get_centroid!(beam3)
     get_emittance!(beam3)
 
-    return lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix
+    return lattice, beam1, beam2, beam3
 end
 
 # Run the simulation
-function run_simulation()
-    lattice, beam1, beam2, beam3, _, _, _ = create_lattice()
-    
-    beam1_rms, floor_distance, beam1, twi1 = propagate_beam(lattice, beam1, beam1.np)
-    beam2_rms, _, beam2, twi2 = propagate_beam(lattice, beam2, beam2.np)
-    beam3_rms, _, beam3, twi3 = propagate_beam(lattice, beam3, beam3.np)
-
-    return lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance
-end
 
 function propagate_beam(lattice, beam, np)
-    # Initialize arrays to store results
-    n_elements = length(lattice)
-    beam_rms = zeros(n_elements, 6)  # Store RMS for all 6 dimensions
-    floor_distance = zeros(n_elements)
+    # Create expanded lattice
+    expanded_lattice = []
+    expanded_indices = []  # Track which original element each expanded element belongs to
     
-    # Create a temporary array for flattened particles
-    flat_particles = zeros(6 * np)
-    twi = zeros(n_elements, 9)
-    
-    # Loop through each lattice element
-    for i in eachindex(lattice)
-        twi[i, :] .= twiss_beam(beam)
-        flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
-        
-        # Pass particles through the lattice element
-        pass!(lattice[i], flat_particles, np, beam)
-
-        # Reshape the particles back to original shape
-        beam.r = reshape(flat_particles, 6, np)'
-
-        # Calculate and store RMS for all 6 dimensions
-        for dim in 1:6
-            beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
-        end
-        
-        # Calculate and store cumulative distance
-        if i == 1
-            floor_distance[i] = lattice[i].len
+    for (i, element) in enumerate(lattice)
+        if element.len > 0
+            # Calculate segments needed
+            segments_by_count = 10
+            segments_by_length = ceil(Int, element.len / 0.1)
+            num_segments = max(segments_by_count, segments_by_length)
+            segment_length = element.len / num_segments
+            
+            # Create smaller elements
+            for j in 1:num_segments
+                small_element = deepcopy(element)
+                small_element.len = segment_length
+                push!(expanded_lattice, small_element)
+                push!(expanded_indices, i)  # Record original index
+            end
         else
-            floor_distance[i] = floor_distance[i-1] + lattice[i].len
+            # Zero-length elements
+            push!(expanded_lattice, element)
+            push!(expanded_indices, i)
         end
     end
     
-    return beam_rms, floor_distance, beam, twi
+    # Propagate through expanded lattice
+    n_expanded = length(expanded_lattice)
+    expanded_beam_rms = zeros(n_expanded, 6)
+    expanded_floor_distance = zeros(n_expanded)
+    expanded_twi = zeros(n_expanded, 9)
+    flat_particles = zeros(6 * np)
+    
+    # Propagate through expanded lattice
+    for i in eachindex(expanded_lattice)
+        expanded_twi[i, :] .= twiss_beam(beam)
+        flat_particles .= collect(Iterators.flatten(eachrow(beam.r)))
+        
+        # Pass particles through element
+        pass!(expanded_lattice[i], flat_particles, np, beam)
+        beam.r = reshape(flat_particles, 6, np)'
+        
+        # Store RMS values
+        for dim in 1:6
+            expanded_beam_rms[i, dim] = sqrt(mean(beam.r[:,dim].^2))
+        end
+        
+        # Calculate floor distance
+        if i == 1
+            expanded_floor_distance[i] = expanded_lattice[i].len
+        else
+            expanded_floor_distance[i] = expanded_floor_distance[i-1] + expanded_lattice[i].len
+        end
+    end
+    
+    # Return everything needed
+    return expanded_beam_rms, expanded_floor_distance, beam, expanded_twi, 
+        lattice, expanded_lattice, expanded_indices
+end
+
+function run_simulation()
+    lattice, beam1, beam2, beam3 = create_lattice()
+    
+    beam1_rms, floor_distance, beam1, twi1, original_lattice, _, expanded_indices1 = 
+        propagate_beam(lattice, beam1, beam1.np)
+    
+    beam2_rms, _, beam2, twi2, _, _, expanded_indices2 = 
+        propagate_beam(lattice, beam2, beam2.np)
+    
+    beam3_rms, _, beam3, twi3, _, _, expanded_indices3 = 
+        propagate_beam(lattice, beam3, beam3.np)
+
+    return original_lattice, beam1, beam2, beam3, 
+        beam1_rms, beam2_rms, beam3_rms, 
+        twi1, twi2, twi3, floor_distance, expanded_indices1
+end
+
+# plotting wrapper function
+function plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, 
+                                    twi1, twi2, twi3, floor_distance,
+                                    original_lattice, expanded_indices, 
+                                    combined=false)
+    # Filter expanded data up to the specified original element
+    mask = expanded_indices .<= end_ele
+    
+    # Use the filtered data for plots but original lattice for floor layout
+    return plot_multibeam_data(
+        floor_distance[mask], 
+        beam1_rms[mask,:], 
+        beam2_rms[mask,:], 
+        beam3_rms[mask,:], 
+        twi1[mask,:], 
+        twi2[mask,:], 
+        twi3[mask,:], 
+        original_lattice[1:end_ele],  # Use original lattice for floor plot
+        combined=combined
+    )
 end
 
 function visualize_beam_properties(beam::Beam)
@@ -1285,20 +1396,26 @@ function plot_multibeam_data(floor_length, beam1_rms, beam2_rms, beam3_rms, twi1
 end
 
 # Create the lattice and beams
-lattice, beam1, beam2, beam3, S0_matrix, S1_matrix, S2_matrix = create_lattice();
+lattice, beam1, beam2, beam3 = create_lattice();
 
-p1 = visualize_beam_properties(beam1)
-p2 = visualize_beam_properties(beam2)
-p3 = visualize_beam_properties(beam3)
 
-lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance = run_simulation();
+begin
+    p1 = visualize_beam_properties(beam1);
+    p2 = visualize_beam_properties(beam2);
+    p3 = visualize_beam_properties(beam3);
+    display(p1)
+    display(p2)
+    display(p3)
+end;
 
-end_ele = 20;
-plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=false)["rms"]
 
-plot_multibeam_data(floor_distance[1:end_ele], beam1_rms[1:end_ele,:], beam2_rms[1:end_ele,:], beam3_rms[1:end_ele,:], twi1[1:end_ele,:], twi2[1:end_ele,:], twi3[1:end_ele,:], lattice[1:end_ele], combined=true)
+# Run simulation
+lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms, 
+twi1, twi2, twi3, floor_distance, expanded_indices = run_simulation();
 
-# Run visualization
-p1 = visualize_beam_properties(beam1)
-p2 = visualize_beam_properties(beam2)
-p3 = visualize_beam_properties(beam3)
+# Plot using original indexing
+end_ele = 200;
+plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false);
+plots["rms"]
+plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, true)
+

@@ -1368,7 +1368,69 @@ lattice, beam1, beam2, beam3, beam1_rms, beam2_rms, beam3_rms,
 twi1, twi2, twi3, floor_distance, expanded_indices = run_simulation();
 
 # Plot using original indexing
-end_ele = 200
+end_ele = 20
 plots = plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, false);
 plots["rms"] 
 plot_multibeam(end_ele, beam1_rms, beam2_rms, beam3_rms, twi1, twi2, twi3, floor_distance,lattice, expanded_indices, true)
+
+
+using LinearAlgebra
+
+
+S0 = [
+    1.9401120068506905 6.916101751370262e-06 -0.6452826622660077 1.937737875971762e-05 2.5016619575190483e-07 -7.22289629767321e-07;
+    6.916101751370465e-06 1.227632215382666e-08 7.966019841914919e-05 1.2214490136665444e-08 1.937446677836609e-11 1.4392049726901372e-10;
+    -0.6452826622660028 7.966019841914866e-05 1.6772745702339231 3.786049860001454e-05 -9.291570665087502e-07 -2.371472911673177e-06;
+    1.9377378759717306e-05 1.221449013666544e-08 3.786049860001564e-05 1.3727527372393609e-08 8.669554527079634e-11 -7.809804442718887e-10;
+    2.501661957483989e-07 1.9374466777649283e-11 -9.291570665010154e-07 8.669554527099378e-11 5.397896688007718e-05 4.2791987513052936e-05;
+    -7.222896297913816e-07 1.4392049726288899e-10 -2.371472911608706e-06 -7.809804442646337e-10 4.279198751305285e-05 0.0003339580248268087;];
+
+rf_freq = 80.5e6
+rf_k =  2 * pi * rf_freq / 299792458.0 # [1/m]
+IonEs = 931494320.0 # Nucleon mass [eV/u].
+IonEk = 227050000.0 # Kinetic energy at LS1 entrance [eV/u].
+gamma = 1.0 + IonEk / IonEs # Lorentz factor.
+beta = sqrt(1.0 - 1.0 / (gamma * gamma)) # Velocity factor.
+scaling = [1e-3, 1.0, 1e-3, 1.0, beta/rf_k, 1.0e6/beta/beta/(IonEs+IonEk)] # from flame to jutrack
+ 
+
+s=diagm(scaling)*((S0+S0')./2)*diagm(scaling) # symmetrize
+ 
+lam,u = eigen(s) # eigenvalues
+ 
+u'*s*u - diagm(lam) # check that the eigenvalue decomposition is correct
+ 
+dis=Matrix{Float64}(undef,1000000,6)
+ 
+for i = 1:6
+    dis[:, i] .= randn(1000000)
+end
+ 
+using Statistics
+ 
+moment2nd = zeros(6, 6)
+    for i = 1:6
+        for j = 1:6
+            moment2nd[i, j] = mean(dis[:, i] .* dis[:, j])
+        end
+    end
+ 
+moment2nd
+
+lam,u = eigen(moment2nd)
+transformation = u*diagm(1.0 ./ sqrt.(lam)) *u'
+dis = dis * transformation'
+ 
+lam,u = eigen(s)
+transformation = u*diagm(sqrt.(lam)) *u'
+ 
+dis = dis * transformation'
+ 
+for i = 1:6
+    for j = 1:6
+        moment2nd[i, j] = mean(dis[:, i] .* dis[:, j])
+    end
+end
+moment2nd
+ 
+moment2nd ./ s
