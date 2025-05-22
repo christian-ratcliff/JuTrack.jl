@@ -60,8 +60,11 @@ include("utils/lattice_utils.jl")
 include("utils/matrix.jl")
 include("utils/dynamic_aperture.jl")
 include("utils/fma.jl")
+include("utils/yaml_reader.jl")
+include("utils/plotting.jl")
+include("utils/beam_data_io.jl")
 
-export Beam
+export Beam, MultiChargeBeam
 export m_e, m_p, m_goldion, charge_e, speed_of_light, epsilon_0, CGAMMA, CoordLimit, AngleLimit, use_exact_Hamiltonian, use_exact_drift
 export qr_eigen, diag1, randn_approx
 export Lattice, add!, buildlattice
@@ -93,4 +96,8 @@ export autodiff, Forward, ForwardWithPrimal, gradient, jacobian, Duplicated, set
 
 export dynamic_aperture, naff, FMA, computeRDT, ADcomputeRDT
 export drift6!, multmv!, addvv!, linearQuadFringeElegantEntrance!, QuadFringePassP!, fastdrift!, strthinkick!
+
+export load_lattice, load_multicharge_lattice
+export plot_multicharge_orbits, plot_orbits, plot_multibeam_data
+export export_beam_data_csv
 end

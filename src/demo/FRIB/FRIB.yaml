@@ -1,0 +1,2077 @@
+lattice:
+  settings:
+    reference_brho: 5.69860938
+    mass_number: 124.0
+    IonEk: 2.2705e8
+    brho_values:
+      51: 5.57963986
+      50: 5.69860938
+      49: 5.81944925
+    reference_charge: 50
+    rf_freq: 8.05e7
+    IonEs: 9.3149432e8
+  elements:
+    - name: "LS3_BTS:QV_D4992"
+      parameters:
+        aper: 0.025
+        B2: -7.11955065
+        len: 0.261
+        k1: -1.2493487753322725
+      type: "KQUAD"
+    - name: "BDS_BTS:BPM_D5513"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:PM_D5792"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_576"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "drift_579"
+      parameters:
+        len: 0.2
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D5337"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -0.00014618073014858934
+      type: "ORBTRIM"
+    - name: "LS3_BTS:DCV_D4965"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.0
+      type: "ORBTRIM"
+    - name: "drift_599"
+      parameters:
+        len: 0.1941
+      type: "DRIFT"
+    - name: "drift_562"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "drift_536"
+      parameters:
+        len: 1.723146854
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5280"
+      parameters:
+        aper: 0.025
+        B2: 7.1107749899999995
+        len: 0.261
+        k1: 1.2478088101557154
+      type: "KQUAD"
+    - name: "BDS_BBS:DH_D5641_4"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_FFS:QV_D5757"
+      parameters:
+        aper: 0.025
+        B2: -8.6416533
+        len: 0.261
+        k1: -1.5164494921039842
+      type: "KQUAD"
+    - name: "BDS_BTS:PM_D5514"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_617"
+      parameters:
+        len: 0.1103716
+      type: "DRIFT"
+    - name: "BDS_FFS:CLLM_D5824"
+      parameters:
+        len: 0.0738636
+      type: "DRIFT"
+    - name: "drift_538"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "drift_587"
+      parameters:
+        len: 0.347358
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D5275"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.0001028500704148983
+      type: "ORBTRIM"
+    - name: "BDS_BTS:QH_D5471"
+      parameters:
+        aper: 0.025
+        B2: 15.703851295404386
+        len: 0.261
+        k1: 2.755733942831573
+      type: "KQUAD"
+    - name: "drift_605"
+      parameters:
+        len: 0.2195
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D5275"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -5.9322532473703265e-5
+      type: "ORBTRIM"
+    - name: "drift_517"
+      parameters:
+        len: 1.4945
+      type: "DRIFT"
+    - name: "drift_523"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "BDS_BTS:GV_D5547"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BTS:DCV_D5496"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 4.526166768075618e-5
+      type: "ORBTRIM"
+    - name: "BDS_BBS:PM_D5628"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_509"
+      parameters:
+        len: 0.825101
+      type: "DRIFT"
+    - name: "drift_533"
+      parameters:
+        len: 0.243199
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D5213"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 0.0
+      type: "ORBTRIM"
+    - name: "LS3_BTS:QV_D5240"
+      parameters:
+        aper: 0.025
+        B2: -7.1041339500000005
+        len: 0.261
+        k1: -1.2466434311031862
+      type: "KQUAD"
+    - name: "BDS_FFS:DCH_D5746"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.0004499129522718751
+      type: "ORBTRIM"
+    - name: "LS3_BTS:BPM_D5010"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_515"
+      parameters:
+        len: 0.243199
+      type: "DRIFT"
+    - name: "drift_612"
+      parameters:
+        len: 0.275063
+      type: "DRIFT"
+    - name: "drift_524"
+      parameters:
+        len: 3.397481
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5731_0"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_BBS:QV_D5621"
+      parameters:
+        aper: 0.07
+        B2: -7.6287745
+        len: 0.4
+        k1: -1.3387080937279474
+      type: "KQUAD"
+    - name: "LS3_BTS:DCH_D4841"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 0.00010569451243910318
+      type: "ORBTRIM"
+    - name: "BDS_BTS:BCM_D5521"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_594"
+      parameters:
+        len: 0.2
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D5445"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:DCV_D5781"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.0
+      type: "ORBTRIM"
+    - name: "drift_613"
+      parameters:
+        len: 0.24
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D5134"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:DCV_D5389"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -8.511069274237569e-5
+      type: "ORBTRIM"
+    - name: "drift_520"
+      parameters:
+        len: 1.564721
+      type: "DRIFT"
+    - name: "drift_590"
+      parameters:
+        len: 0.270037
+      type: "DRIFT"
+    - name: "drift_607"
+      parameters:
+        len: 0.123632
+      type: "DRIFT"
+    - name: "LS3_BTS:PM_D4797"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:BPM_D5772"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_592"
+      parameters:
+        len: 0.3
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5218"
+      parameters:
+        aper: 0.025
+        B2: 7.099627529999999
+        len: 0.261
+        k1: 1.245852638174684
+      type: "KQUAD"
+    - name: "drift_544"
+      parameters:
+        len: 1.723164854
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D4886"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DH_D5731_4"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_541"
+      parameters:
+        len: 0.242179
+      type: "DRIFT"
+    - name: "BDS_BTS:DCH_D5563"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.00010320721263404088
+      type: "ORBTRIM"
+    - name: "BDS_FFS:QH_D5821"
+      parameters:
+        aper: 0.025
+        B2: 17.316936000000002
+        len: 0.26
+        k1: 3.038800318684065
+      type: "KQUAD"
+    - name: "BDS_BBS:DH_D5731_1"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_606"
+      parameters:
+        len: 0.180737
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D4718"
+      parameters:
+        aper: 0.025
+        B2: 7.84223811
+        len: 0.261
+        k1: 1.3761669886557482
+      type: "KQUAD"
+    - name: "LS3_BTS:PM_D4862"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_532"
+      parameters:
+        len: 3.397481
+      type: "DRIFT"
+    - name: "drift_611"
+      parameters:
+        len: 0.2367
+      type: "DRIFT"
+    - name: "drift_525"
+      parameters:
+        len: 0.243199
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D5381"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:BPM_D4968"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_596"
+      parameters:
+        len: 0.255853
+      type: "DRIFT"
+    - name: "drift_554"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "LS3_BTS:QV_D4713"
+      parameters:
+        aper: 0.025
+        B2: -7.073181959999999
+        len: 0.261
+        k1: -1.2412119323047897
+      type: "KQUAD"
+    - name: "BDS_BBS:DH_D5641_3"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_FFS:DCV_D5805"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -0.0003068900293706392
+      type: "ORBTRIM"
+    - name: "BDS_FFS:QH_D5777"
+      parameters:
+        aper: 0.025
+        B2: 7.48468926
+        len: 0.261
+        k1: 1.31342381288117
+      type: "KQUAD"
+    - name: "Target_Center"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:BPM_D5803"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BTS:DCH_D5467"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 8.071466024926946e-5
+      type: "ORBTRIM"
+    - name: "LS3_BTS:QH_D4760"
+      parameters:
+        aper: 0.025
+        B2: 1.80802314
+        len: 0.261
+        k1: 0.3172744470511506
+      type: "KQUAD"
+    - name: "LS3_BTS:DCV_D4750"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 6.266447973312393e-5
+      type: "ORBTRIM"
+    - name: "BDS_BBS:BPM_D5680"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:QH_D5432"
+      parameters:
+        aper: 0.025
+        B2: 23.487911465234422
+        len: 0.261
+        k1: 4.121691784607708
+      type: "KQUAD"
+    - name: "drift_535"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "drift_557"
+      parameters:
+        len: 0.243199
+      type: "DRIFT"
+    - name: "drift_503"
+      parameters:
+        len: 2.421837
+      type: "DRIFT"
+    - name: "drift_528"
+      parameters:
+        len: 1.7231509999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5342"
+      parameters:
+        aper: 0.025
+        B2: 7.10994486
+        len: 0.261
+        k1: 1.2476631377741494
+      type: "KQUAD"
+    - name: "drift_597"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "BDS_FFS:GV_D5788"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:PM_D4771"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:DCV_D5746"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.0
+      type: "ORBTRIM"
+    - name: "BDS_BBS:QH_D5611"
+      parameters:
+        aper: 0.07
+        B2: 12.715320875
+        len: 0.4
+        k1: 2.2313024155728325
+      type: "KQUAD"
+    - name: "BDS_BBS:DH_D5578_0"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_FFS:BPM_D5742"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_569"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "drift_603"
+      parameters:
+        len: 0.206184
+      type: "DRIFT"
+    - name: "drift_609"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "drift_531"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "drift_527"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D5337"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.00011223512568604939
+      type: "ORBTRIM"
+    - name: "BDS_FFS:QV_D5784"
+      parameters:
+        aper: 0.025
+        B2: -8.503614540000001
+        len: 0.261
+        k1: -1.4922262560835502
+      type: "KQUAD"
+    - name: "drift_561"
+      parameters:
+        len: 2.223275186
+      type: "DRIFT"
+    - name: "drift_553"
+      parameters:
+        len: 0.736277
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5093"
+      parameters:
+        aper: 0.025
+        B2: 7.1094705000000005
+        len: 0.261
+        k1: 1.2475798964132545
+      type: "KQUAD"
+    - name: "drift_543"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D5027"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -0.00012233538842769393
+      type: "ORBTRIM"
+    - name: "BDS_BTS:QH_D5559"
+      parameters:
+        aper: 0.025
+        B2: 19.82095506614822
+        len: 0.261
+        k1: 3.478209111105668
+      type: "KQUAD"
+    - name: "drift_526"
+      parameters:
+        len: 0.05232
+      type: "DRIFT"
+    - name: "drift_558"
+      parameters:
+        len: 0.05232
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5668_1"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_BTS:DCV_D5467"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 9.062325447546294e-5
+      type: "ORBTRIM"
+    - name: "drift_504"
+      parameters:
+        len: 0.243209
+      type: "DRIFT"
+    - name: "BDS_BBS:DCH_D5693"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -1.5833336518320895e-6
+      type: "ORBTRIM"
+    - name: "BDS_FFS:BPM_D5818"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:BPM_D5092"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:DCH_D5089"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -5.255998087028032e-5
+      type: "ORBTRIM"
+    - name: "LS3_BTS:DCV_D5089"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 5.349068091415665e-5
+      type: "ORBTRIM"
+    - name: "drift_565"
+      parameters:
+        len: 0.2921758
+      type: "DRIFT"
+    - name: "drift_608"
+      parameters:
+        len: 0.123499
+      type: "DRIFT"
+    - name: "drift_555"
+      parameters:
+        len: 1.2389999999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D4750"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -2.0996336478146185e-5
+      type: "ORBTRIM"
+    - name: "drift_610"
+      parameters:
+        len: 0.23193000000000003
+      type: "DRIFT"
+    - name: "drift_501"
+      parameters:
+        len: 0.239
+      type: "DRIFT"
+    - name: "drift_556"
+      parameters:
+        len: 1.873481
+      type: "DRIFT"
+    - name: "BDS_BBS:DCH_D5616"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -6.763755405884654e-7
+      type: "ORBTRIM"
+    - name: "drift_571"
+      parameters:
+        len: 2.571083
+      type: "DRIFT"
+    - name: "BDS_BTS:QV_D5552"
+      parameters:
+        aper: 0.025
+        B2: -15.048493687224616
+        len: 0.261
+        k1: -2.640730866733774
+      type: "KQUAD"
+    - name: "drift_550"
+      parameters:
+        len: 0.052308999999999994
+      type: "DRIFT"
+    - name: "drift_500"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "drift_512"
+      parameters:
+        len: 0.789925
+      type: "DRIFT"
+    - name: "drift_529"
+      parameters:
+        len: 1.675349
+      type: "DRIFT"
+    - name: "drift_560"
+      parameters:
+        len: 0.371224814
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5731_2"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:DCH_D5151"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.00013929881433634954
+      type: "ORBTRIM"
+    - name: "BDS_FFS:BPM_D5790"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:QV_D5178"
+      parameters:
+        aper: 0.025
+        B2: -7.10745447
+        len: 0.261
+        k1: -1.247226120629451
+      type: "KQUAD"
+    - name: "BDS_BBS:BPM_D5653"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DH_D5668_3"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_566"
+      parameters:
+        len: 0.052324199999999994
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D4965"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 0.0
+      type: "ORBTRIM"
+    - name: "BDS_BBS:DH_D5668_4"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_574"
+      parameters:
+        len: 0.2195
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D5151"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -5.608545571165294e-5
+      type: "ORBTRIM"
+    - name: "BDS_FFS:QH_D5810"
+      parameters:
+        aper: 0.025
+        B2: 20.273760000000003
+        len: 0.26
+        k1: 3.5576679586344984
+      type: "KQUAD"
+    - name: "BDS_FFS:PM_D5743"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:PM_D5774"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_506"
+      parameters:
+        len: 0.239
+      type: "DRIFT"
+    - name: "LS3_BTS:QV_D4755"
+      parameters:
+        aper: 0.025
+        B2: -3.9165533400000005
+        len: 0.261
+        k1: -0.6872822962292602
+      type: "KQUAD"
+    - name: "drift_537"
+      parameters:
+        len: 1.675353146
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D4753"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:GV_D4726"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:DCH_D4903"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.00010653974496493739
+      type: "ORBTRIM"
+    - name: "drift_575"
+      parameters:
+        len: 0.234072
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D5428"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 4.613263034358042e-5
+      type: "ORBTRIM"
+    - name: "drift_583"
+      parameters:
+        len: 0.270036
+      type: "DRIFT"
+    - name: "drift_510"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "drift_572"
+      parameters:
+        len: 0.356979
+      type: "DRIFT"
+    - name: "drift_585"
+      parameters:
+        len: 0.370384
+      type: "DRIFT"
+    - name: "drift_567"
+      parameters:
+        len: 0.489
+      type: "DRIFT"
+    - name: "BDS_FFS:DCH_D5781"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 0.0
+      type: "ORBTRIM"
+    - name: "drift_584"
+      parameters:
+        len: 0.449816
+      type: "DRIFT"
+    - name: "BDS_FFS:QH_D5750"
+      parameters:
+        aper: 0.025
+        B2: 11.51497041
+        len: 0.261
+        k1: 2.0206632253849977
+      type: "KQUAD"
+    - name: "drift_588"
+      parameters:
+        len: 0.338129
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D5389"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 3.940546632097812e-5
+      type: "ORBTRIM"
+    - name: "LS3_BTS:BPM_D5259"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DCV_D5693"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.00011031070180142792
+      type: "ORBTRIM"
+    - name: "drift_614"
+      parameters:
+        len: 0.12288
+      type: "DRIFT"
+    - name: "BDS_BTS:QV_D5501"
+      parameters:
+        aper: 0.025
+        B2: -4.804583880544453
+        len: 0.261
+        k1: -0.8431151461980806
+      type: "KQUAD"
+    - name: "BDS_BTS:DCV_D5563"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.0
+      type: "ORBTRIM"
+    - name: "drift_580"
+      parameters:
+        len: 0.3
+      type: "DRIFT"
+    - name: "drift_582"
+      parameters:
+        len: 0.230148
+      type: "DRIFT"
+    - name: "BDS_BTS:BPM_D5499"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_600"
+      parameters:
+        len: 0.489
+      type: "DRIFT"
+    - name: "drift_516"
+      parameters:
+        len: 0.05232
+      type: "DRIFT"
+    - name: "LS3_BTS:DCH_D5027"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 1.9704115953987358e-5
+      type: "ORBTRIM"
+    - name: "BDS_BTS:QV_D5479"
+      parameters:
+        aper: 0.025
+        B2: -2.1049294985230427
+        len: 0.261
+        k1: -0.36937599301165697
+      type: "KQUAD"
+    - name: "drift_595"
+      parameters:
+        len: 0.37951480000000004
+      type: "DRIFT"
+    - name: "drift_591"
+      parameters:
+        len: 0.335998
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5668_0"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:QV_D5408"
+      parameters:
+        aper: 0.025
+        B2: -7.09440957
+        len: 0.261
+        k1: -1.2449369832048394
+      type: "KQUAD"
+    - name: "BDS_BBS:S_D5606"
+      parameters:
+        len: 0.2
+      type: "DRIFT"
+    - name: "drift_522"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "LS3_BTS:BPM_D4769"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_FFS:DCH_D5805"
+      parameters:
+        realpara: 1.0
+        tm_xkick: 0.00030831964130870117
+      type: "ORBTRIM"
+    - name: "BDS_BBS:BPM_D5625"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:BPM_D5216"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_570"
+      parameters:
+        len: 0.705851186
+      type: "DRIFT"
+    - name: "BDS_BBS:DCV_D5616"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 1.6909388514711636e-7
+      type: "ORBTRIM"
+    - name: "LS3_BTS:QV_D5302"
+      parameters:
+        aper: 0.025
+        B2: -7.09713714
+        len: 0.261
+        k1: -1.2454156210299854
+      type: "KQUAD"
+    - name: "LS3_BTS:DCH_D4779"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -1.8761396486523174e-5
+      type: "ORBTRIM"
+    - name: "drift_539"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "drift_499"
+      parameters:
+        len: 0.999498
+      type: "DRIFT"
+    - name: "BDS_BTS:PM_D5567"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:PM_D5653"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_534"
+      parameters:
+        len: 0.05232
+      type: "DRIFT"
+    - name: "LS3_BTS:QV_D4806"
+      parameters:
+        aper: 0.025
+        B2: -6.88877451
+        len: 0.261
+        k1: -1.208851853256873
+      type: "KQUAD"
+    - name: "LS3_BTS:DCV_D4779"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -0.0001647570600812088
+      type: "ORBTRIM"
+    - name: "BDS_BBS:PM_D5683"
+      parameters: {}
+      type: "MARKER"
+    - name: "mirror_shield_2"
+      parameters:
+        len: 0.0127
+      type: "DRIFT"
+    - name: "drift_514"
+      parameters:
+        len: 1.391397
+      type: "DRIFT"
+    - name: "drift_568"
+      parameters:
+        len: 0.268080814
+      type: "DRIFT"
+    - name: "drift_615"
+      parameters:
+        len: 0.11712
+      type: "DRIFT"
+    - name: "drift_508"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "drift_602"
+      parameters:
+        len: 0.145282
+      type: "DRIFT"
+    - name: "LS3_BTS:PM_D4827"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_545"
+      parameters:
+        len: 1.675335146
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5578_2"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "BDS_BBS:DH_D5578_4"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:QV_D5364"
+      parameters:
+        aper: 0.025
+        B2: -7.1072172899999995
+        len: 0.261
+        k1: -1.2471844999490034
+      type: "KQUAD"
+    - name: "LS3_BTS:QH_D4969"
+      parameters:
+        aper: 0.025
+        B2: 7.10555703
+        len: 0.261
+        k1: 1.246893155185871
+      type: "KQUAD"
+    - name: "drift_518"
+      parameters:
+        len: 0.4945
+      type: "DRIFT"
+    - name: "drift_546"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "drift_548"
+      parameters:
+        len: 3.3985
+      type: "DRIFT"
+    - name: "drift_601"
+      parameters:
+        len: 0.27309419999999995
+      type: "DRIFT"
+    - name: "drift_564"
+      parameters:
+        len: 0.32889999999999997
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5641_1"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:QV_D4868"
+      parameters:
+        aper: 0.025
+        B2: -7.06820118
+        len: 0.261
+        k1: -1.2403378980153927
+      type: "KQUAD"
+    - name: "drift_530"
+      parameters:
+        len: 0.2945
+      type: "DRIFT"
+    - name: "BDS_BBS:QV_D5688"
+      parameters:
+        aper: 0.07
+        B2: -7.622504125
+        len: 0.4
+        k1: -1.3376077594916675
+      type: "KQUAD"
+    - name: "LS3_BTS:QH_D5155"
+      parameters:
+        aper: 0.025
+        B2: 7.10365959
+        len: 0.261
+        k1: 1.2465601897422913
+      type: "KQUAD"
+    - name: "BDS_BTS:BPM_D5565"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DH_D5578_3"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_552"
+      parameters:
+        len: 1.583223
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D4841"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.00010634492164472591
+      type: "ORBTRIM"
+    - name: "drift_551"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:QV_D4930"
+      parameters:
+        aper: 0.025
+        B2: -7.0700986200000004
+        len: 0.261
+        k1: -1.2406708634589727
+      type: "KQUAD"
+    - name: "LS3_BTS:DCV_D5213"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 0.00011332942564313822
+      type: "ORBTRIM"
+    - name: "drift_593"
+      parameters:
+        len: 0.3
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5731_3"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_519"
+      parameters:
+        len: 0.158432
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D4845"
+      parameters:
+        aper: 0.025
+        B2: 7.06167873
+        len: 0.261
+        k1: 1.239193329303087
+      type: "KQUAD"
+    - name: "BDS_FFS:BCM_D5789"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DCV_D5657"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 2.305825706551587e-7
+      type: "ORBTRIM"
+    - name: "BDS_BBS:S_D5703"
+      parameters:
+        len: 0.2
+      type: "DRIFT"
+    - name: "drift_589"
+      parameters:
+        len: 0.343965
+      type: "DRIFT"
+    - name: "drift_540"
+      parameters:
+        len: 3.3985
+      type: "DRIFT"
+    - name: "drift_547"
+      parameters:
+        len: 1.9889999999999999
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5393"
+      parameters:
+        aper: 0.025
+        B2: 7.0869384
+        len: 0.261
+        k1: 1.2436259317707439
+      type: "KQUAD"
+    - name: "BDS_BBS:DCH_D5657"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -1.0760519963907406e-7
+      type: "ORBTRIM"
+    - name: "drift_559"
+      parameters:
+        len: 0.489
+      type: "DRIFT"
+    - name: "LS3_BTS:QH_D5031"
+      parameters:
+        aper: 0.025
+        B2: 7.10140638
+        len: 0.261
+        k1: 1.2461647932780402
+      type: "KQUAD"
+    - name: "LS3_BTS:QV_D5440"
+      parameters:
+        aper: 0.025
+        B2: -17.354942289892875
+        len: 0.261
+        k1: -3.045469715963033
+      type: "KQUAD"
+    - name: "drift_578"
+      parameters:
+        len: 0.37951480000000004
+      type: "DRIFT"
+    - name: "USE"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BTS:DCH_D5496"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -3.599286322727388e-5
+      type: "ORBTRIM"
+    - name: "BDS_BBS:DH_D5668_2"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:QH_D4783"
+      parameters:
+        aper: 0.025
+        B2: 6.22882116
+        len: 0.261
+        k1: 1.093042309911756
+      type: "KQUAD"
+    - name: "drift_549"
+      parameters:
+        len: 0.242191
+      type: "DRIFT"
+    - name: "drift_586"
+      parameters:
+        len: 0.044129
+      type: "DRIFT"
+    - name: "drift_511"
+      parameters:
+        len: 1.199075
+      type: "DRIFT"
+    - name: "mirror"
+      parameters:
+        len: 0.011
+      type: "DRIFT"
+    - name: "drift_573"
+      parameters:
+        len: 0.489
+      type: "DRIFT"
+    - name: "drift_502"
+      parameters:
+        len: 0.7016340000000001
+      type: "DRIFT"
+    - name: "drift_505"
+      parameters:
+        len: 0.05232
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5641_2"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "drift_618"
+      parameters:
+        len: 0.045896
+      type: "DRIFT"
+    - name: "LS3_BTS:GV_D4871"
+      parameters: {}
+      type: "MARKER"
+    - name: "BDS_BBS:DH_D5641_0"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_WD06:BPM_D4699"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:BPM_D5340"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_616"
+      parameters:
+        len: 0.116366
+      type: "DRIFT"
+    - name: "drift_581"
+      parameters:
+        len: 0.3
+      type: "DRIFT"
+    - name: "drift_513"
+      parameters:
+        len: 2.006084
+      type: "DRIFT"
+    - name: "drift_521"
+      parameters:
+        len: 1.675347
+      type: "DRIFT"
+    - name: "drift_542"
+      parameters:
+        len: 0.05232099999999999
+      type: "DRIFT"
+    - name: "BDS_BTS:QH_D5509"
+      parameters:
+        aper: 0.025
+        B2: 4.793709029952756
+        len: 0.261
+        k1: 0.8412068120999646
+      type: "KQUAD"
+    - name: "drift_604"
+      parameters:
+        len: 0.2695
+      type: "DRIFT"
+    - name: "BDS_BBS:DH_D5578_1"
+      parameters:
+        e2: 0.0
+        angle_deg: 3.5
+        len: 0.330050488198
+        angle: 0.061086523819801536
+        e1: 0.0
+      type: "SBEND"
+    - name: "LS3_BTS:BPM_D5430"
+      parameters: {}
+      type: "MARKER"
+    - name: "LS3_BTS:BPM_D4843"
+      parameters: {}
+      type: "MARKER"
+    - name: "drift_619"
+      parameters:
+        len: 0.386459
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D4709"
+      parameters:
+        realpara: 1.0
+        tm_ykick: 9.675747383829282e-5
+      type: "ORBTRIM"
+    - name: "BDS_FFS:QV_D5815"
+      parameters:
+        aper: 0.025
+        B2: -21.3058104
+        len: 0.4
+        k1: -3.738773616380072
+      type: "KQUAD"
+    - name: "LS3_BTS:DCH_D4709"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.00010063867371095366
+      type: "ORBTRIM"
+    - name: "drift_598"
+      parameters:
+        len: 0.299265
+      type: "DRIFT"
+    - name: "LS3_BTS:DCV_D4903"
+      parameters:
+        realpara: 1.0
+        tm_ykick: -0.00016632031164066208
+      type: "ORBTRIM"
+    - name: "LS3_BTS:QV_D5116"
+      parameters:
+        aper: 0.025
+        B2: -7.0999833
+        len: 0.261
+        k1: -1.245915069195355
+      type: "KQUAD"
+    - name: "LS3_BTS:DCH_D5428"
+      parameters:
+        realpara: 1.0
+        tm_xkick: -0.0002086068443596322
+      type: "ORBTRIM"
+    - name: "LS3_BTS:QH_D4907"
+      parameters:
+        aper: 0.025
+        B2: 7.06511784
+        len: 0.261
+        k1: 1.2397968291695756
+      type: "KQUAD"
+    - name: "drift_563"
+      parameters:
+        len: 0.489
+      type: "DRIFT"
+    - name: "drift_507"
+      parameters:
+        len: 0.826117
+      type: "DRIFT"
+    - name: "BDS_BBS:QH_D5698"
+      parameters:
+        aper: 0.07
+        B2: 12.706415125
+        len: 0.4
+        k1: 2.229739622019855
+      type: "KQUAD"
+    - name: "LS3_BTS:QV_D5054"
+      parameters:
+        aper: 0.025
+        B2: -7.1070987
+        len: 0.261
+        k1: -1.2471636896087797
+      type: "KQUAD"
+    - name: "drift_577"
+      parameters:
+        len: 0.295646
+      type: "DRIFT"
+    - name: "LS3_BTS"
+      parameters: {}
+      type: "MARKER"
+  beams:
+    - brho: 5.69860938
+      charge: 50.0
+      matrix:
+        - 1.9401120068506905
+        - 6.916101751370465e-6
+        - -0.6452826622660028
+        - 1.9377378759717306e-5
+        - 2.501661957483989e-7
+        - -7.222896297913816e-7
+        - 6.916101751370262e-6
+        - 1.227632215382666e-8
+        - 7.966019841914866e-5
+        - 1.221449013666544e-8
+        - 1.9374466777649283e-11
+        - 1.4392049726288899e-10
+        - -0.6452826622660077
+        - 7.966019841914919e-5
+        - 1.6772745702339231
+        - 3.786049860001564e-5
+        - -9.291570665010154e-7
+        - -2.371472911608706e-6
+        - 1.937737875971762e-5
+        - 1.2214490136665444e-8
+        - 3.786049860001454e-5
+        - 1.3727527372393609e-8
+        - 8.669554527099378e-11
+        - -7.809804442646337e-10
+        - 2.5016619575190483e-7
+        - 1.937446677836609e-11
+        - -9.291570665087502e-7
+        - 8.669554527079634e-11
+        - 5.397896688007718e-5
+        - 4.279198751305285e-5
+        - -7.22289629767321e-7
+        - 1.4392049726901372e-10
+        - -2.371472911673177e-6
+        - -7.809804442718887e-10
+        - 4.2791987513052936e-5
+        - 0.0003339580248268087
+      centroid:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+    - brho: 5.81944925
+      charge: 49.0
+      matrix:
+        - 1.4591505220806416
+        - 4.807597807226825e-6
+        - -0.2574008048881045
+        - -1.5753048728498907e-5
+        - 2.5016619574839727e-7
+        - -7.222896297913825e-7
+        - 4.80759780722691e-6
+        - 1.113553929141832e-8
+        - 6.51728055039751e-5
+        - -9.059142689309881e-9
+        - 1.937446677764928e-11
+        - 1.43920497262889e-10
+        - -0.25740080488810885
+        - 6.517280550397521e-5
+        - 2.3112947543955262
+        - 4.479549584864725e-5
+        - -9.291570665010305e-7
+        - -2.3714729116086933e-6
+        - -1.5753048728498944e-5
+        - -9.059142689309891e-9
+        - 4.479549584864729e-5
+        - 1.2334170148319723e-8
+        - 8.669554527099342e-11
+        - -7.80980444264636e-10
+        - 2.5016619575190346e-7
+        - 1.9374466778366148e-11
+        - -9.291570665087705e-7
+        - 8.669554527079657e-11
+        - 5.397896688007715e-5
+        - 4.279198751305286e-5
+        - -7.222896297673236e-7
+        - 1.4392049726901385e-10
+        - -2.3714729116731894e-6
+        - -7.809804442718882e-10
+        - 4.279198751305294e-5
+        - 0.0003339580248268087
+      centroid:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0007812442053822318
+    - brho: 5.57963986
+      charge: 51.0
+      matrix:
+        - 8.610934701851642
+        - -0.00029259969095107716
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - -0.00029259969095107527
+        - 2.0119976600609268e-8
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.2714676786183123
+        - 1.2290925637784374e-5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 1.2290925637784062e-5
+        - 2.8471963564199213e-8
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 5.3978966880077166e-5
+        - 4.279198751305287e-5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 4.279198751305295e-5
+        - 0.0003339580248268087
+      centroid:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - -0.0012939357151643517
+  lines:
+    ls3bts:
+      - element: "LS3_WD06:BPM_D4699"
+        count: 1
+      - element: "drift_499"
+        count: 1
+      - element: "LS3_BTS:DCH_D4709"
+        count: 1
+      - element: "LS3_BTS:DCV_D4709"
+        count: 1
+      - element: "drift_500"
+        count: 1
+      - element: "LS3_BTS:QV_D4713"
+        count: 1
+      - element: "drift_501"
+        count: 1
+      - element: "LS3_BTS:QH_D4718"
+        count: 1
+      - element: "drift_502"
+        count: 1
+      - element: "LS3_BTS:GV_D4726"
+        count: 1
+      - element: "drift_503"
+        count: 1
+      - element: "LS3_BTS:DCH_D4750"
+        count: 1
+      - element: "LS3_BTS:DCV_D4750"
+        count: 1
+      - element: "drift_504"
+        count: 1
+      - element: "LS3_BTS:BPM_D4753"
+        count: 1
+      - element: "drift_505"
+        count: 1
+      - element: "LS3_BTS:QV_D4755"
+        count: 1
+      - element: "drift_506"
+        count: 1
+      - element: "LS3_BTS:QH_D4760"
+        count: 1
+      - element: "drift_507"
+        count: 1
+      - element: "LS3_BTS:BPM_D4769"
+        count: 1
+      - element: "drift_508"
+        count: 1
+      - element: "LS3_BTS:PM_D4771"
+        count: 1
+      - element: "drift_509"
+        count: 1
+      - element: "LS3_BTS:DCH_D4779"
+        count: 1
+      - element: "LS3_BTS:DCV_D4779"
+        count: 1
+      - element: "drift_510"
+        count: 1
+      - element: "LS3_BTS:QH_D4783"
+        count: 1
+      - element: "drift_511"
+        count: 1
+      - element: "LS3_BTS:PM_D4797"
+        count: 1
+      - element: "drift_512"
+        count: 1
+      - element: "LS3_BTS:QV_D4806"
+        count: 1
+      - element: "drift_513"
+        count: 1
+      - element: "LS3_BTS:PM_D4827"
+        count: 1
+      - element: "drift_514"
+        count: 1
+      - element: "LS3_BTS:DCH_D4841"
+        count: 1
+      - element: "LS3_BTS:DCV_D4841"
+        count: 1
+      - element: "drift_515"
+        count: 1
+      - element: "LS3_BTS:BPM_D4843"
+        count: 1
+      - element: "drift_516"
+        count: 1
+      - element: "LS3_BTS:QH_D4845"
+        count: 1
+      - element: "drift_517"
+        count: 1
+      - element: "LS3_BTS:PM_D4862"
+        count: 1
+      - element: "drift_518"
+        count: 1
+      - element: "LS3_BTS:QV_D4868"
+        count: 1
+      - element: "drift_519"
+        count: 1
+      - element: "LS3_BTS:GV_D4871"
+        count: 1
+      - element: "drift_520"
+        count: 1
+      - element: "LS3_BTS:BPM_D4886"
+        count: 1
+      - element: "drift_521"
+        count: 1
+      - element: "LS3_BTS:DCH_D4903"
+        count: 1
+      - element: "LS3_BTS:DCV_D4903"
+        count: 1
+      - element: "drift_522"
+        count: 1
+      - element: "LS3_BTS:QH_D4907"
+        count: 1
+      - element: "drift_523"
+        count: 1
+      - element: "LS3_BTS:QV_D4930"
+        count: 1
+      - element: "drift_524"
+        count: 1
+      - element: "LS3_BTS:DCH_D4965"
+        count: 1
+      - element: "LS3_BTS:DCV_D4965"
+        count: 1
+      - element: "drift_525"
+        count: 1
+      - element: "LS3_BTS:BPM_D4968"
+        count: 1
+      - element: "drift_526"
+        count: 1
+      - element: "LS3_BTS:QH_D4969"
+        count: 1
+      - element: "drift_527"
+        count: 1
+      - element: "LS3_BTS:QV_D4992"
+        count: 1
+      - element: "drift_528"
+        count: 1
+      - element: "LS3_BTS:BPM_D5010"
+        count: 1
+      - element: "drift_529"
+        count: 1
+      - element: "LS3_BTS:DCH_D5027"
+        count: 1
+      - element: "LS3_BTS:DCV_D5027"
+        count: 1
+      - element: "drift_530"
+        count: 1
+      - element: "LS3_BTS:QH_D5031"
+        count: 1
+      - element: "drift_531"
+        count: 1
+      - element: "LS3_BTS:QV_D5054"
+        count: 1
+      - element: "drift_532"
+        count: 1
+      - element: "LS3_BTS:DCH_D5089"
+        count: 1
+      - element: "LS3_BTS:DCV_D5089"
+        count: 1
+      - element: "drift_533"
+        count: 1
+      - element: "LS3_BTS:BPM_D5092"
+        count: 1
+      - element: "drift_534"
+        count: 1
+      - element: "LS3_BTS:QH_D5093"
+        count: 1
+      - element: "drift_535"
+        count: 1
+      - element: "LS3_BTS:QV_D5116"
+        count: 1
+      - element: "drift_536"
+        count: 1
+      - element: "LS3_BTS:BPM_D5134"
+        count: 1
+      - element: "drift_537"
+        count: 1
+      - element: "LS3_BTS:DCH_D5151"
+        count: 1
+      - element: "LS3_BTS:DCV_D5151"
+        count: 1
+      - element: "drift_538"
+        count: 1
+      - element: "LS3_BTS:QH_D5155"
+        count: 1
+      - element: "drift_539"
+        count: 1
+      - element: "LS3_BTS:QV_D5178"
+        count: 1
+      - element: "drift_540"
+        count: 1
+      - element: "LS3_BTS:DCH_D5213"
+        count: 1
+      - element: "LS3_BTS:DCV_D5213"
+        count: 1
+      - element: "drift_541"
+        count: 1
+      - element: "LS3_BTS:BPM_D5216"
+        count: 1
+      - element: "drift_542"
+        count: 1
+      - element: "LS3_BTS:QH_D5218"
+        count: 1
+      - element: "drift_543"
+        count: 1
+      - element: "LS3_BTS:QV_D5240"
+        count: 1
+      - element: "drift_544"
+        count: 1
+      - element: "LS3_BTS:BPM_D5259"
+        count: 1
+      - element: "drift_545"
+        count: 1
+      - element: "LS3_BTS:DCH_D5275"
+        count: 1
+      - element: "LS3_BTS:DCV_D5275"
+        count: 1
+      - element: "drift_546"
+        count: 1
+      - element: "LS3_BTS:QH_D5280"
+        count: 1
+      - element: "drift_547"
+        count: 1
+      - element: "LS3_BTS:QV_D5302"
+        count: 1
+      - element: "drift_548"
+        count: 1
+      - element: "LS3_BTS:DCH_D5337"
+        count: 1
+      - element: "LS3_BTS:DCV_D5337"
+        count: 1
+      - element: "drift_549"
+        count: 1
+      - element: "LS3_BTS:BPM_D5340"
+        count: 1
+      - element: "drift_550"
+        count: 1
+      - element: "LS3_BTS:QH_D5342"
+        count: 1
+      - element: "drift_551"
+        count: 1
+      - element: "LS3_BTS:QV_D5364"
+        count: 1
+      - element: "drift_552"
+        count: 1
+      - element: "LS3_BTS:BPM_D5381"
+        count: 1
+      - element: "drift_553"
+        count: 1
+      - element: "LS3_BTS:DCH_D5389"
+        count: 1
+      - element: "LS3_BTS:DCV_D5389"
+        count: 1
+      - element: "drift_554"
+        count: 1
+      - element: "LS3_BTS:QH_D5393"
+        count: 1
+      - element: "drift_555"
+        count: 1
+      - element: "LS3_BTS:QV_D5408"
+        count: 1
+      - element: "drift_556"
+        count: 1
+      - element: "LS3_BTS:DCH_D5428"
+        count: 1
+      - element: "LS3_BTS:DCV_D5428"
+        count: 1
+      - element: "drift_557"
+        count: 1
+      - element: "LS3_BTS:BPM_D5430"
+        count: 1
+      - element: "drift_558"
+        count: 1
+      - element: "LS3_BTS:QH_D5432"
+        count: 1
+      - element: "drift_559"
+        count: 1
+      - element: "LS3_BTS:QV_D5440"
+        count: 1
+      - element: "drift_560"
+        count: 1
+      - element: "LS3_BTS:BPM_D5445"
+        count: 1
+    bds:
+      - element: "drift_561"
+        count: 1
+      - element: "BDS_BTS:DCV_D5467"
+        count: 1
+      - element: "BDS_BTS:DCH_D5467"
+        count: 1
+      - element: "drift_562"
+        count: 1
+      - element: "BDS_BTS:QH_D5471"
+        count: 1
+      - element: "drift_563"
+        count: 1
+      - element: "BDS_BTS:QV_D5479"
+        count: 1
+      - element: "drift_564"
+        count: 5
+      - element: "BDS_BTS:DCH_D5496"
+        count: 1
+      - element: "BDS_BTS:DCV_D5496"
+        count: 1
+      - element: "drift_565"
+        count: 1
+      - element: "BDS_BTS:BPM_D5499"
+        count: 1
+      - element: "drift_566"
+        count: 1
+      - element: "BDS_BTS:QV_D5501"
+        count: 1
+      - element: "drift_567"
+        count: 1
+      - element: "BDS_BTS:QH_D5509"
+        count: 1
+      - element: "drift_568"
+        count: 1
+      - element: "BDS_BTS:BPM_D5513"
+        count: 1
+      - element: "drift_569"
+        count: 1
+      - element: "BDS_BTS:PM_D5514"
+        count: 1
+      - element: "drift_570"
+        count: 1
+      - element: "BDS_BTS:BCM_D5521"
+        count: 1
+      - element: "drift_571"
+        count: 1
+      - element: "BDS_BTS:GV_D5547"
+        count: 1
+      - element: "drift_572"
+        count: 1
+      - element: "BDS_BTS:QV_D5552"
+        count: 1
+      - element: "drift_573"
+        count: 1
+      - element: "BDS_BTS:QH_D5559"
+        count: 1
+      - element: "drift_574"
+        count: 1
+      - element: "BDS_BTS:DCH_D5563"
+        count: 1
+      - element: "BDS_BTS:DCV_D5563"
+        count: 1
+      - element: "drift_575"
+        count: 1
+      - element: "BDS_BTS:BPM_D5565"
+        count: 1
+      - element: "drift_576"
+        count: 1
+      - element: "BDS_BTS:PM_D5567"
+        count: 1
+      - element: "drift_577"
+        count: 1
+      - element: "BDS_BBS:DH_D5578_0"
+        count: 1
+      - element: "BDS_BBS:DH_D5578_1"
+        count: 1
+      - element: "BDS_BBS:DH_D5578_2"
+        count: 1
+      - element: "BDS_BBS:DH_D5578_3"
+        count: 1
+      - element: "BDS_BBS:DH_D5578_4"
+        count: 1
+      - element: "drift_578"
+        count: 5
+      - element: "BDS_BBS:S_D5606"
+        count: 1
+      - element: "drift_579"
+        count: 1
+      - element: "BDS_BBS:QH_D5611"
+        count: 1
+      - element: "drift_580"
+        count: 1
+      - element: "BDS_BBS:DCH_D5616"
+        count: 1
+      - element: "BDS_BBS:DCV_D5616"
+        count: 1
+      - element: "drift_581"
+        count: 1
+      - element: "BDS_BBS:QV_D5621"
+        count: 1
+      - element: "drift_582"
+        count: 1
+      - element: "BDS_BBS:BPM_D5625"
+        count: 1
+      - element: "drift_583"
+        count: 1
+      - element: "BDS_BBS:PM_D5628"
+        count: 1
+      - element: "drift_584"
+        count: 1
+      - element: "BDS_BBS:DH_D5641_0"
+        count: 1
+      - element: "BDS_BBS:DH_D5641_1"
+        count: 1
+      - element: "BDS_BBS:DH_D5641_2"
+        count: 1
+      - element: "BDS_BBS:DH_D5641_3"
+        count: 1
+      - element: "BDS_BBS:DH_D5641_4"
+        count: 1
+      - element: "drift_585"
+        count: 1
+      - element: "BDS_BBS:BPM_D5653"
+        count: 1
+      - element: "drift_586"
+        count: 1
+      - element: "BDS_BBS:PM_D5653"
+        count: 1
+      - element: "drift_587"
+        count: 1
+      - element: "BDS_BBS:DCH_D5657"
+        count: 1
+      - element: "BDS_BBS:DCV_D5657"
+        count: 1
+      - element: "drift_588"
+        count: 1
+      - element: "BDS_BBS:DH_D5668_0"
+        count: 1
+      - element: "BDS_BBS:DH_D5668_1"
+        count: 1
+      - element: "BDS_BBS:DH_D5668_2"
+        count: 1
+      - element: "BDS_BBS:DH_D5668_3"
+        count: 1
+      - element: "BDS_BBS:DH_D5668_4"
+        count: 1
+      - element: "drift_589"
+        count: 1
+      - element: "BDS_BBS:BPM_D5680"
+        count: 1
+      - element: "drift_590"
+        count: 1
+      - element: "BDS_BBS:PM_D5683"
+        count: 1
+      - element: "drift_591"
+        count: 1
+      - element: "BDS_BBS:QV_D5688"
+        count: 1
+      - element: "drift_592"
+        count: 1
+      - element: "BDS_BBS:DCH_D5693"
+        count: 1
+      - element: "BDS_BBS:DCV_D5693"
+        count: 1
+      - element: "drift_593"
+        count: 1
+      - element: "BDS_BBS:QH_D5698"
+        count: 1
+      - element: "drift_594"
+        count: 1
+      - element: "BDS_BBS:S_D5703"
+        count: 1
+      - element: "drift_595"
+        count: 5
+      - element: "BDS_BBS:DH_D5731_0"
+        count: 1
+      - element: "BDS_BBS:DH_D5731_1"
+        count: 1
+      - element: "BDS_BBS:DH_D5731_2"
+        count: 1
+      - element: "BDS_BBS:DH_D5731_3"
+        count: 1
+      - element: "BDS_BBS:DH_D5731_4"
+        count: 1
+      - element: "drift_596"
+        count: 1
+      - element: "BDS_FFS:BPM_D5742"
+        count: 1
+      - element: "drift_597"
+        count: 1
+      - element: "BDS_FFS:PM_D5743"
+        count: 1
+      - element: "drift_598"
+        count: 1
+      - element: "BDS_FFS:DCH_D5746"
+        count: 1
+      - element: "BDS_FFS:DCV_D5746"
+        count: 1
+      - element: "drift_599"
+        count: 1
+      - element: "BDS_FFS:QH_D5750"
+        count: 1
+      - element: "drift_600"
+        count: 1
+      - element: "BDS_FFS:QV_D5757"
+        count: 1
+      - element: "drift_601"
+        count: 5
+      - element: "BDS_FFS:BPM_D5772"
+        count: 1
+      - element: "drift_602"
+        count: 1
+      - element: "BDS_FFS:PM_D5774"
+        count: 1
+      - element: "drift_603"
+        count: 1
+      - element: "BDS_FFS:QH_D5777"
+        count: 1
+      - element: "drift_604"
+        count: 1
+      - element: "BDS_FFS:DCH_D5781"
+        count: 1
+      - element: "BDS_FFS:DCV_D5781"
+        count: 1
+      - element: "drift_605"
+        count: 1
+      - element: "BDS_FFS:QV_D5784"
+        count: 1
+      - element: "drift_606"
+        count: 1
+      - element: "BDS_FFS:GV_D5788"
+        count: 1
+      - element: "drift_607"
+        count: 1
+      - element: "BDS_FFS:BCM_D5789"
+        count: 1
+      - element: "drift_608"
+        count: 1
+      - element: "BDS_FFS:BPM_D5790"
+        count: 1
+      - element: "drift_609"
+        count: 1
+      - element: "BDS_FFS:PM_D5792"
+        count: 1
+      - element: "drift_610"
+        count: 5
+      - element: "BDS_FFS:BPM_D5803"
+        count: 1
+      - element: "drift_611"
+        count: 1
+      - element: "BDS_FFS:DCH_D5805"
+        count: 1
+      - element: "BDS_FFS:DCV_D5805"
+        count: 1
+      - element: "drift_612"
+        count: 1
+      - element: "BDS_FFS:QH_D5810"
+        count: 1
+      - element: "drift_613"
+        count: 1
+      - element: "BDS_FFS:QV_D5815"
+        count: 1
+      - element: "drift_614"
+        count: 1
+      - element: "BDS_FFS:BPM_D5818"
+        count: 1
+      - element: "drift_615"
+        count: 1
+      - element: "BDS_FFS:QH_D5821"
+        count: 1
+      - element: "drift_616"
+        count: 1
+      - element: "BDS_FFS:CLLM_D5824"
+        count: 1
+      - element: "drift_617"
+        count: 10
+      - element: "mirror_shield_2"
+        count: 1
+      - element: "drift_618"
+        count: 1
+      - element: "mirror"
+        count: 1
+      - element: "drift_619"
+        count: 1
+      - element: "Target_Center"
+        count: 1
+    cell:
+      - element: "S"
+        count: 1
+      - element: "ls3bts"
+        count: 1
+      - element: "bds"
+        count: 1
+  main_line: "cell"

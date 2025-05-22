@@ -152,3 +152,16 @@ function Beam(beam::Beam)
     return Beam(r, beam.np, beam.nmacro, beam.energy, lost_flag, beam.charge, beam.mass, beam.gamma, beam.beta, beam.atomnum, beam.classrad0, beam.radconst, beam.T0, beam.nturn, beam.znbin, inzindex, zhist, zhist_edges, beam.temp1, beam.temp2, beam.temp3, beam.temp4, beam.temp5, emittance, centroid, moment2nd, beamsize, beam.current)
 end
 
+
+
+mutable struct MultiChargeBeam
+    beams::Dict{Int, Beam}  # charge -> beam
+    brho_values::Dict{Int, Float64}  # charge -> brho
+    reference_charge::Int
+    reference_brho::Float64
+    
+    function MultiChargeBeam(beams::Dict{Int, Beam}, brho_values::Dict{Int, Float64}, reference_charge::Int=50)
+        reference_brho = brho_values[reference_charge]
+        new(beams, brho_values, reference_charge, reference_brho)
+    end
+end

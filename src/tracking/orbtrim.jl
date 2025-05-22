@@ -3,22 +3,6 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
     theta_x = ele.theta_x
     theta_y = ele.theta_y
     
-    # Calculate kicks if realpara is true
-    if ele.realpara
-        # C0 is the speed of light in m/s
-        # C0 = speed_of_light
-        amu = 931494320.0
-        # println("charge: ", particles.charge)
-        # println("mass (eV/u): ", particles.mass / amu)
-        # println("energy (eV/u): ",  (particles.energy / (particles.mass / amu)))
-        # println("denom: ",  sqrt(( (particles.energy / (particles.mass / amu)) + amu)^2 - amu^2))
-        mass_number = particles.mass/amu
-        ecpi = 50.  / (mass_number) * speed_of_light / sqrt(( (particles.energy / mass_number) + amu)^2 - amu^2)
-        # println(ecpi)
-        theta_x = ele.tm_xkick * ecpi * (particles.charge) / 50.
-        theta_y = ele.tm_ykick * ecpi * (particles.charge) / 50.
-        
-    end
     # Calculate rotation values if needed
     xyrotate_rad = ele.xyrotate * π / 180.0
     
@@ -67,6 +51,20 @@ function pass!(ele::ORBTRIM, r_in::Array{Float64,1}, num_particles::Int64, parti
         end
     end
     
+    return nothing
+end
+
+function pass!(ele::ORBTRIM, multibeam::MultiChargeBeam)
+    for (charge, beam) in multibeam.beams
+        r_in = collect(Iterators.flatten(eachrow(beam.r)))
+
+        pass!(ele, r_in, beam.np, beam)
+        
+        # Update beam coordinates
+        beam.r = reshape(r_in, 6, beam.np)'
+            
+
+    end
     return nothing
 end
 

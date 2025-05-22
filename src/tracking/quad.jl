@@ -84,6 +84,15 @@ function pass!(ele::QUAD, r_in::Array{Float64,1}, num_particles::Int64, particle
     return nothing
 end
 
+function pass!(ele::KQUAD, multibeam::MultiChargeBeam)
+    for (charge, beam) in multibeam.beams
+        r_in = collect(Iterators.flatten(eachrow(beam.r)))
+        pass!(ele, r_in, beam.np, beam)
+        beam.r = reshape(r_in, 6, beam.np)'
+    end
+    return nothing
+end
+
 function QuadLinearPass_P!(r::Array{Float64,1}, le::Float64, k1::Float64, 
     T1::Array{Float64,1}, T2::Array{Float64,1}, R1::Array{Float64,2}, R2::Array{Float64,2}, 
     RApertures::Array{Float64,1}, EApertures::Array{Float64,1},

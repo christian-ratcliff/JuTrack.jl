@@ -303,6 +303,21 @@ function pass!(ele::SBEND, r_in::Array{Float64,1}, num_particles::Int64, particl
     end
     return nothing
 end
+
+function pass!(ele::SBEND, multibeam::MultiChargeBeam)
+    for (charge, beam) in multibeam.beams
+
+        # Get particle array
+        r_in = collect(Iterators.flatten(eachrow(beam.r)))
+
+        pass!(ele, r_in, beam.np, beam)
+        
+        # Update beam coordinates
+        beam.r = reshape(r_in, 6, beam.np)'
+    end
+    return nothing
+end
+
 # function pass!(ele::RBEND, r_in::Array{Float64,1}, num_particles::Int64, particles::Beam)
 #     # ele: RBEND
 #     # r_in: 6-by-num_particles array
