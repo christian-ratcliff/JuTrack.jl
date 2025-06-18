@@ -43,6 +43,15 @@ function linepass!(lattice::Lattice, particles::Beam)
     return nothing
 end
 
+function linepass!(lattice::Lattice, multibeam::MultiChargeBeam, id::Vector{Int}, elems::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass!(lattice, beam, id, elems)
+        
+    end
+    return nothing
+end
+
 function ADlinepass!(lattice::Lattice, particles::Beam, id::Vector{Int}, elems::Vector)
     np = particles.nmacro
     particles6 = matrix_to_array(particles.r)
@@ -94,6 +103,15 @@ function ADlinepass!(lattice::Lattice, particles::Beam, id::Vector{Int}, elems::
     rout = array_to_matrix(particles6, np)
     particles.r = rout
     return c
+end
+
+function ADlinepass!(lattice::Lattice, multibeam::MultiChargeBeam, id::Vector{Int}, elems::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass!(lattice, beam, id, elems)
+        
+    end
+    return nothing
 end
 
 function ringpass!(lattice::Lattice, particles::Beam, nturn::Int)

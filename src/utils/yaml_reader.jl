@@ -83,7 +83,7 @@ function load_multicharge_lattice(yaml_file::String; charges::Vector{Int}=[49, 5
         beam = create_beam(matrix_transformed, centroid, charge, mass_number, rest_energy, kinetic_energy, brho_values, reference_charge)
         
         beams[charge] = beam
-        println("Created beam for charge $charge")
+        # println("Created beam for charge $charge")
     end
     
     # Create MultiChargeBeam
@@ -206,7 +206,7 @@ function resolve_line!(lattice, line_name, lines_data, elements)
             push!(lattice, elements[line_name])
         else
             # Instead of a dictionary, create a proper MARKER object
-            println("Warning: Element '$line_name' not found - creating a MARKER instead")
+            # println("Warning: Element '$line_name' not found - creating a MARKER instead")
             marker = MARKER(name=line_name)
             push!(lattice, marker)
         end

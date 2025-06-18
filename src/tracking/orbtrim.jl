@@ -69,6 +69,7 @@ function pass!(ele::ORBTRIM, multibeam::MultiChargeBeam)
 end
 
 function pass_TPSA!(ele::ORBTRIM, r_in::Vector{CTPS{T, TPS_Dim, Max_TPS_Degree}}) where {T, TPS_Dim, Max_TPS_Degree}
+    
     # Extract parameters from the element
     theta_x = ele.theta_x
     theta_y = ele.theta_y
@@ -77,12 +78,11 @@ function pass_TPSA!(ele::ORBTRIM, r_in::Vector{CTPS{T, TPS_Dim, Max_TPS_Degree}}
     xyrotate_rad = ele.xyrotate * π / 180.0
     
     # Apply misalignment at entrance
-    # Misalignment at entrance
-    if !iszero(T1)
-        addvv!(r_in, T1)
+    if !iszero(ele.T1)
+        addvv!(r_in, ele.T1)
     end
-    if !iszero(R1)
-        multmv!(r_in, R1)
+    if !iszero(ele.R1)
+        multmv!(r_in, ele.R1)
     end
     
     # Apply kicks to momenta
@@ -100,12 +100,26 @@ function pass_TPSA!(ele::ORBTRIM, r_in::Vector{CTPS{T, TPS_Dim, Max_TPS_Degree}}
     end
     
     # Apply misalignment at exit
-    if !iszero(R2)
-        multmv!(r_in, R2)
+    if !iszero(ele.R2)
+        multmv!(r_in, ele.R2)
     end
-    if !iszero(T2)
-        addvv!(r_in, T2)
+    if !iszero(ele.T2)
+        addvv!(r_in, ele.T2)
     end   
     
-    return r_in
+    return nothing
+end
+
+function pass_TPSA!(ele::ORBTRIM, multibeam::MultiChargeBeam)
+    for (charge, beam) in multibeam.beams
+        r_in = collect(Iterators.flatten(eachrow(beam.r)))
+
+        pass_TPSA!(ele, r_in)
+        
+        # Update beam coordinates
+        beam.r = reshape(r_in, 6, beam.np)'
+            
+
+    end
+    return nothing
 end

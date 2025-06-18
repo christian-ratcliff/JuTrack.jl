@@ -1,5 +1,7 @@
 include("ssrf_ring.jl")
-using JuTrack
+include("../../JuTrack.jl")
+
+using .JuTrack
 using BenchmarkTools
 using Plots
 

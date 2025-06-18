@@ -113,6 +113,24 @@ function ADlinepass!(line::Vector, particles::Beam, changed_idx::Vector, changed
     return nothing
 end
 
+function ADlinepass!(line::Vector, multibeam::MultiChargeBeam, changed_idx::Vector, changed_ele::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass!(line, beam, changed_idx, changed_ele)
+        
+    end
+    return nothing
+end
+
+function ADlinepass!(line::Vector, multibeam::MultiChargeBeam, refpts::Vector, changed_idx::Vector, changed_ele::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass!(line, beam, refpts, changed_idx, changed_ele)
+        
+    end
+    return nothing
+end
+
 function ADlinepass!(line::Vector, id_list::Vector, particles::Beam, changed_idx::Vector, changed_ele::Vector)
     # Note!!! A lost particle's coordinate will not be marked as NaN or Inf like other softwares 
     # Check if the particle is lost by checking the lost_flag
@@ -164,6 +182,7 @@ function ADlinepass!(line::Vector, particles::Beam, refpts::Vector, changed_idx:
     particles.r = rout
     return saved_particles
 end
+
 
 
 """
@@ -285,6 +304,24 @@ function ADlinepass_TPSA!(line::Vector, rin::Vector{CTPS{T, TPS_Dim, Max_TPS_Deg
         else
             pass_TPSA!(line[i], rin)        
         end
+    end
+    return nothing
+end
+
+function ADlinepass_TPSA!(line::Vector, multibeam::MultiChargeBeam, changed_idx::Vector, changed_ele::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass_TPSA!(line, beam.r, changed_idx, changed_ele)
+        
+    end
+    return nothing
+end
+
+function ADlinepass_TPSA!(line::Vector, multibeam::MultiChargeBeam, refpts::Vector, changed_idx::Vector, changed_ele::Vector)
+    for (_, beam) in multibeam.beams
+
+        ADlinepass_TPSA!(line, beam, refpts, changed_idx, changed_ele)
+        
     end
     return nothing
 end

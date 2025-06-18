@@ -63,6 +63,7 @@ include("utils/fma.jl")
 include("utils/yaml_reader.jl")
 include("utils/plotting.jl")
 include("utils/beam_data_io.jl")
+include("utils/tpsa_helpers.jl")
 
 export Beam, MultiChargeBeam
 export m_e, m_p, m_goldion, charge_e, speed_of_light, epsilon_0, CGAMMA, CoordLimit, AngleLimit, use_exact_Hamiltonian, use_exact_drift
@@ -100,4 +101,5 @@ export drift6!, multmv!, addvv!, linearQuadFringeElegantEntrance!, QuadFringePas
 export load_lattice, load_multicharge_lattice
 export plot_multicharge_orbits, plot_orbits, plot_multibeam_data
 export export_beam_data_csv
+export load_flame_data, create_tpsa_beam, extract_transfer_matrix, extract_centroid
 end
